@@ -13,7 +13,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     auth_value.set_sensitive(true);
     headers.insert(header::AUTHORIZATION, auth_value);
 
-    let resp = reqwest::get("https://httpbin.org/ip")
+    let client = reqwest::Client::builder()
+        .default_headers(headers)
+        .build()?;
+
+    let resp = reqwest::get("api.collegefootballdata.com/")
         .await?
         .json::<HashMap<String, String>>()
         .await?;
