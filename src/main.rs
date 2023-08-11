@@ -1,6 +1,5 @@
 use reqwest::header;
 use dotenv::dotenv;
-use std::collections::HashMap;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -18,6 +17,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()?;
 
     let res = client.get("api.collegefootballdata.com/").send().await?;
+
 
     println!("{:#?}", res);
     Ok(())
