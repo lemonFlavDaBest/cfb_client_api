@@ -17,11 +17,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .default_headers(headers)
         .build()?;
 
-    let resp = reqwest::get("api.collegefootballdata.com/")
-        .await?
-        .json::<HashMap<String, String>>()
-        .await?;
-    println!("{:#?}", resp);
+    let res = client.get("api.collegefootballdata.com/").send().await?;
+
+    println!("{:#?}", res);
     Ok(())
 }
 
