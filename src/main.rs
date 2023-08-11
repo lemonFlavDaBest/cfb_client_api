@@ -7,9 +7,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
     let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_TOKEN must be set.");
-    let bearer_api_key = "Bearer {api_key}";
+    let bearer_api_key = format!("Bearer {}", api_key);
     let mut headers = header::HeaderMap::new();
-    let mut auth_value = header::HeaderValue::from_static(bearer_api_key);
+    let mut auth_value = header::HeaderValue::from_str(&bearer_api_key).expect("Bearer API key is invalid");
     auth_value.set_sensitive(true);
     headers.insert(header::AUTHORIZATION, auth_value);
 
