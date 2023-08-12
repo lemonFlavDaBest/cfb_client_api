@@ -26,4 +26,16 @@ impl ApiClient {
         let res = self.client.get(url).send().await?;
         Ok(res)
     }
+
+    pub async fn get_with_params(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
+        let url = format!("{}{}", self.base_url, endpoint);
+        let mut request = self.client.get(&url);
+        
+        for (key, value) in params {
+            request = request.query(&[(key, value)]);
+        }
+
+        let res = request.send().await?;
+        Ok(res)
+    }
 }
