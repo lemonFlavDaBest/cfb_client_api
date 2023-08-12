@@ -1,24 +1,20 @@
-use reqwest::header;
+mod api_client; 
 use dotenv::dotenv;
+use api_client::ApiClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
-    let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_TOKEN must be set.");
-    let bearer_api_key = format!("Bearer {}", api_key);
-    let mut headers = header::HeaderMap::new();
-    let mut auth_value = header::HeaderValue::from_str(&bearer_api_key).expect("Bearer API key is invalid");
-    auth_value.set_sensitive(true);
-    headers.insert(header::AUTHORIZATION, auth_value);
+    let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_KEY must be set.");
+    let api_client = ApiClient::new(&api_key)?;
 
-    let client = reqwest::Client::builder()
-        .default_headers(headers)
-        .build()?;
+    let endpoint = "games";  // Adjust the endpoint according to your requirements
+    let _params = [("year", "2022"), ("week", "1")];  // Adjust query parameters as needed
+    let url = format!("{}{}", api_client.base_url, endpoint);
 
-    let res = client.get("api.collegefootballdata.com/").send().await?;
-
-
+    let res = api_client.get(&url).await?;
+    
     println!("{:#?}", res);
     Ok(())
 }
