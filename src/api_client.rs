@@ -1,39 +1,29 @@
-use reqwest::{Client, Error, Response, Url};
-use std::collections::HashMap;
-use serde::Deserialize;
+use reqwest::{Client, ClientBuilder, Error, Response};
+use reqwest::header;
 
 pub struct ApiClient {
     client: Client,
-    base_url: Url,
-    auth_header: String,
+    pub base_url: String,
 }
 
 impl ApiClient {
     pub fn new(api_key: &str) -> Result<Self, Error> {
-        let client = Client::new();
-        let base_url = Url::parse("https://api.collegefootballdata.com")?;
-        let auth_header = format!("Bearer {}", api_key);
+        let api_key = api_key.trim();
+        let bearer_api_key = format!("Bearer {}", api_key);
+        let mut headers = header::HeaderMap::new();
+        let mut auth_value = header::HeaderValue::from_str(&bearer_api_key).expect("Bearer API key is invalid");
+        auth_value.set_sensitive(true);
+        headers.insert(header::AUTHORIZATION, auth_value);
 
-        Ok(ApiClient {
-            client,
-            base_url,
-            auth_header,
-        })
+        let client = ClientBuilder::new()
+            .default_headers(headers)
+            .build()?;
+
+        Ok(ApiClient { client, base_url: "https://api.collegefootballdata.com/".to_string()})
     }
 
-    pub async fn get(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
-        let url = self.base_url.join(endpoint)?;
-        let request = self.client.get(url).query(params);
-        let response = request.header("Authorization", &self.auth_header).send().await?;
-        Ok(response)
-    }
-
-    pub async fn get_json<T>(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<T, Error>
-    where
-        T: Deserialize<'static>,
-    {
-        let response = self.get(endpoint, params).await?;
-        let json = response.json::<T>().await?;
-        Ok(json)
+    pub async fn get(&self, url: &str) -> Result<Response, Error> {
+        let res = self.client.get(url).send().await?;
+        Ok(res)
     }
 }
