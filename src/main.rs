@@ -13,7 +13,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _params = [("year", "2022"), ("week", "1")];  // Adjust query parameters as needed
     let url = format!("{}{}", api_client.base_url, endpoint);
 
-    let res = api_client.get(&url).await?;
+    let res = api_client.get(&url).query(_params).send().await?;
     
     println!("{:#?}", res);
     Ok(())
