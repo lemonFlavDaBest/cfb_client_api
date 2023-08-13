@@ -9,8 +9,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_KEY must be set.");
     let api_client = ApiClient::new(&api_key)?;
 
-    let endpoint = "games";  // Adjust the endpoint according to your requirements
-    let params = [("year", "2022"), ("week", "1")];  // Adjust query parameters as needed
+    let endpoint = "calendar";  // Adjust the endpoint according to your requirements
+    let params = [("year", "2022")];  // Adjust query parameters as needed
     let url = format!("{}{}", api_client.base_url, endpoint);
 
     let res = api_client.get_with_params(&url, &params).await?;
