@@ -17,7 +17,7 @@ pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Calendar
     let params = [("year", year)];
     let url = format!("{}{}", api_client.base_url, endpoint);
 
-    let response = api_client.get_with_params(&url, &params).await?;
+    let response: Response = api_client.get_with_params(&url, &params).await?;
     let json_response: CalendarResponse = response.json().await?;
 
     Ok(json_response)
