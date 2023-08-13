@@ -3,7 +3,7 @@ mod endpoints;
 
 use dotenv::dotenv;
 use api_client::ApiClient;
-use serde::Deserialize; 
+//use serde::Deserialize; 
 use endpoints::calendar_endpoint::get_calendar;
 
 #[tokio::main]
