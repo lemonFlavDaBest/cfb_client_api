@@ -1,6 +1,7 @@
 mod api_client; 
 use dotenv::dotenv;
 use api_client::ApiClient;
+use serde::Deserialize; 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
