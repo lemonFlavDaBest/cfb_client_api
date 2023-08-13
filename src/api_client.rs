@@ -22,7 +22,7 @@ impl ApiClient {
         Ok(ApiClient { client, base_url: "https://api.collegefootballdata.com/".to_string()})
     }
 
-    pub async fn get(&self, url: &str) -> Result<Response, Error> {
+    pub async fn _get(&self, url: &str) -> Result<Response, Error> {
         let res = self.client.get(url).send().await?;
         Ok(res)
     }
