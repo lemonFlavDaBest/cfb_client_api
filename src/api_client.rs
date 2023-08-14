@@ -28,6 +28,7 @@ impl ApiClient {
     }
 
     pub async fn get_with_params(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
+        
         let url = format!("{}{}", self.base_url, endpoint);
         let mut request = self.client.get(&url);
         
