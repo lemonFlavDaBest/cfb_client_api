@@ -1,11 +1,13 @@
 use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder};
 use reqwest::header;
 
+#[derive(Debug)]
 pub struct ApiClient {
-    client: Client,
+    pub client: Client,
     pub base_url: String,
 }
 
+//note to self. remember to use self in the function signature for methods and in the body
 impl ApiClient {
     pub fn new(api_key: &str) -> Result<Self, Error> {
         let api_key = api_key.trim();
@@ -19,6 +21,8 @@ impl ApiClient {
             .default_headers(headers)
             .build()?;
 
+        println!("Client: {:?}", client);
+
         Ok(ApiClient { client, base_url: "https://api.collegefootballdata.com/".to_string()})
     }
 
@@ -27,20 +31,19 @@ impl ApiClient {
         Ok(res)
     }
 
-    pub async fn get_with_params(&self, endpoint: &str, client: ApiClient, params: &[(&str, &str)]) -> Result<Response, Error> {
-        
+    pub async fn _get_endpoint(&self, endpoint: &str) -> Result<Response, Error> {
         let url = format!("{}{}", self.base_url, endpoint);
-
-        let mut request = Request::new(reqwest::Method::GET, url.parse().unwrap());
-        let request_build: RequestBuilder = RequestBuilder::from_parts(client.client, request);
-        
-        println!("request: {:?}", request);
-
-        for (key, value) in params {
-            request_build = request_build.query(&[(key, value)]);
-        }
-
-        let res = request_build.send().await?;
+        let res = self.client.get(&url).send().await?;
         Ok(res)
     }
+
+    //pub async fn get_with_params(&self, endpoint: &str, client: ApiClient, _params: &[(&str, &str)]) -> Result<Response, Error> {
+        
+        //let url = format!("{}{}", self.base_url, endpoint);
+
+        //let request = Request::new(reqwest::Method::GET, url.parse().unwrap());
+        //let request_build: RequestBuilder = RequestBuilder::from_parts(client.client, request);
+        //let res = request_build.send().await?;
+        //Ok(res)
+    //}
 }
