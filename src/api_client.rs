@@ -42,13 +42,11 @@ impl ApiClient {
     
         let mut request_builder = self.client.get(&url);
         for (param_key, param_value) in params {
-            request_builder = request_builder.query(param_key, param_value);
+            request_builder = request_builder.query(&(param_key, param_value));
         }
     
         let res = request_builder.send().await?;
         Ok(res)
     }
-
-    
 
 }
