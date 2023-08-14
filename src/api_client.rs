@@ -3,7 +3,7 @@ use reqwest::header;
 
 #[derive(Debug)]
 pub struct ApiClient {
-    pub client: Client,
+    client: Client,
     pub base_url: String,
 }
 
@@ -37,13 +37,18 @@ impl ApiClient {
         Ok(res)
     }
 
-    //pub async fn get_with_params(&self, endpoint: &str, client: ApiClient, _params: &[(&str, &str)]) -> Result<Response, Error> {
-        
-        //let url = format!("{}{}", self.base_url, endpoint);
+    pub async fn get_endpoint_with_params(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
+        let url = format!("{}{}", self.base_url, endpoint);
+    
+        let mut request_builder = self.client.get(&url);
+        for (param_key, param_value) in params {
+            request_builder = request_builder.query(param_key, param_value);
+        }
+    
+        let res = request_builder.send().await?;
+        Ok(res)
+    }
 
-        //let request = Request::new(reqwest::Method::GET, url.parse().unwrap());
-        //let request_build: RequestBuilder = RequestBuilder::from_parts(client.client, request);
-        //let res = request_build.send().await?;
-        //Ok(res)
-    //}
+    
+
 }
