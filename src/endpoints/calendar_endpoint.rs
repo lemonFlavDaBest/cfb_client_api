@@ -31,7 +31,10 @@ pub struct CalendarResponse {
     pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<CalendarResponse, Error> {
         let endpoint = "calendar";
         let params = [("year", year)];
+        println!("Params: {:?}", params);
         let response = api_client.get_endpoint_with_params(endpoint, &params).await?;
+        println!("checkpoint");
         let json_response = response.json::<CalendarResponse>().await?;
+        println!("JSON Response: {:?}", json_response);
         Ok(json_response)
     }
