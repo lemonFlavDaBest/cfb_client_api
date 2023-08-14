@@ -1,4 +1,4 @@
-use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder};
+use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder };
 use reqwest::header;
 
 #[derive(Debug)]
@@ -39,13 +39,16 @@ impl ApiClient {
 
     pub async fn get_endpoint_with_params(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
         let url = format!("{}{}", self.base_url, endpoint);
-    
-        let mut request_builder = self.client.get(&url);
+        println!("{:?}", self.client);
+        let mut request_builder: RequestBuilder = self.client.get(&url);
+        println!("Request Builder: {:?}", request_builder);
         for (param_key, param_value) in params {
-            request_builder = request_builder.query(&(param_key, param_value));
+            request_builder = request_builder.query(&[(param_key, param_value)]);
         }
+       println!("Request Builder: {:?}", request_builder);
     
         let res = request_builder.send().await?;
+        println!("Response: {:?}", res);
         Ok(res)
     }
 
