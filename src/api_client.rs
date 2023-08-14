@@ -16,12 +16,11 @@ impl ApiClient {
         let mut auth_value = header::HeaderValue::from_str(&bearer_api_key).expect("Bearer API key is invalid");
         auth_value.set_sensitive(true);
         headers.insert(header::AUTHORIZATION, auth_value);
-
+        headers.insert(header::ACCEPT, header::HeaderValue::from_static("application/json"));
         let client = ClientBuilder::new()
             .default_headers(headers)
             .build()?;
 
-        println!("Client: {:?}", client);
 
         Ok(ApiClient { client, base_url: "https://api.collegefootballdata.com/".to_string()})
     }
