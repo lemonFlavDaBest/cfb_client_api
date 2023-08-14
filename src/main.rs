@@ -20,6 +20,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     println!("{:#?}", response);
 
+   // let resp: Response = api_client.client
+   //     .get("https://api.collegefootballdata.com/calendar?year=2022")
+   //     .send()
+   //     .await?;
+
+   //println!("{:#?}", resp);
+   // let response_text = resp.text().await?;
+   // println!("Response Text: {}", response_text);
+    
     Ok(())
 }
 
