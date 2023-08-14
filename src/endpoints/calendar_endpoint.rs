@@ -18,8 +18,7 @@ pub struct CalendarResponse {
 pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<String, Error> {
     let endpoint = "calendar";
     let params = [("year", year)];
-    let url = format!("{}{}", api_client.base_url, endpoint);
-    let response: Response = api_client.get_with_params(&url, &params).await?;
+    let response: Response = api_client.get_with_params(endpoint, &params).await?;
     let response_text = response.text().await?;
     println!("Raw JSON Response: {}", response_text);
     //let json_response: CalendarResponse = response.json().await?;
