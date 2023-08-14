@@ -7,11 +7,11 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 #[derive(Debug, Deserialize)]
 pub struct CalendarResponse {
-    //season: Option<u16>,
-    //week: Option<u8>,
-    //seasonType: Option<String>,
-    //firstGameStart: Option<String>,
-    //lastGameStart: Option<String>,
+    pub season: String,
+    pub week: i32,
+    pub seasonType: String,
+    pub firstGameStart: String,
+    pub lastGameStart: String,
 }
 
 //pub async fn get_calendar(api_client: ApiClient, year: &str) -> Result<String, Error> {
@@ -28,13 +28,17 @@ pub struct CalendarResponse {
     //}
     //Ok(response_text)
     
-    pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<CalendarResponse, Error> {
+    //need to evewntuallu change to CalendarResponse as the result
+    pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Error> {
         let endpoint = "calendar";
         let params = [("year", year)];
         println!("Params: {:?}", params);
         let response = api_client.get_endpoint_with_params(endpoint, &params).await?;
         println!("checkpoint");
-        let json_response = response.json::<CalendarResponse>().await?;
+    
+        // Parse the response into JSON
+        let json_response: Vec<CalendarResponse> = response.json().await?;
+    
         println!("JSON Response: {:?}", json_response);
         Ok(json_response)
     }
