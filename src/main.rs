@@ -18,7 +18,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Client: {:?}", api_client);
     
     let resp: Response = api_client.client
-        .get("https://api.collegefootballdata.com/calendar")
+        .get("https://api.collegefootballdata.com/calendar?year=2022")
         .send()
         .await?;
 

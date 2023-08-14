@@ -20,7 +20,8 @@ impl ApiClient {
         let client = ClientBuilder::new()
             .default_headers(headers)
             .build()?;
-
+        
+        println!("Client: {:?}", client);
 
         Ok(ApiClient { client, base_url: "https://api.collegefootballdata.com/".to_string()})
     }
