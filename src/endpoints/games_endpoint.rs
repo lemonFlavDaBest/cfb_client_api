@@ -11,7 +11,39 @@ const GAMES_ENDPOINT: &str = "games";
 //define the response struct
 #[derive(Deserialize, Debug)]
 pub struct GamesResponse {
-
+    pub id: u32,
+    pub season: u32,
+    pub week: u32,
+    pub season_type: String,
+    pub start_date: String,
+    pub start_time_tbd: bool,
+    pub completed: bool,
+    pub neutral_site: bool,
+    pub conference_game: bool,
+    pub attendance: u32,
+    pub venue_id: u32,
+    pub venue: String,
+    pub home_id: u32,
+    pub home_team: String,
+    pub home_conference: String,
+    pub home_division: String,
+    pub home_points: u32,
+    pub home_line_scores: Vec<u32>,
+    pub home_post_win_prob: u32,
+    pub home_pregame_elo: u32,
+    pub home_postgame_elo: u32,
+    pub away_id: u32,
+    pub away_team: String,
+    pub away_conference: String,
+    pub away_division: String,
+    pub away_points: u32,
+    pub away_line_scores: Vec<u32>,
+    pub away_post_win_prob: u32,
+    pub away_pregame_elo: u32,
+    pub away_postgame_elo: u32,
+    pub excitement_index: u32,
+    pub highlights: String,
+    pub notes: String,
 }
 
 #[derive(Debug)]
