@@ -28,7 +28,7 @@ pub struct GamesParams<'a> {
 }
 
 impl GamesParams<'_> {
-    fn new(year: &str) -> Self {
+    fn new() -> Self {
         Default::default()
     }
 }
@@ -50,5 +50,7 @@ impl Default for GamesParams<'_> {
 }
 
 //create function to get games that take the api client as a parameter and an optional parameters struct
-pub async fn get_games_with_params(api_client: &ApiClient, params: Option<GamesParams>) -> Result<GamesResponseResponse, Error> {
+pub async fn get_games_with_params(api_client: &ApiClient, year: &str, params: Option<GamesParams>) -> Result<GamesResponseResponse, Error> {
+    let mut games = GamesParams::new();
+    games.year = year;
 }
