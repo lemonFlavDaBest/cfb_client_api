@@ -6,6 +6,7 @@ use api_client::ApiClient;
 use reqwest::Response;
 //use serde::Deserialize; 
 use endpoints::calendar_endpoint::get_calendar;
+use endpoints::games_endpoint::{get_games_with_params, GamesResponse};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -14,24 +15,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_KEY must be set.");
     let api_client = ApiClient::new(&api_key)?;
 
-    let year = "2023";  
+    //testing the calendar endpoint here. 
+    {
+    let year = "2021";  
     
     let response = get_calendar(&api_client, year).await?;
     
     println!("{:#?}", response);
+    //Ok(())
+    }
+    
+    //testing the games endpoint here. 
+    let year: &str = "2021";
+
+    let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
+
+    println!("{:#?}", response);
+
     Ok(())
-    
-    //Below this is our working test code.
-
-    //let resp: Response = api_client.client
-   //     .get("https://api.collegefootballdata.com/calendar?year=2022")
- //       .send()
-//        .await?;
-
-//   println!("{:#?}", resp);
- //  let response_text = resp.text().await?;
- //  println!("Response Text: {}", response_text);
-    
- //  Ok(())
 }
 
