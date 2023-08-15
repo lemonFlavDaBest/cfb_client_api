@@ -13,3 +13,5 @@ const GAMES_ENDPOINT: &str = "games";
 pub struct GamesResponse {
 
 }
+
+//create function to get games
