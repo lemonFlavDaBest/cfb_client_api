@@ -12,6 +12,36 @@ const PLAYS_ENDPOINT: &str = "plays";
 //define the response struct
 #[derive(Deserialize, Debug)]
 pub struct PlaysResponse {
+    id: u64,
+    drive_id: u32,
+    game_id: u32,
+    drive_number: u8,
+    play_number: u16,
+    offense: Option<String>,
+    offense_conference: Option<String>,
+    offense_score: u8,
+    defense: Option<String>,
+    home: Option<String>,
+    away: Option<String>,
+    defense_conference: Option<String>,
+    defense_score: u8,
+    period: Option<u8>,
+    clock: {
+      minutes: u8,
+      seconds: u8,
+    },
+    offense_timeouts: Option<u8>,
+    defense_timeouts: Option<u8>,
+    yard_line: Option<u16>,
+    yards_to_goal: Option<u16>,
+    down: Option<u8>,
+    distance: Option<u16>,
+    yards_gained: Option<u16>,
+    scoring: Option<bool>,
+    play_type: Option<String>,
+    play_text: Option<String>,
+    ppa: Option<f64>,
+    wallclock: Option<String>,
 }
 pub struct PlaysParams<'a> {
     seasonType: Option<&'a str>,
