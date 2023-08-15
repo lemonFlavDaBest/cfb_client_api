@@ -14,4 +14,15 @@ pub struct GamesResponse {
 
 }
 
-//create function to get games
+pub struct GamesParams {
+
+}
+
+//create function to get games that take the api client as a parameter and an optional parameters struct
+pub async fn get_games_with_params(api_client: &ApiClient, params: Option<GamesParams>) -> Result<Response, Error> {
+    //create the url
+    
+
+    //return the response
+    Ok(response)
+}
