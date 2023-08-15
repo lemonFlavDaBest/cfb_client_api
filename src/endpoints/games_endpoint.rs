@@ -11,39 +11,39 @@ const GAMES_ENDPOINT: &str = "games";
 //define the response struct
 #[derive(Deserialize, Debug)]
 pub struct GamesResponse {
-    pub id: u32,
-    pub season: u32,
-    pub week: u32,
-    pub season_type: String,
-    pub start_date: String,
-    pub start_time_tbd: bool,
-    pub completed: bool,
-    pub neutral_site: bool,
-    pub conference_game: bool,
-    pub attendance: u32,
-    pub venue_id: u32,
-    pub venue: String,
-    pub home_id: u32,
-    pub home_team: String,
-    pub home_conference: String,
-    pub home_division: String,
-    pub home_points: u32,
-    pub home_line_scores: Vec<u32>,
-    pub home_post_win_prob: u32,
-    pub home_pregame_elo: u32,
-    pub home_postgame_elo: u32,
-    pub away_id: u32,
-    pub away_team: String,
-    pub away_conference: String,
-    pub away_division: String,
-    pub away_points: u32,
-    pub away_line_scores: Vec<u32>,
-    pub away_post_win_prob: u32,
-    pub away_pregame_elo: u32,
-    pub away_postgame_elo: u32,
-    pub excitement_index: u32,
-    pub highlights: String,
-    pub notes: String,
+    id: u32,
+    season: u32,
+    week: u32,
+    season_type: String,
+    start_date: String, // Change this to DateTime<Utc> or your preferred date-time type
+    start_time_tbd: bool,
+    completed: bool,
+    neutral_site: bool,
+    conference_game: bool,
+    attendance: Option<u32>,
+    venue_id: u32,
+    venue: String,
+    home_id: u32,
+    home_team: String,
+    home_conference: String,
+    home_division: String,
+    home_points: u32,
+    home_line_scores: Vec<u32>,
+    home_post_win_prob: Option<f64>,
+    home_pregame_elo: Option<u32>,
+    home_postgame_elo: Option<u32>,
+    away_id: u32,
+    away_team: String,
+    away_conference: String,
+    away_division: String,
+    away_points: u32,
+    away_line_scores: Vec<u32>,
+    away_post_win_prob: Option<f64>,
+    away_pregame_elo: Option<u32>,
+    away_postgame_elo: Option<u32>,
+    excitement_index: Option<f64>,
+    highlights: Option<String>,
+    notes: Option<String>,
 }
 
 #[derive(Debug)]
@@ -119,8 +119,11 @@ pub async fn get_games_with_params(api_client: &ApiClient, year: &str, params: O
     let endpoint = GAMES_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, games_params.as_query_params()).await?;
     println!("checkpoint");
+    //print response as text
+   
+    //Ok(response.text().await?)
 
-    // Deserialize the response into GamesResponse struct
+    //Deserialize the response into GamesResponse struct
     let json_response: Vec<GamesResponse> = response.json().await?;
     println!("json_response: {:?}", json_response);
 
