@@ -3,7 +3,7 @@ mod endpoints;
 
 use dotenv::dotenv;
 use api_client::ApiClient;
-use reqwest::Response;
+//use reqwest::Response;
 //use serde::Deserialize; 
 use endpoints::calendar_endpoint::get_calendar;
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse};
@@ -26,11 +26,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     
     //testing the games endpoint here. 
+    {
     let year: &str = "2021";
 
     let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
 
     println!("{:#?}", response);
+
+    //Ok(())
+    }
+
+    //testing the plays endpoint here 
 
     Ok(())
 }
