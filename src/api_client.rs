@@ -37,7 +37,7 @@ impl ApiClient {
         Ok(res)
     }
 
-    pub async fn get_endpoint_with_params(&self, endpoint: &str, params: &[(&str, &str)]) -> Result<Response, Error> {
+    pub async fn get_endpoint_with_params(&self, endpoint: &str, params: Vec<(&str, &str)>) -> Result<Response, Error> {
         let url = format!("{}{}", self.base_url, endpoint);
         println!("{:?}", self.client);
         let mut request_builder: RequestBuilder = self.client.get(&url);
