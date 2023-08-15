@@ -1,7 +1,8 @@
 // games_endpoint.rs
 
 use reqwest::{Error, Response};
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
+use std::str::FromStr;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
@@ -12,36 +13,39 @@ const GAMES_ENDPOINT: &str = "games";
 #[derive(Deserialize, Debug)]
 pub struct GamesResponse {
     id: u32,
-    season: u32,
-    week: u32,
-    season_type: String,
-    start_date: String, // Change this to DateTime<Utc> or your preferred date-time type
+    season: Option<u32>,
+    week: Option<u32>,
+    season_type: Option<String>,
+    start_date: Option<String>, // Change this to DateTime<Utc> or your preferred date-time type
     start_time_tbd: bool,
     completed: bool,
     neutral_site: bool,
     conference_game: bool,
     attendance: Option<u32>,
-    venue_id: u32,
-    venue: String,
-    home_id: u32,
-    home_team: String,
-    home_conference: String,
-    home_division: String,
-    home_points: u32,
-    home_line_scores: Vec<u32>,
-    home_post_win_prob: Option<String>, //f64::from_str(&val_str).unwrap()
+    venue_id: Option<u32>,
+    venue: Option<String>,
+    home_id: Option<u32>,
+    home_team: Option<String>,
+    home_conference: Option<String>,
+    home_division: Option<String>,
+    home_points: Option<u32>,
+    home_line_scores: Vec<Option<u32>>,
+    #[serde(deserialize_with = "deserialize_f64_from_str")]
+    home_post_win_prob: Option<f64>, //f64::from_str(&val_str).unwrap()
     home_pregame_elo: Option<u32>,
     home_postgame_elo: Option<u32>,
-    away_id: u32,
-    away_team: String,
-    away_conference: String,
-    away_division: String,
-    away_points: u32,
-    away_line_scores: Vec<u32>,
-    away_post_win_prob: Option<String>, //f64::from_str(&val_str).unwrap()
+    away_id: Option<u32>,
+    away_team: Option<String>,
+    away_conference: Option<String>,
+    away_division: Option<String>,
+    away_points: Option<u32>,
+    away_line_scores: Vec<Option<u32>>,
+    #[serde(deserialize_with = "deserialize_f64_from_str")]
+    away_post_win_prob: Option<f64>, //f64::from_str(&val_str).unwrap()
     away_pregame_elo: Option<u32>,
     away_postgame_elo: Option<u32>,
-    excitement_index: Option<String>, //f64::from_str(&val_str).unwrap()
+    #[serde(deserialize_with = "deserialize_f64_from_str")]
+    excitement_index: Option<f64>, //f64::from_str(&val_str).unwrap()
     highlights: Option<String>,
     notes: Option<String>,
 }
@@ -108,6 +112,23 @@ impl Default for GamesParams<'_> {
             division: None,
             id: None,
         } 
+    }
+}
+
+fn deserialize_f64_from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let value: Option<String> = Option::deserialize(deserializer)?;
+    println!("lolololol");
+    match value {
+        Some(val_str) => {
+            // Parse the string value into f64
+            let parsed_val = f64::from_str(&val_str)
+                .map_err(|_err| serde::de::Error::custom("Failed to parse f64 from string"))?;
+            Ok(Some(parsed_val))
+        }
+        None => Ok(None),
     }
 }
 
