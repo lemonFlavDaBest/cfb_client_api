@@ -29,7 +29,7 @@ pub struct GamesResponse {
     home_division: String,
     home_points: u32,
     home_line_scores: Vec<u32>,
-    home_post_win_prob: Option<f64>,
+    home_post_win_prob: Option<String>, //f64::from_str(&val_str).unwrap()
     home_pregame_elo: Option<u32>,
     home_postgame_elo: Option<u32>,
     away_id: u32,
@@ -38,10 +38,10 @@ pub struct GamesResponse {
     away_division: String,
     away_points: u32,
     away_line_scores: Vec<u32>,
-    away_post_win_prob: Option<f64>,
+    away_post_win_prob: Option<String>, //f64::from_str(&val_str).unwrap()
     away_pregame_elo: Option<u32>,
     away_postgame_elo: Option<u32>,
-    excitement_index: Option<f64>,
+    excitement_index: Option<String>, //f64::from_str(&val_str).unwrap()
     highlights: Option<String>,
     notes: Option<String>,
 }
