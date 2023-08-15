@@ -7,7 +7,7 @@ use std::str::FromStr;
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
-const GAMES_ENDPOINT: &str = "games";
+const PLAYS_ENDPOINT: &str = "plays";
 
 //define the response struct
 #[derive(Deserialize, Debug)]
@@ -81,5 +81,20 @@ impl Default for PlaysParams<'_> {
 }
 
 pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &str, params: Option<PlaysParams<'_>>) -> Result<Vec<PlaysParamsResponse>, Error> {
+    let mut plays_params = params.unwrap_or_else(PlaysParams::new);
+    plays_params.year = year;
+    play_params.week = week;
 
+    let endpoint = PLAYS_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, games_params.as_query_params()).await?;
+    println!("checkpoint");
+    //print response as text
+   
+    //Ok(response.text().await?)
+
+    //Deserialize the response into GamesResponse struct
+    let json_response: Vec<GamesResponse> = response.json().await?;
+    println!("json_response: {:?}", json_response);
+
+    Ok(json_response)
 }
