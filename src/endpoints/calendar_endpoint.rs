@@ -33,7 +33,7 @@ const CALENDAR_ENDPOINT: &str = "calendar";
     
     //need to evewntuallu change to CalendarResponse as the result
     pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Error> {
-        let params = [("year", year)];
+        let params: [(&str, &str); 1] = [("year", year)];
         println!("Params: {:?}", params);
         let response = api_client.get_endpoint_with_params(CALENDAR_ENDPOINT, &params).await?;
         println!("checkpoint");
