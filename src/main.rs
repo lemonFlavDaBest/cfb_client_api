@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_KEY must be set.");
     let api_client = ApiClient::new(&api_key)?;
 
-    let year = "2022";  
+    let year = "2023";  
     
     let response = get_calendar(&api_client, year).await?;
     
