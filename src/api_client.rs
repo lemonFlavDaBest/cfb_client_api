@@ -1,6 +1,5 @@
 use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder };
 use reqwest::header;
-use polars::prelude::*;
 
 #[derive(Debug)]
 pub struct ApiClient {
