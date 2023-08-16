@@ -120,7 +120,6 @@ where
     D: Deserializer<'de>,
 {
     let value: Option<String> = Option::deserialize(deserializer)?;
-    println!("lolololol");
     match value {
         Some(val_str) => {
             // Parse the string value into f64
