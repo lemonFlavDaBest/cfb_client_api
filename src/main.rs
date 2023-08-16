@@ -17,36 +17,52 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_key = std::env::var("CFB_API_KEY").expect("CFB_API_KEY must be set.");
     let api_client = ApiClient::new(&api_key)?;
 
-    //testing the calendar endpoint here. 
+    //testing calendar range function here 
     {
-    let year = "2021";  
-    
-    let response: Vec<CalendarResponse> = get_calendar(&api_client, year).await?;
-    
+    let start_year = 2010;
+    let end_year = 2014;
+    let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
     println!("{:#?}", response);
-    //Ok(())
     }
-    
+
     //testing the games endpoint here. 
     {
-    let year: &str = "2021";
+    //let year: &str = "2021";
 
-    let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
+    //let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
 
-    println!("{:#?}", response);
+    //println!("{:#?}", response);
 
     //Ok(())
     }
 
     //testing the plays endpoint here 
-    
-    let year: &str = "2021";
-    let week: &str = "1";
+    {
+    //let year: &str = "2021";
+    //let week: &str = "1";
 
-    let response: Vec<PlaysResponse> = get_plays_with_params(&api_client, year, week, None).await?;
-    println!("{:#?}", response);
+    //let response: Vec<PlaysResponse> = get_plays_with_params(&api_client, year, week, None).await?;
+    //println!("{:#?}", response);
+    }
     
     Ok(())
 
 }
 
+async fn get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
+    let response = get_calendar(api_client, year).await?;
+    Ok(response)
+}
+
+async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, end_year: i32) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
+    let mut calendar_responses: Vec<CalendarResponse> = Vec::new();;
+    while start_year < end_year {
+        let year_str = start_year.to_string();
+        let response: Vec<CalendarResponse> = get_calendar(&api_client, &year_str).await?;
+        calendar_responses.extend(response);
+        start_year += 1;
+    }
+
+    println!("{:#?}", calendar_responses);
+    Ok(calendar_responses)
+}
