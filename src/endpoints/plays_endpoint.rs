@@ -12,10 +12,10 @@ const PLAYS_ENDPOINT: &str = "plays";
 //define the response struct
 #[derive(Deserialize, Debug)]
 pub struct PlaysResponse {
-    #[serde(deserialize_with = "deserialize_u64_from_str")]
-    id: Option<u64>,
-    #[serde(deserialize_with = "deserialize_u32_from_str")]
-    drive_id: Option<u32>,
+    #[serde(deserialize_with = "deserialize_i64_from_str")]
+    id: Option<i64>,
+    #[serde(deserialize_with = "deserialize_i64_from_str")]
+    drive_id: Option<i64>,
     game_id: u32,
     drive_number: u8,
     play_number: u16,
@@ -29,13 +29,13 @@ pub struct PlaysResponse {
     defense_score: u8,
     period: Option<u8>,
     clock: Clock,
-    offense_timeouts: Option<u8>,
-    defense_timeouts: Option<u8>,
+    offense_timeouts: Option<i8>,
+    defense_timeouts: Option<i8>,
     yard_line: Option<u16>,
     yards_to_goal: Option<u16>,
     down: Option<u8>,
-    distance: Option<u16>,
-    yards_gained: Option<u16>,
+    distance: Option<i16>,
+    yards_gained: Option<i16>,
     scoring: Option<bool>,
     play_type: Option<String>,
     play_text: Option<String>,
@@ -132,33 +132,33 @@ where
     }
 }
 
-fn deserialize_u32_from_str<'de, D>(deserializer: D) -> Result<Option<u32>, D::Error>
+fn deserialize_f64_from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
 where
     D: Deserializer<'de>,
 {
     let value: Option<String> = Option::deserialize(deserializer)?;
+    
     match value {
         Some(val_str) => {
-            // Parse the string value into u32
-            let parsed_val = u32::from_str(&val_str)
-                .map_err(|_err| serde::de::Error::custom("Failed to parse u32 from string"))?;
+            // Parse the string value into f64
+            let parsed_val = f64::from_str(&val_str)
+                .map_err(|_err| serde::de::Error::custom("Failed to parse f64 from string"))?;
             Ok(Some(parsed_val))
         }
         None => Ok(None),
     }
 }
 
-fn deserialize_f64_from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
+fn deserialize_i64_from_str<'de, D>(deserializer: D) -> Result<Option<i64>, D::Error>
 where
     D: Deserializer<'de>,
 {
     let value: Option<String> = Option::deserialize(deserializer)?;
-    println!("lolololol");
     match value {
         Some(val_str) => {
-            // Parse the string value into f64
-            let parsed_val = f64::from_str(&val_str)
-                .map_err(|_err| serde::de::Error::custom("Failed to parse f64 from string"))?;
+            // Parse the string value into i64
+            let parsed_val = i64::from_str(&val_str)
+                .map_err(|_err| serde::de::Error::custom("Failed to parse i64 from string"))?;
             Ok(Some(parsed_val))
         }
         None => Ok(None),
