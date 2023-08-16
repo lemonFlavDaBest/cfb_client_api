@@ -18,21 +18,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing the calendar endpoint here. 
     {
-    //let year = "2021";  
+    let year = "2021";  
     
-    //let response: Vec<CalendarResponse> = get_calendar(&api_client, year).await?;
+    let response: Vec<CalendarResponse> = get_calendar(&api_client, year).await?;
     
-    //println!("{:#?}", response);
+    println!("{:#?}", response);
     //Ok(())
     }
     
     //testing the games endpoint here. 
     {
-    //let year: &str = "2021";
+    let year: &str = "2021";
 
-    //let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
+    let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
 
-    //println!("{:#?}", response);
+    println!("{:#?}", response);
 
     //Ok(())
     }
