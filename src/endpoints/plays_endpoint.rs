@@ -172,14 +172,13 @@ pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &st
 
     let endpoint = PLAYS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, plays_params.as_query_params()).await?;
-    println!("checkpoint");
     //print response as text
     
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
     let json_response: Vec<PlaysResponse> = response.json().await?;
-    println!("json_response: {:?}", json_response);
+    //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
 }
