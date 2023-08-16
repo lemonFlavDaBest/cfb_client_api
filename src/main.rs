@@ -5,6 +5,7 @@ use dotenv::dotenv;
 use api_client::ApiClient;
 //use reqwest::Response;
 //use serde::Deserialize; 
+//use polars::prelude::*;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse};
 use endpoints::plays_endpoint::{get_plays_with_params, PlaysResponse};
