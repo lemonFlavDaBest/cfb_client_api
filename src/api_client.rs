@@ -1,5 +1,6 @@
 use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder };
 use reqwest::header;
+use polars::prelude::*;
 
 #[derive(Debug)]
 pub struct ApiClient {
@@ -39,16 +40,16 @@ impl ApiClient {
 
     pub async fn get_endpoint_with_params(&self, endpoint: &str, params: Vec<(&str, &str)>) -> Result<Response, Error> {
         let url = format!("{}{}", self.base_url, endpoint);
-        println!("{:?}", self.client);
+        //println!("{:?}", self.client);
         let mut request_builder: RequestBuilder = self.client.get(&url);
-        println!("Request Builder: {:?}", request_builder);
+        //println!("Request Builder: {:?}", request_builder);
         for (param_key, param_value) in params {
             request_builder = request_builder.query(&[(param_key, param_value)]);
         }
-       println!("Request Builder: {:?}", request_builder);
+        //println!("Request Builder: {:?}", request_builder);
     
         let res = request_builder.send().await?;
-        println!("Response: {:?}", res);
+        //println!("Response: {:?}", res);
         Ok(res)
     }
 
