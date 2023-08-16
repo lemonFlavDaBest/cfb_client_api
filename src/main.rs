@@ -42,10 +42,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let year: &str = "2021";
     let week: &str = "1";
 
-    let response: String = get_plays_with_params(&api_client, year, week, None).await?;
+    let response: Vec<PlaysResponse> = get_plays_with_params(&api_client, year, week, None).await?;
     println!("{:#?}", response);
     
     Ok(())
-    
+
 }
 
