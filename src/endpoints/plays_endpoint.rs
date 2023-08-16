@@ -2,6 +2,8 @@
 
 use reqwest::{Error, Response};
 use serde::{Deserialize, Deserializer};
+use chrono::{DateTime, Utc, TimeZone, NaiveDateTime};
+use serde_json::Value;
 use std::str::FromStr;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
@@ -41,7 +43,8 @@ pub struct PlaysResponse {
     play_text: Option<String>,
     #[serde(deserialize_with = "deserialize_f64_from_str")]
     ppa: Option<f64>,
-    wallclock: Option<String>,
+    #[serde(deserialize_with = "deserialize_wallclock")]
+    wallclock: Option<DateTime<Utc>>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -160,6 +163,31 @@ where
             let parsed_val = i64::from_str(&val_str)
                 .map_err(|_err| serde::de::Error::custom("Failed to parse i64 from string"))?;
             Ok(Some(parsed_val))
+        }
+        None => Ok(None),
+    }
+}
+
+fn deserialize_wallclock<'de, D>(deserializer: D) -> Result<Option<DateTime<Utc>>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let value: Option<Value> = Option::deserialize(deserializer)?;
+    match value {
+        Some(val) => {
+            let wallclock_str = val
+                .as_str()
+                .ok_or_else(|| serde::de::Error::custom("Invalid wallclock format"))?;
+
+            // Define a custom date and time format
+            let custom_format = "%Y-%m-%dT%H:%M:%S%.3fZ";
+
+            // Parse the wallclock string using the custom format
+            let parsed_datetime = Utc
+                .datetime_from_str(wallclock_str, custom_format)
+                .map_err(|_err| serde::de::Error::custom("Failed to parse wallclock datetime"))?;
+
+            Ok(Some(parsed_datetime))
         }
         None => Ok(None),
     }
