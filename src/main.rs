@@ -7,7 +7,7 @@ use api_client::ApiClient;
 //use serde::Deserialize; 
 //use polars::prelude::*;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
-use endpoints::games_endpoint::{get_games_with_params, GamesResponse};
+use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
 use endpoints::plays_endpoint::{get_plays_with_params, PlaysResponse};
 
 #[tokio::main]
@@ -27,11 +27,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing the games endpoint here. 
     {
-    //let year: &str = "2021";
+    let year: &str = "2022";
+    let mut game_params = GamesParams::new();
+    game_params.division = Some("fbs");
+    game_params.seasonType=Some("postseason");
 
-    //let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, None).await?;
+    let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, Some(game_params)).await?;
 
-    //println!("{:#?}", response);
+    println!("{:#?}", response);
 
     //Ok(())
     }
@@ -66,3 +69,5 @@ async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, en
     println!("{:#?}", calendar_responses);
     Ok(calendar_responses)
 }
+
+get_games_full_season(){}
