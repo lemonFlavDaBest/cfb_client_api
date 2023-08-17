@@ -5,6 +5,7 @@ use serde::{Deserialize, Deserializer};
 use chrono::{DateTime, Utc, TimeZone, NaiveDateTime};
 use serde_json::Value;
 use std::str::FromStr;
+use tqdm::tqdm;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
@@ -31,12 +32,12 @@ pub struct PlaysResponse {
     defense_score: u8,
     period: Option<u8>,
     clock: Clock,
-    offense_timeouts: Option<i8>,
-    defense_timeouts: Option<i8>,
-    yard_line: Option<u16>,
-    yards_to_goal: Option<u16>,
+    offense_timeouts: Option<i8>, //need to clean: negative values
+    defense_timeouts: Option<i8>,// need to clean: negative values
+    yard_line: Option<i16>, //need to clean: negative values here
+    yards_to_goal: Option<i16>, //need to clean:: negative values here
     down: Option<u8>,
-    distance: Option<i16>,
+    distance: Option<i16>, //need to clean: negative values here
     yards_gained: Option<i16>,
     scoring: Option<bool>,
     play_type: Option<String>,
@@ -214,9 +215,9 @@ pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &st
 pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<PlaysResponse>, Error> {
     let mut all_plays = Vec::new();
 
-    for year in start_year..=end_year {
+    for year in tqdm(start_year..=end_year) {
         let year_str = year.to_string();
-        for week_num in start_week..=end_week {
+        for week_num in tqdm(start_week..=end_week) {
             
             let week_str = week_num.to_string();
 
