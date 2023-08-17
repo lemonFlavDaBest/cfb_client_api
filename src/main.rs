@@ -86,3 +86,15 @@ async fn get_games_full_season_fbs(api_client: &ApiClient, year: &str) -> Result
 
     Ok(response)
 }
+
+async fn get_all_games_for_years(api_client: &ApiClient) -> Result<Vec<GamesResponse>, Error> {
+    let mut all_games = Vec::new();
+
+    for year in 2016..=2023 {
+        let year_str = year.to_string();
+        let games_for_year = get_games_full_season_fbs(&api_client, &year_str).await?;
+        all_games.extend(games_for_year);
+    }
+
+    Ok(all_games)
+}
