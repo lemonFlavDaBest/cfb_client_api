@@ -29,9 +29,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //testing the games endpoint here. 
     {
     let year: &str = "2022";
-    let response = get_games_full_season_fbs(&api_client, year);
-
     
+    let response = get_games_full_season_fbs(&api_client, year).await?;
+    
+    println!("{:#?}", response);
     //Ok(())
     }
 
