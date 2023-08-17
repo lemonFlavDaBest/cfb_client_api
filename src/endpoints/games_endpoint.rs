@@ -29,7 +29,7 @@ pub struct GamesResponse {
     home_conference: Option<String>,
     home_division: Option<String>,
     home_points: Option<u32>,
-    home_line_scores: Vec<Option<u32>>,
+    home_line_scores: Option<Vec<Option<u32>>>,
     #[serde(deserialize_with = "deserialize_f64_from_str")]
     home_post_win_prob: Option<f64>, //f64::from_str(&val_str).unwrap()
     home_pregame_elo: Option<u32>,
@@ -39,7 +39,7 @@ pub struct GamesResponse {
     away_conference: Option<String>,
     away_division: Option<String>,
     away_points: Option<u32>,
-    away_line_scores: Vec<Option<u32>>,
+    away_line_scores: Option<Vec<Option<u32>>>,
     #[serde(deserialize_with = "deserialize_f64_from_str")]
     away_post_win_prob: Option<f64>, //f64::from_str(&val_str).unwrap()
     away_pregame_elo: Option<u32>,
@@ -54,17 +54,17 @@ pub struct GamesResponse {
 pub struct GamesParams<'a> {
     year: &'a str,
     week: Option<&'a str>,
-    seasonType: Option<&'a str>,
+    pub seasonType: Option<&'a str>,
     team: Option<&'a str>,
-    home: Option<&'a str>,
-    away: Option<&'a str>,
-    conference: Option<&'a str>,
-    division: Option<&'a str>, //Division classification filter (fbs/fcs/ii/iii)
-    id: Option<&'a str>, // id filter for querying a single game
+    pub home: Option<&'a str>,
+    pub away: Option<&'a str>,
+    pub conference: Option<&'a str>,
+    pub division: Option<&'a str>, //Division classification filter (fbs/fcs/ii/iii)
+    pub id: Option<&'a str>, // id filter for querying a single game
 }
 
 impl GamesParams<'_> {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Default::default()
     }
 
