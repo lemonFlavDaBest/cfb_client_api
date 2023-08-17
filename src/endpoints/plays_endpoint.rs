@@ -210,3 +210,38 @@ pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &st
 
     Ok(json_response)
 }
+
+pub async fn get_all_plays_for_years_and_weeks(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<PlaysResponse>, Error> {
+    let mut all_plays = Vec::new();
+
+    for year in start_year..=end_year {
+        let year_str = year.to_string();
+        for week_num in start_week..=end_week {
+            
+            let week_str = week_num.to_string();
+
+            // Get regular season plays
+            let regular_season_params = PlaysParams {
+                year: &year_str,
+                week: &week_str,
+                ..Default::default()
+            };
+            let regular_season_plays = get_plays_with_params(&api_client, &year_str, &week_str, Some(regular_season_params)).await?;
+
+            all_plays.extend(regular_season_plays);
+
+        }
+
+            // Get postseason plays
+            let postseason_params = PlaysParams {
+                year: &year_str,
+                seasonType: Some("postseason"),
+                ..Default::default()
+            };
+            let postseason_plays = get_plays_with_params(&api_client, &year_str, postseason_params.week, Some(postseason_params)).await?;
+
+            all_plays.extend(postseason_plays);
+    }
+
+    Ok(all_plays)
+}
