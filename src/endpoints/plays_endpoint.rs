@@ -211,7 +211,7 @@ pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &st
     Ok(json_response)
 }
 
-pub async fn get_all_plays_for_years_and_weeks(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<PlaysResponse>, Error> {
+pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<PlaysResponse>, Error> {
     let mut all_plays = Vec::new();
 
     for year in start_year..=end_year {
