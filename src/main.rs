@@ -8,7 +8,7 @@ use api_client::ApiClient;
 //use polars::prelude::*;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
-use endpoints::plays_endpoint::{get_plays_with_params, PlaysResponse};
+use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, PlaysResponse};
 use reqwest::Error;
 
 #[tokio::main]
@@ -20,20 +20,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing calendar range function here 
     {
-    let start_year = 2010;
-    let end_year = 2014;
-    let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
-    println!("{:#?}", response);
+    //let start_year = 2016;
+    //let end_year = 2017;
+    //let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
+    //println!("{:#?}", response);
+    //print length of response
+    //println!("length of response: {}", response.len());
     }
 
-    //testing the games endpoint here. 
+    //testing the games for years function here
     {
-    let start_year = 2016;
-    let end_year = 2018;
+    //let start_year = 2016;
+    //let end_year = 2017;
     
-    let response = get_all_games_for_years(&api_client, start_year, end_year).await?;
+    //let response = get_all_games_for_years(&api_client, start_year, end_year).await?;
     
-    println!("{:#?}", response);
+    //println!("{:#?}", response);
     //Ok(())
     }
 
@@ -44,6 +46,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //let response: Vec<PlaysResponse> = get_plays_with_params(&api_client, year, week, None).await?;
     //println!("{:#?}", response);
+    }
+
+    //testing get_all_plays_for_year_range here
+    {
+        let start_year = 2016;
+        let end_year = 2017;
+        let response = get_all_plays_for_year_range(&api_client, start_year, end_year, 1, 15).await?;
+        //println!("{:#?}", response);
     }
     
     Ok(())
