@@ -9,6 +9,7 @@ use api_client::ApiClient;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
 use endpoints::plays_endpoint::{get_plays_with_params, PlaysResponse};
+use reqwest::Error;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -28,14 +29,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //testing the games endpoint here. 
     {
     let year: &str = "2022";
-    let mut game_params = GamesParams::new();
-    game_params.division = Some("fbs");
-    game_params.seasonType=Some("postseason");
+    let response = get_games_full_season_fbs(&api_client, year);
 
-    let response: Vec<GamesResponse> = get_games_with_params(&api_client, year, Some(game_params)).await?;
-
-    println!("{:#?}", response);
-
+    
     //Ok(())
     }
 
@@ -70,4 +66,22 @@ async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, en
     Ok(calendar_responses)
 }
 
-get_games_full_season(){}
+async fn get_games_full_season_fbs(api_client: &ApiClient, year: &str) -> Result<Vec<GamesResponse>, Error> {
+    let mut game_params = GamesParams::new();
+    game_params.division = Some("fbs");
+
+    // Get regular season games
+    let mut response = get_games_with_params(&api_client, year, Some(game_params)).await?;
+    
+    // Update params for postseason
+    let mut post_game_params = GamesParams::new();
+    post_game_params.seasonType = Some("postseason");
+    
+    // Get postseason games
+    let post_season_response = get_games_with_params(&api_client, year, Some(post_game_params)).await?;
+
+    // Combine the responses into a single vector
+    response.extend(post_season_response);
+
+    Ok(response)
+}
