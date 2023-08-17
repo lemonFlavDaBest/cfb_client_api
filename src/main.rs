@@ -28,9 +28,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing the games endpoint here. 
     {
-    let year: &str = "2022";
+    let start_year = 2016;
+    let end_year = 2018;
     
-    let response = get_games_full_season_fbs(&api_client, year).await?;
+    let response = get_all_games_for_years(&api_client, start_year, end_year).await?;
     
     println!("{:#?}", response);
     //Ok(())
@@ -49,7 +50,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 }
 
-async fn get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
+async fn _get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
     let response = get_calendar(api_client, year).await?;
     Ok(response)
 }
