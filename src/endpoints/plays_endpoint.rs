@@ -24,12 +24,12 @@ pub struct PlaysResponse {
     play_number: u16,
     offense: Option<String>,
     offense_conference: Option<String>,
-    offense_score: u8,
+    offense_score: i8, //changed to i8(2016 week 13)
     defense: Option<String>,
     home: Option<String>,
     away: Option<String>,
     defense_conference: Option<String>,
-    defense_score: u8,
+    defense_score: i8, //changed to i8(2016 week 13)
     period: Option<u8>,
     clock: Clock,
     offense_timeouts: Option<i8>, //need to clean: negative values
@@ -217,8 +217,9 @@ pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u3
 
     for year in tqdm(start_year..=end_year) {
         let year_str = year.to_string();
+        println!("Getting plays for year: {}", year_str);
         for week_num in tqdm(start_week..=end_week) {
-            
+            println!("Getting plays for year: {}, week: {}", year_str, week_num);
             let week_str = week_num.to_string();
 
             // Get regular season plays
