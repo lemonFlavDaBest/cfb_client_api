@@ -114,7 +114,7 @@ impl Default for PlaysParams<'_> {
             offenseConference: None,
             defenseConference: None,
             playType: None,
-            classification: None,
+            classification: Some("fbs"),
         } 
     }
 }
