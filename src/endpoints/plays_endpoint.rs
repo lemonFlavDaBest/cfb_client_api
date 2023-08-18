@@ -1,9 +1,9 @@
 // plays_endpoints.rs
 
 use reqwest::{Error, Response};
-use serde::{Deserialize, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use chrono::{DateTime, Utc, TimeZone, NaiveDateTime};
-use serde_json::Value;
+use serde_json::{Value};
 use std::str::FromStr;
 use tqdm::tqdm;
 
@@ -13,7 +13,8 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 const PLAYS_ENDPOINT: &str = "plays";
 
 //define the response struct
-#[derive(Deserialize, Debug)]
+//we added Serialize to the struct
+#[derive(Deserialize, Debug, Serialize)]
 pub struct PlaysResponse {
     #[serde(deserialize_with = "deserialize_i64_from_str")]
     id: Option<i64>,
@@ -44,11 +45,12 @@ pub struct PlaysResponse {
     play_text: Option<String>,
     #[serde(deserialize_with = "deserialize_f64_from_str")]
     ppa: Option<f64>,
-    #[serde(deserialize_with = "deserialize_wallclock")]
-    wallclock: Option<DateTime<Utc>>,
+    #[serde(deserialize_with = "deserialize_wallclock", serialize_with = "serialize_game_start")]
+    wallclock: Option<DateTime<Utc>>, // need to fix this eventually
 }
 
-#[derive(Deserialize, Debug)]
+//we added serialize here too
+#[derive(Deserialize, Debug, Serialize)]
 pub struct Clock {
     minutes: Option<u8>,
     seconds: Option<u8>,
@@ -191,6 +193,16 @@ where
             Ok(Some(parsed_datetime))
         }
         None => Ok(None),
+    }
+}
+
+fn serialize_game_start<S>(datetime: &Option<chrono::DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    match datetime {
+        Some(dt) => dt.to_rfc3339().serialize(serializer),
+        None => serializer.serialize_none(),
     }
 }
 
