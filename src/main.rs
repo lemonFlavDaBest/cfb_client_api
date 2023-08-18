@@ -9,7 +9,10 @@ use api_client::ApiClient;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
 use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, PlaysResponse};
+use polars::prelude::*;
 use reqwest::Error;
+use std::fs::File;
+use std::io::{Cursor, Write}; 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -49,11 +52,28 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     //testing get_all_plays_for_year_range here
+    //ready tot test tomorrows
     {
         let start_year = 2016;
         let end_year = 2017;
-        let response = get_all_plays_for_year_range(&api_client, start_year, end_year, 1, 15).await?;
+        let plays_data = get_all_plays_for_year_range(&api_client, start_year, end_year, 1, 15).await?;
         //println!("{:#?}", response);
+        // Create a DataFrame from the plays_data
+        let json_string = serde_json::to_string(&plays_data)?;
+
+        // Specify the path and filename to save the JSON file
+        let filename = format!("plays_response_{}_{}.json", start_year, end_year);
+
+        // Create or open the file for writing
+        let mut file = File::create(&filename)?;
+
+        // Write the JSON string to the file
+        file.write_all(json_string.as_bytes())?;
+    
+        // Print a success message
+        println!("JSON response saved as: {}", filename);
+    
+    
     }
     
     Ok(())
