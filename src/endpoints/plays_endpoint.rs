@@ -11,6 +11,7 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
 const PLAYS_ENDPOINT: &str = "plays";
+const LIVE_ENDPOINT: &str = "live";
 
 //define the response struct
 //we added Serialize to the struct
@@ -259,3 +260,5 @@ pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u3
 
     Ok(all_plays)
 }
+
+fn get_live_plays()
