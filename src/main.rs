@@ -55,7 +55,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //ready tot test tomorrows
     {
         let start_year = 2016;
-        let end_year = 2017;
+        let end_year = 2027;
         let plays_data = get_all_plays_for_year_range(&api_client, start_year, end_year, 1, 15).await?;
         //println!("{:#?}", response);
         // Create a DataFrame from the plays_data
