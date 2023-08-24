@@ -9,6 +9,7 @@ use api_client::ApiClient;
 use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
 use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, PlaysResponse};
+use endpoints::scoreboard_endpoint::{get_scoreboard, ScoreboardResponse};
 use polars::prelude::*;
 use reqwest::Error;
 use std::fs::File;
