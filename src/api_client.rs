@@ -29,7 +29,7 @@ impl ApiClient {
         Ok(res)
     }
 
-    pub async fn _get_endpoint(&self, endpoint: &str) -> Result<Response, Error> {
+    pub async fn get_endpoint(&self, endpoint: &str) -> Result<Response, Error> {
         let url = format!("{}{}", self.base_url, endpoint);
         let res = self.client.get(&url).send().await?;
         Ok(res)
