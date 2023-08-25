@@ -31,6 +31,27 @@ impl RecordsParams<'_> {
     }
 }
 
+#[derive(Debug, Deserialize)]
+pub struct RecordsResponse<'a> {
+    year: u32,
+    team: String,
+    conference: String,
+    division: String,
+    expectedWins: u32,
+    total: RecordStats,
+    conferenceGames: RecordStats,
+    homeGames: RecordStats,
+    awayGames: RecordStats,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct RecordStats {
+    games: u32,
+    wins: u32,
+    losses: u32,
+    ties: u32,
+}
+
 //create function to get records that take the api client as a parameter and an optional recordsparams struct
 pub async fn get_records_with_params(api_client: &ApiClient, params: Option<RecordsParams<'_>>) -> Result<Vec<RecordsResponse>, Error> {
     let mut records_params = params.unwrap_or_else(|| RecordsParams { year: None, team: None, conference: None });
@@ -42,7 +63,7 @@ pub async fn get_records_with_params(api_client: &ApiClient, params: Option<Reco
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<RecordsResponseResponse> = response.json().await?;
+    let json_response: Vec<RecordsResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
