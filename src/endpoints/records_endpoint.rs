@@ -32,7 +32,7 @@ impl RecordsParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RecordsResponse<'a> {
+pub struct RecordsResponse {
     year: u32,
     team: String,
     conference: String,
