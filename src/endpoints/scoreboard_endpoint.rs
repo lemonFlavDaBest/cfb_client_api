@@ -64,6 +64,30 @@ pub struct Betting {
 }
 
 
+pub struct ScoreboardParams {
+    classification: Option<String>,
+    conference: Option<String>,
+}
+
+impl ScoreboardParams<'_> {
+    pub fn new() -> Self {
+        Self {
+            classification: None,
+            conference: None,
+        }
+    }
+
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = vec![("year", self.classification)];
+        // Add other fields if they exist in self
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        
+        params
+    }
+}
+
 pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardResponse>, Error> {
 
     let response = api_client.get_endpoint(SCOREBOARD_ENDPOINT,).await?;
