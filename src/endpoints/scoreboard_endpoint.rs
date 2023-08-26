@@ -65,8 +65,8 @@ pub struct Betting {
 
 
 pub struct ScoreboardParams<'a> {
-    classification: Option<&'a str>,
-    conference: Option<&'a str>,
+    pub classification: Option<&'a str>,
+    pub conference: Option<&'a str>,
 }
 
 impl ScoreboardParams<'_> {
