@@ -64,9 +64,9 @@ pub struct Betting {
 }
 
 
-pub struct ScoreboardParams {
-    classification: Option<String>,
-    conference: Option<String>,
+pub struct ScoreboardParams<'a> {
+    classification: Option<&'a str>,
+    conference: Option<&'a str>,
 }
 
 impl ScoreboardParams<'_> {
@@ -78,13 +78,14 @@ impl ScoreboardParams<'_> {
     }
 
     fn as_query_params(&self) -> Vec<(&str, &str)> {
-        let mut params = vec![("year", self.classification)];
-        // Add other fields if they exist in self
+        let mut query_params = vec![];
+        if let Some(classification) = self.classification {
+            query_params.push(("classification", classification));
+        } 
         if let Some(conference) = self.conference {
-            params.push(("conference", conference));
-        }
-        
-        params
+            query_params.push(("conference", conference));
+        } 
+        query_params
     }
 }
 
@@ -100,3 +101,18 @@ pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardResp
     Ok(json_response)
 }
 
+pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<Vec<ScoreboardResponse>, Error> {
+    let scoreboard_params = params.unwrap_or_else(ScoreboardParams::new);
+    let endpoint = SCOREBOARD_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, scoreboard_params.as_query_params()).await?;
+    //println!("checkpoint");
+    //print response as text
+    
+    //Ok(response.text().await?)
+
+    //Deserialize the response into GamesResponse struct
+    let json_response: Vec<ScoreboardResponse> = response.json().await?;
+    //println!("json_response: {:?}", json_response);
+
+    Ok(json_response)
+}
