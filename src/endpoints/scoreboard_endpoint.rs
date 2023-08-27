@@ -12,23 +12,23 @@ use crate::api_client::ApiClient;
 const SCOREBOARD_ENDPOINT: &str = "scoreboard";
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ScoreboardResponse {
-    //id: Option<u64>,
-    //startDate: Option<String>,
-    //startTimeTBD: Option<bool>,
-    //tv: Option<String>,
-    //neutralSite: Option<bool>,
-    //conferenceGame: Option<bool>,
-    //status: Option<String>,
-    //period: Option<u8>,
-    //clock: Option<String>,
-    //situation: Option<String>,
-    //possession: Option<String>,
-    //venue: Option<Venue>,
-    //homeTeam: Option<Team>,
-    //awayTeam: Option<Team>,
-    //weather: Option<Weather>,
-    //betting: Option<Betting>,
+pub struct ScoreboardResponse<T> {
+    //id: Option<T>,
+    //startDate: Option<T>,
+   // startTimeTBD: Option<T>,
+   // tv: Option<T>,
+   // neutralSite: Option<T>,
+   // conferenceGame: Option<T>,
+   // status: Option<T>,
+   // period: Option<T>,
+   // clock: Option<T>,
+   // situation: Option<T>,
+   // possession: Option<T>,
+   // venue: Option<Venue>,
+  //  homeTeam: Option<Team>,
+  //  awayTeam: Option<Team>,
+  //  weather: Option<Weather>,
+  //  betting: Option<Betting>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -101,18 +101,18 @@ pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardResp
     Ok(json_response)
 }
 
-pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<Vec<ScoreboardResponse>, Error> {
+pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<String, Error> {
     let scoreboard_params = params.unwrap_or_else(ScoreboardParams::new);
     let endpoint = SCOREBOARD_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, scoreboard_params.as_query_params()).await?;
     //println!("checkpoint");
     //print response as text
     
-    //Ok(response.text().await?)
+    Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<ScoreboardResponse> = response.json().await?;
+    //let json_response: Vec<ScoreboardResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
-    Ok(json_response)
+    //Ok(json_response)
 }
