@@ -22,6 +22,10 @@ pub struct MediaParams<'a> {
     pub classification: Option<&'a str>, 
 }
 
+pub struct MediaResponse {
+
+}
+
 impl MediaParams<'_> {
     pub fn new() -> Self {
         Default::default()
@@ -122,7 +126,9 @@ impl Default for WeatherParams<'_> {
     }
 }
 
-pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<GamesResponse>, Error> {
+pub struct WeatherResponse {}
+
+pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<MediaResponse>, Error> {
     let mut games_params = params.unwrap_or_else(MediaParams::new);
     games_params.year = year;
 
@@ -134,13 +140,13 @@ pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, par
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<GamesResponse> = response.json().await?;
+    let json_response: Vec<MediaResponsee> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
 }
 
-pub async fn get_games_weather_with_params(api_client: &ApiClient, year: &str, params: Option<WeatherParams<'_>>) -> Result<Vec<GamesResponse>, Error> {
+pub async fn get_games_weather_with_params(api_client: &ApiClient, year: &str, params: Option<WeatherParams<'_>>) -> Result<Vec<WeatherResponse>, Error> {
     let mut games_params = params.unwrap_or_else(WeatherParams::new);
     games_params.year = year;
 
@@ -152,7 +158,7 @@ pub async fn get_games_weather_with_params(api_client: &ApiClient, year: &str, p
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<GamesResponse> = response.json().await?;
+    let json_response: Vec<WeatherResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
