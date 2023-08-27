@@ -12,7 +12,7 @@ use crate::api_client::ApiClient;
 const SCOREBOARD_ENDPOINT: &str = "scoreboard";
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ScoreboardResponse<T> {
+pub struct ScoreboardResponse {
     //id: Option<T>,
     //startDate: Option<T>,
    // startTimeTBD: Option<T>,
