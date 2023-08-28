@@ -271,7 +271,7 @@ pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<
     let mut games_params = params.unwrap_or_else(WeatherParams::new);
     games_params.year = year;
 
-    let endpoint = format!("{}/{}", GAMES_ENDPOINT, WEATHER_ENDPOINT);
+    let endpoint= format!("{}/{}", GAMES_ENDPOINT, WEATHER_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, games_params.as_query_params()).await?;
     //println!("checkpoint");
     //print response as text
