@@ -5,3 +5,4 @@ pub mod plays_endpoint;
 pub mod scoreboard_endpoint;
 pub mod records_endpoint;
 pub mod games_details;
+pub mod drives_endpoint;
