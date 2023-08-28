@@ -25,6 +25,7 @@ pub struct MediaParams<'a> {
     pub classification: Option<&'a str>, 
 }
 
+#[derive(Debug, Deserialize)]
 pub struct MediaResponse {
 
 }
@@ -129,6 +130,7 @@ impl Default for WeatherParams<'_> {
     }
 }
 
+#[derive(Debug, Deserialize)]
 pub struct WeatherResponse {}
 
 pub struct PlayersParams<'a> {
@@ -141,6 +143,7 @@ pub struct PlayersParams<'a> {
     pub gameId: Option<&'a str>,
 }
 
+#[derive(Debug, Deserialize)]
 pub struct PlayersResponse {}
 
 impl PlayersParams<'_> {
@@ -196,8 +199,9 @@ pub struct TeamsParams<'a> {
     conference: Option<&'a str>,
     classification: Option<&'a str>,
 }
+#[derive(Debug, Deserialize)]
 pub struct TeamsResponse {}
-impl TeamsParams {
+impl TeamsParams<'_> {
     pub fn new() -> Self {
         Default::default()
     }
@@ -223,7 +227,7 @@ impl TeamsParams {
         params
     }
 }
-impl Default for TeamsParams {
+impl Default for TeamsParams<'_> {
     fn default() -> Self {
         TeamsParams { 
             year: "2023", 
@@ -236,6 +240,7 @@ impl Default for TeamsParams {
     }
 }
 
+#[derive(Debug, Deserialize)]
 pub struct BoxResponse{}
 pub struct BoxParams<'a> {
     gameId: &'a str,
@@ -253,7 +258,7 @@ pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, par
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<MediaResponsee> = response.json().await?;
+    let json_response: Vec<MediaResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
@@ -314,9 +319,9 @@ pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, par
 }
 
 pub async fn get_games_box_with_params(api_client: &ApiClient, game_id: &str) -> Result<Vec<BoxResponse>, Error> {
-    let mut games_params = BoxParams{gameId: game_id};
+    let games_params = vec![("gameId", game_id)];
     let endpoint = format!("{}/{}", GAMES_ENDPOINT, BOX_ADVANCED_ENDPOINT);
-    let response = api_client.get_endpoint_with_params(&endpoint, games_params.as_query_params()).await?;
+    let response = api_client.get_endpoint_with_params(&endpoint, games_params).await?;
     //println!("checkpoint");
     //print response as text
    
