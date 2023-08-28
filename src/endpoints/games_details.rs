@@ -240,6 +240,7 @@ pub struct BoxResponse{}
 pub struct BoxParams<'a> {
     gameId: &'a str,
 }
+
 pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<MediaResponse>, Error> {
     let mut games_params = params.unwrap_or_else(MediaParams::new);
     games_params.year = year;
@@ -307,6 +308,22 @@ pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, par
 
     //Deserialize the response into GamesResponse struct
     let json_response: Vec<TeamsResponse> = response.json().await?;
+    //println!("json_response: {:?}", json_response);
+
+    Ok(json_response)
+}
+
+pub async fn get_games_box_with_params(api_client: &ApiClient, game_id: &str) -> Result<Vec<BoxResponse>, Error> {
+    let mut games_params = BoxParams{gameId: game_id};
+    let endpoint = format!("{}/{}", GAMES_ENDPOINT, BOX_ADVANCED_ENDPOINT);
+    let response = api_client.get_endpoint_with_params(&endpoint, games_params.as_query_params()).await?;
+    //println!("checkpoint");
+    //print response as text
+   
+    //Ok(response.text().await?)
+
+    //Deserialize the response into GamesResponse struct
+    let json_response: Vec<BoxResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
