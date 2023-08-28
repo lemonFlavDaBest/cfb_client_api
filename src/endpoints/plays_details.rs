@@ -22,6 +22,7 @@ pub struct LivePlayParams {
 }
 
 pub struct LivePlayResponse{}
+pub struct PlayTypesResponse{}
 
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
@@ -35,5 +36,12 @@ pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec
     let json_response: Vec<LivePlayResponse> = response.json().await?;
     
     //println!("JSON Response: {:?}", json_response);
+    Ok(json_response)
+}
+
+pub async fn get_play_types(api_client: &ApiClient) -> Result<Vec<PlayTypesResponse>, Error> {
+    let endpoint = format!("{}/{}", PLAYS_ENDPOINT, TYPES_ENDPOINT);
+    let response = api_client.get_endpoint(&endpoint).await?;
+    let json_response: Vec<PlayTypesResponse> = response.json().await?;
     Ok(json_response)
 }
