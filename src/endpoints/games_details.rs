@@ -11,6 +11,7 @@ const GAMES_ENDPOINT: &str = "games";
 const MEDIA_ENDPOINT: &str = "media";
 const WEATHER_ENDPOINT: &str = "weather";
 const PLAYERS_ENDPOINT: &str = "players";
+const TEAMS_ENDPOINT: &str = "teams";
 
 
 pub struct MediaParams<'a> {
@@ -185,6 +186,16 @@ impl Default for PlayersParams<'_> {
         } 
     }
 }
+
+pub struct TeamsParams<'a> {
+    year: &'a str,
+    week: Option<&'a str>,
+    seasonType: Option<&'a str>,
+    team: Option<&'a str>,
+    conference: Option<&'a str>,
+    classification: Option<&'a str>,
+}
+pub struct TeamsResponse {}
 
 pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<MediaResponse>, Error> {
     let mut games_params = params.unwrap_or_else(MediaParams::new);
