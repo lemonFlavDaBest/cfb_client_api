@@ -264,7 +264,7 @@ pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, par
     Ok(json_response)
 }
 
-pub async fn get_games_weather_with_params(api_client: &ApiClient, year: &str, params: Option<WeatherParams<'_>>) -> Result<Vec<WeatherResponse>, Error> {
+pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<&str>, params: Option<WeatherParams<'_>>) -> Result<Vec<WeatherResponse>, Error> {
     let mut games_params = params.unwrap_or_else(WeatherParams::new);
     games_params.year = year;
 
