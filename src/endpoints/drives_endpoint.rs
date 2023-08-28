@@ -29,14 +29,14 @@ pub struct DrivesParams<'a> {
 }
 
 impl DrivesParams<'_> {
-    pub fn new() -> DrivesParams {
+    pub fn new() -> Self {
         Default::default()
     }
 
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
         // Add other fields if they exist in self
-        if let Some(year) = self.year {
+        if let year = self.year {
             params.push(("year", year));
         }
         if let Some(team) = self.team {
@@ -84,7 +84,7 @@ impl Default for DrivesParams<'_> {
 }
 
 pub async fn get_drives_with_params(api_client: &ApiClient, params: Option<DrivesParams<'_>>) -> Result<Vec<DrivesResponse>, Error> {
-    let mut drives_params = params.unwrap_or_else(DrivesParams::new);
+    let drives_params = params.unwrap_or_else(DrivesParams::new);
     let endpoint = DRIVES_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, drives_params.as_query_params()).await?;
     //println!("checkpoint");
