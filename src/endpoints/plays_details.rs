@@ -26,8 +26,9 @@ pub struct LivePlayResponse{}
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
     //println!("Params: {:?}", params);
+    let endpoint = format!("{}/{}", LIVE_ENDPOINT, PLAYS_ENDPOINT);
     
-    let response = api_client.get_endpoint_with_params(LIVE_ENDPOINT, params).await?;
+    let response = api_client.get_endpoint_with_params(&endpoint, params).await?;
     //println!("checkpoint");
     
     // Parse the response into JSON
