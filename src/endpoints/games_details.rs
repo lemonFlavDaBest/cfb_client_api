@@ -12,6 +12,7 @@ const MEDIA_ENDPOINT: &str = "media";
 const WEATHER_ENDPOINT: &str = "weather";
 const PLAYERS_ENDPOINT: &str = "players";
 const TEAMS_ENDPOINT: &str = "teams";
+const BOX_ADVANCED_ENDPOINT: &str = "box/advanced";
 
 
 pub struct MediaParams<'a> {
