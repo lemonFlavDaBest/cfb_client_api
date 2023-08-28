@@ -236,6 +236,10 @@ impl Default for TeamsParams {
     }
 }
 
+pub struct BoxResponse{}
+pub struct BoxParams<'a> {
+    gameId: &'a str,
+}
 pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<MediaResponse>, Error> {
     let mut games_params = params.unwrap_or_else(MediaParams::new);
     games_params.year = year;
@@ -267,6 +271,24 @@ pub async fn get_games_weather_with_params(api_client: &ApiClient, year: &str, p
 
     //Deserialize the response into GamesResponse struct
     let json_response: Vec<WeatherResponse> = response.json().await?;
+    //println!("json_response: {:?}", json_response);
+
+    Ok(json_response)
+}
+
+pub async fn get_games_players_with_params(api_client: &ApiClient, year: &str, params: Option<PlayersParams<'_>>) -> Result<Vec<PlayersResponse>, Error> {
+    let mut games_params = params.unwrap_or_else(PlayersParams::new);
+    games_params.year = year;
+
+    let endpoint = format!("{}/{}", GAMES_ENDPOINT, PLAYERS_ENDPOINT);
+    let response = api_client.get_endpoint_with_params(&endpoint, games_params.as_query_params()).await?;
+    //println!("checkpoint");
+    //print response as text
+   
+    //Ok(response.text().await?)
+
+    //Deserialize the response into GamesResponse struct
+    let json_response: Vec<PlayersResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
