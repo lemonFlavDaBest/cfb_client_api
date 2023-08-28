@@ -91,7 +91,10 @@ impl WeatherParams<'_> {
     }
 
     fn as_query_params(&self) -> Vec<(&str, &str)> {
-        let mut params = vec![("year", self.year)];
+        let mut params = vec![];
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
         // Add other fields if they exist in self
         if let Some(week) = self.week {
             params.push(("week", week));
@@ -119,7 +122,7 @@ impl Default for WeatherParams<'_> {
 
     fn default() -> Self {
         WeatherParams { 
-            year: "2023", 
+            year: Some("2023"), 
             week: None, 
             seasonType: Some("both"),
             team: None,
