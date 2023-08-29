@@ -17,11 +17,13 @@ const TYPES_ENDPOINT: &str = "types";
 const STATS_ENDPOINT: &str = "stats";
 const STAT_ENDPOINT: &str = "stat";
 
-pub struct LivePlayParams {
+pub struct LivePlayParams<'a> {
     gameId: &'a str,
 }
-
+#[derive(Debug, Deserialize)]
 pub struct LivePlayResponse{}
+
+#[derive(Debug, Deserialize)]
 pub struct PlayTypesResponse{}
 
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
