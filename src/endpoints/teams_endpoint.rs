@@ -36,7 +36,6 @@ pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) 
             let response = api_client.get_endpoint_with_params(TEAMS_ENDPOINT, params.as_query_params()).await?;
             //println!("checkpoint");
             //print response as text
-            
             response.json().await?
         },
         None => {
@@ -44,7 +43,6 @@ pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) 
             let response = api_client.get_endpoint(endpoint).await?;
             //println!("checkpoint");
             //print response as text
-            
             response.json().await?
         }
     };
