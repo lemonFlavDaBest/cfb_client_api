@@ -73,6 +73,9 @@ impl PlayStatsParams <'_> {
     }
 }
 
+#[derive(Debug, Deserialize)]
+pub struct PlayStatTypesResponse{}
+
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
     //println!("Params: {:?}", params);
@@ -99,5 +102,12 @@ pub async fn get_play_stats(api_client: &ApiClient, params: PlayStatsParams<'_>)
     let endpoint = format!("{}/{}", PLAY_ENDPOINT, STATS_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: Vec<PlayStatsResponse> = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_play_stat_types(api_client: &ApiClient) -> Result<Vec<PlayStatTypesResponse>, Error> {
+    let endpoint = format!("{}/{}/{}", PLAY_ENDPOINT, STAT_ENDPOINT, TYPES_ENDPOINT);
+    let response = api_client.get_endpoint(&endpoint).await?;
+    let json_response: Vec<PlayStatTypesResponse> = response.json().await?;
     Ok(json_response)
 }
