@@ -170,12 +170,9 @@ pub async fn get_player_returning_with_params(api_client: &ApiClient, params: Op
     Ok(json_response)
 }
 
-pub async fn get_player_season_stats(api_client: &ApiClient, params: Option<PlayerSeasonStatsParams<'_>>) -> Result<PlayerSeasonStatsResponse, Error> {
+pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeasonStatsParams<'_>) -> Result<PlayerSeasonStatsResponse, Error> {
     let endpoint = format!("{}/{}/{}", STATS_ENDPOINT, PLAYER_ENDPOINT, SEASON_ENDPOINT);
-    let response = match params {
-        Some(params) => api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?,
-        None => api_client.get_endpoint(&endpoint).await?,
-    };
+    let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PlayerSeasonStatsResponse = response.json().await?;
     Ok(json_response)
 }
