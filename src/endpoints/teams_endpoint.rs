@@ -12,6 +12,7 @@ const TEAMS_ENDPOINT: &str = "teams";
 const FBS_ENDPOINT: &str = "fbs";
 const ROSTER_ENDPOINT: &str = "roster";
 const TALENT_ENDPOINT: &str = "talent";
+const MATCHUP_ENDPOINT: &str = "matchup";
 
 pub struct TeamsParams<'a> {
     conference: Option<&'a str>,
