@@ -69,16 +69,17 @@ pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) 
 }
 
 pub async fn get_fbs_teams(api_client: &ApiClient, params: Option<FbsParams<'_>>) -> Result<Vec<FbsResponse>, Error> {
+    let endpoint = format!("{}/{}", TEAMS_ENDPOINT, FBS_ENDPOINT);
     let fbs_response: Vec<FbsResponse> = match params {
         Some(params) => {
-            let response = api_client.get_endpoint_with_params(FBS_ENDPOINT, params.as_query_params()).await?;
+            let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
             //println!("checkpoint");
             //print response as text
             response.json().await?
         },
         None => {
             let endpoint = FBS_ENDPOINT;
-            let response = api_client.get_endpoint(endpoint).await?;
+            let response = api_client.get_endpoint(&endpoint).await?;
             //println!("checkpoint");
             //print response as text
             response.json().await?
