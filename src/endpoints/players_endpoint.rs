@@ -23,6 +23,15 @@ pub struct PlayerSearchParams<'a> {
     year: Option<&'a str>,
 }
 
+pub struct PlayerUsageParams<'a> {
+    year: &'a str,
+    team: Option<&'a str>,
+    conference: Option<&'a str>,
+    position: Option<&'a str>,
+    playerId: Option<&'a str>,
+    excludeGarbageTime: Option<&'a str>,
+}
+
 impl PlayerSearchParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -41,12 +50,46 @@ impl PlayerSearchParams<'_> {
     }
 }
 
+impl PlayerUsageParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        params.push(("year", self.year));
+        // Add other fields if they exist in self
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        if let Some(position) = self.position {
+            params.push(("position", position));
+        }
+        if let Some(playerId) = self.playerId {
+            params.push(("playerId", playerId));
+        }
+        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+            params.push(("excludeGarbageTime", excludeGarbageTime));
+        }
+        params
+    }
+}
+
 #[derive(Debug, Deserialize)]
 pub struct PlayerSearchResponse {}
+
+#[derive(Debug, Deserialize)]
+pub struct PlayerUsageResponse {}
 
 pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResponse, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, SEARCH_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PlayerSearchResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_player_usage_with_params(api_client: &ApiClient, params: PlayerUsageParams<'_>) -> Result<PlayerUsageResponse, Error> {
+    let endpoint = format!("{}/{}", PLAYER_ENDPOINT, USAGE_ENDPOINT);
+    let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
+    let json_response: PlayerUsageResponse = response.json().await?;
     Ok(json_response)
 }
