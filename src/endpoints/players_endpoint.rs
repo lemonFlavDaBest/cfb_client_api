@@ -15,3 +15,4 @@ const RETURNING_ENDPOINT: &str = "returning";
 const STATS_ENDPOINT: &str = "stats";
 const PORTAL_ENDPOINT: &str = "portal";
 const SEASON_ENDPOINT: &str = "season";
+
