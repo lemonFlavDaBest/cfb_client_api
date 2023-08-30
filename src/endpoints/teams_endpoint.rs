@@ -10,6 +10,7 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 //define the endpoint
 const TEAMS_ENDPOINT: &str = "teams";
 const FBS_ENDPOINT: &str = "fbs";
+const ROSTER_ENDPOINT: &str = "roster";
 
 pub struct TeamsParams<'a> {
     conference: Option<&'a str>,
@@ -19,8 +20,10 @@ pub struct FbsParams<'a> {
     year: Option<&'a str>,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct TeamsResponse {}
+pub struct RosterParams<'a> {
+    team: Option<&'a str>,
+    year: Option<&'a str>,
+}
 
 impl TeamsParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
@@ -44,8 +47,29 @@ impl FbsParams<'_> {
     }
 }
 
+impl RosterParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        params
+    }
+}
+
+#[derive(Deserialize, Debug)]
+pub struct TeamsResponse {}
+
 #[derive(Deserialize, Debug)]
 pub struct FbsResponse {}
+
+#[derive(Deserialize, Debug)]
+pub struct RosterResponse {}
+
 
 pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamsResponse>, Error> {
     // I want to match params with some and none. if some, then unwrap and call get_endpoint_with_parms.
@@ -86,4 +110,23 @@ pub async fn get_fbs_teams(api_client: &ApiClient, params: Option<FbsParams<'_>>
         }
     };
     Ok(fbs_response)
+}
+
+async fn get_roster(api_client: &ApiClient, params: Option<RosterParams<'_>>) -> Result<Vec<RosterResponse>, Error> {
+    let endpoint = ROSTER_ENDPOINT;
+    let roster_response: Vec<RosterResponse> = match params {
+        Some(params) => {
+            let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+            //println!("checkpoint");
+            //print response as text
+            response.json().await?
+        },
+        None => {
+            let response = api_client.get_endpoint(endpoint).await?;
+            //println!("checkpoint");
+            //print response as text
+            response.json().await?
+        }
+    };
+    Ok(roster_response)
 }
