@@ -46,6 +46,7 @@ impl CoachesParams<'_> {
     }
 }
 
+#[derive(Deserialize, Debug)]
 pub struct CoachesResponse {}
 
 async fn get_coaches_with_params(api_client: &ApiClient, params: Option<CoachesParams<'_>>) -> Result<CoachesResponse, Error> {
