@@ -14,7 +14,7 @@ const CONFERENCES_ENDPOINT: &str = "conferences";
 #[derive(Deserialize, Debug)]
 pub struct ConferencesResponse {}
 
-async fn get_conferences(api_client: &ApiClient) -> Result<Conferences, Error> {
+async fn get_conferences(api_client: &ApiClient) -> Result<ConferencesResponse, Error> {
     let response = api_client.get_endpoint(CONFERENCES_ENDPOINT).await?;
     let json_response: ConferencesResponse = response.json().await?;
     Ok(json_response)
