@@ -6,3 +6,6 @@ use serde::{Deserialize, Deserializer, de};
 use serde_json::Value;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
+
+//define the endpoint
+const COACHES_ENDPOINT: &str = "coaches";
