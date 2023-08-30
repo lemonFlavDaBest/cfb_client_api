@@ -1,6 +1,6 @@
 //teams_endpoint.rs
 
-use chrono::{DateTime, Utc, TimeZone};
+use chrono::{DateTime, Utc, TimeZone, format};
 use reqwest::{Error, Response};
 use serde::{Deserialize, Deserializer, de};
 use serde_json::Value;
@@ -29,6 +29,13 @@ pub struct RosterParams<'a> {
 
 pub struct TalentParams<'a> {
     year: Option<&'a str>,
+}
+
+pub struct MatchupParams<'a> {
+    team1: &'a str,
+    team2: &'a str,
+    minYear: Option<&'a str>,
+    maxYear: Option<&'a str>,
 }
 
 impl TeamsParams<'_> {
@@ -78,6 +85,22 @@ impl TalentParams<'_> {
     }
 }
 
+impl MatchupParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        params.push(("team1", self.team1));
+        params.push(("team2", self.team2));
+        // Add other fields if they exist in self
+        if let Some(minYear) = self.minYear {
+            params.push(("minYear", minYear));
+        }
+        if let Some(maxYear) = self.maxYear {
+            params.push(("maxYear", maxYear));
+        }
+        params
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct TeamsResponse {}
 
@@ -89,6 +112,9 @@ pub struct RosterResponse {}
 
 #[derive(Deserialize, Debug)]
 pub struct TalentResponse {}
+
+#[derive(Deserialize, Debug)]
+pub struct MatchupResponse {}
 
 pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamsResponse>, Error> {
     // I want to match params with some and none. if some, then unwrap and call get_endpoint_with_parms.
@@ -167,4 +193,15 @@ async fn get_talent(api_client: &ApiClient, params: Option<TalentParams<'_>>) ->
         }
     };
     Ok(talent_response)
+}
+
+async fn get_matchups(api_client: &ApiClient, params: MatchupParams<'_>) -> Result<Vec<MatchupResponse>, Error> {
+    let endpoint = format!("{}/{}", TEAMS_ENDPOINT, MATCHUP_ENDPOINT);
+    let matchup_response: Vec<MatchupResponse> = {
+        let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
+        //println!("checkpoint");
+        //print response as text
+        response.json().await?
+    };
+    Ok(matchup_response)
 }
