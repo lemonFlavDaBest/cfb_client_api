@@ -38,6 +38,16 @@ pub struct PlayerReturningParams<'a> {
     conference: Option<&'a str>,
 }
 
+pub struct PlayerSeasonStatsParams<'a> {
+    year: &'a str,
+    team: Option<&'a str>,
+    conference: Option<&'a str>,
+    startWeek: Option<&'a str>,
+    endWeek: Option<&'a str>,
+    seasonType: Option<&'a str>,
+    category: Option<&'a str>,
+}
+
 impl PlayerSearchParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -97,6 +107,33 @@ impl PlayerReturningParams<'_> {
     }
 }
 
+impl PlayerSeasonStatsParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        params.push(("year", self.year));
+        // Add other fields if they exist in self
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        if let Some(startWeek) = self.startWeek {
+            params.push(("startWeek", startWeek));
+        }
+        if let Some(endWeek) = self.endWeek {
+            params.push(("endWeek", endWeek));
+        }
+        if let Some(seasonType) = self.seasonType {
+            params.push(("seasonType", seasonType));
+        }
+        if let Some(category) = self.category {
+            params.push(("category", category));
+        }
+        params
+    }
+}
+
 #[derive(Debug, Deserialize)]
 pub struct PlayerSearchResponse {}
 
@@ -105,6 +142,9 @@ pub struct PlayerUsageResponse {}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayerReturningResponse {}
+
+#[derive(Debug, Deserialize)]
+pub struct PlayerSeasonStatsResponse {}
 
 pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResponse, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, SEARCH_ENDPOINT);
@@ -127,5 +167,15 @@ pub async fn get_player_returning_with_params(api_client: &ApiClient, params: Op
         None => api_client.get_endpoint(&endpoint).await?,
     };
     let json_response: PlayerReturningResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_player_season_stats(api_client: &ApiClient, params: Option<PlayerSeasonStatsParams<'_>>) -> Result<PlayerSeasonStatsResponse, Error> {
+    let endpoint = format!("{}/{}/{}", STATS_ENDPOINT, PLAYER_ENDPOINT, SEASON_ENDPOINT);
+    let response = match params {
+        Some(params) => api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?,
+        None => api_client.get_endpoint(&endpoint).await?,
+    };
+    let json_response: PlayerSeasonStatsResponse = response.json().await?;
     Ok(json_response)
 }
