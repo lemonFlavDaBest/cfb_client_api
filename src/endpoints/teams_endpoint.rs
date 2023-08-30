@@ -11,6 +11,7 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 const TEAMS_ENDPOINT: &str = "teams";
 const FBS_ENDPOINT: &str = "fbs";
 const ROSTER_ENDPOINT: &str = "roster";
+const TALENT_ENDPOINT: &str = "talent";
 
 pub struct TeamsParams<'a> {
     conference: Option<&'a str>,
@@ -22,6 +23,10 @@ pub struct FbsParams<'a> {
 
 pub struct RosterParams<'a> {
     team: Option<&'a str>,
+    year: Option<&'a str>,
+}
+
+pub struct TalentParams<'a> {
     year: Option<&'a str>,
 }
 
@@ -61,6 +66,17 @@ impl RosterParams<'_> {
     }
 }
 
+impl TalentParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        params
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct TeamsResponse {}
 
@@ -70,6 +86,8 @@ pub struct FbsResponse {}
 #[derive(Deserialize, Debug)]
 pub struct RosterResponse {}
 
+#[derive(Deserialize, Debug)]
+pub struct TalentResponse {}
 
 pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamsResponse>, Error> {
     // I want to match params with some and none. if some, then unwrap and call get_endpoint_with_parms.
@@ -129,4 +147,23 @@ async fn get_roster(api_client: &ApiClient, params: Option<RosterParams<'_>>) ->
         }
     };
     Ok(roster_response)
+}
+
+async fn get_talent(api_client: &ApiClient, params: Option<TalentParams<'_>>) -> Result<Vec<TalentResponse>, Error> {
+    let endpoint = TALENT_ENDPOINT;
+    let talent_response: Vec<TalentResponse> = match params {
+        Some(params) => {
+            let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+            //println!("checkpoint");
+            //print response as text
+            response.json().await?
+        },
+        None => {
+            let response = api_client.get_endpoint(endpoint).await?;
+            //println!("checkpoint");
+            //print response as text
+            response.json().await?
+        }
+    };
+    Ok(talent_response)
 }
