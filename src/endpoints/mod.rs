@@ -13,3 +13,4 @@ pub mod venues_endpoint;
 pub mod coaches_endpoint;
 pub mod players_endpoint;
 pub mod rankings_endpoint;
+pub mod betting_endpoint;
