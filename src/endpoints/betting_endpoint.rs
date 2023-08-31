@@ -57,6 +57,7 @@ impl BettingParams<'_> {
     }
 }
 
+#[derive(Debug, Deserialize)]
 pub struct BettingResponse {}
 
 pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<BettingResponse, Error> {
