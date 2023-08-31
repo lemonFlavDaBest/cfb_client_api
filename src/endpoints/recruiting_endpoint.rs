@@ -15,9 +15,12 @@ const GROUPS_ENDPOINT: &str = "groups";
 
 //define the params struct
 pub struct RecruitingPlayersParams<'a> {
-    year: Option<&'a str>,
-    classification: Option<&'a str>,
+    year: Option<&'a str>, //required if no team
+    classification: Option<&'a str>, // HighSchool, JUCO, PrepSchool
     postition: Option<&'a str>,
     state: Option<&'a str>,
-    team: Option<&'a str>,
+    team: Option<&'a str>, //required if no year
 }
+
+#[derive(Deserialize, Debug)]
+pub struct RecruitingPlayersResponse {}
