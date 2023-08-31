@@ -31,6 +31,13 @@ pub struct RatingsSPConferencesParams<'a> {
     conference: Option<&'a str>,
 }
 
+pub struct RatingsEloParams<'a> {
+    year: Option<&'a str>,
+    week: Option<&'a str>,
+    team: Option<&'a str>,
+    conference: Option<&'a str>,
+}
+
 impl RatingsSPParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -84,6 +91,26 @@ impl  RatingsSPConferencesParams<'_> {
     }
 }
 
+impl RatingsEloParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // one of year or team must be provided
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        if let Some(week) = self.week {
+            params.push(("week", week));
+        }
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        params
+    }
+}
+
 #[derive(Debug, Deserialize)]
 pub struct RatingsSPResponse {}
 
@@ -118,5 +145,19 @@ pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<R
         }
     };
     let json_response: RatingsSPConferencesResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_elo_ratings(api_client: &ApiClient, params: Option<RatingsEloParams<'_>>) -> Result<Value, Error> {
+    let endpoint = ELO_ENDPOINT;
+    let response = match params {
+        Some(params) => {
+            api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?
+        },
+        None => {
+            api_client.get_endpoint(endpoint).await?
+        }
+    };
+    let json_response: Value = response.json().await?;
     Ok(json_response)
 }
