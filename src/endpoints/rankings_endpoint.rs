@@ -19,9 +19,6 @@ pub struct RankingsParams<'a> {
     seasonType: Option<&'a str>, //like regular or postseason
 }
 
-pub struct RankingsResponse {
-}
-
 impl RankingsParams <'_> {
     pub fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -35,4 +32,13 @@ impl RankingsParams <'_> {
         }
         params
     }
+}
+#[derive(Deserialize, Debug)]
+pub struct RankingsResponse {}
+
+async fn get_rankings_with_params(api_client: &ApiClient, params: RankingsParams<'_>) -> Result<RankingsResponse, Error> {
+    let endpoint = RANKINGS_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: RankingsResponse = response.json().await?;
+    Ok(json_response)
 }
