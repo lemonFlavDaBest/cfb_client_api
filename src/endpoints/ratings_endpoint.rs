@@ -44,11 +44,42 @@ impl RatingsSPParams<'_> {
     }
 }
 
+impl RatingsSRSParams<'_>{
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // one of year or team must be provided
+        if let Some(year) = self.year {
+            params.push(("year", year));
+
+            if let Some(team) = self.team {
+                params.push(("team", team));
+            }
+
+        } else if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        params
+    }
+}
+#[derive(Debug, Deserialize)]
 pub struct RatingsSPResponse {}
+
+#[derive(Debug, Deserialize)]
+pub struct RatingsSRSResponse {}
 
 pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
     let endpoint = SP_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: RatingsSPResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_ratings_srs_with_params(api_client: &ApiClient, params: RatingsSRSParams<'_>) -> Result<RatingsSRSResponse, Error> {
+    let endpoint = SRS_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: RatingsSRSResponse = response.json().await?;
     Ok(json_response)
 }
