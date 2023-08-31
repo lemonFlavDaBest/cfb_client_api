@@ -12,3 +12,12 @@ const RECRUITING_ENDPOINT: &str = "recruiting";
 const PLAYERS_ENDPOINT: &str = "players";
 const TEAMS_ENDPOINT: &str = "teams";
 const GROUPS_ENDPOINT: &str = "groups";
+
+//define the params struct
+pub struct RecruitingPlayersParams<'a> {
+    year: Option<&'a str>,
+    classification: Option<&'a str>,
+    postition: Option<&'a str>,
+    state: Option<&'a str>,
+    team: Option<&'a str>,
+}
