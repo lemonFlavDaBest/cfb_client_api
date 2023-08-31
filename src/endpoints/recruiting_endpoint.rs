@@ -22,6 +22,11 @@ pub struct RecruitingPlayersParams<'a> {
     team: Option<&'a str>, //required if no year
 }
 
+pub struct RecruitingTeamsParams<'a>{
+    year: Option<&'a str>,
+    team: Option<&'a str>,
+}
+
 impl RecruitingPlayersParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -49,12 +54,43 @@ impl RecruitingPlayersParams<'_> {
     }
 }
 
+impl RecruitingTeamsParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // either year or team must exist, the rest are optional
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        } 
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        params
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct RecruitingPlayersResponse {}
 
-async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<RecruitingPlayersResponse, Error> {
+#[derive(Deserialize, Debug)]
+pub struct RecruitingTeamsResponse {}
+
+pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<RecruitingPlayersResponse, Error> {
     let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, PLAYERS_ENDPOINT);
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: RecruitingPlayersResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_recruiting_teams_with_params(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<RecruitingTeamsResponse, Error> {
+    let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, TEAMS_ENDPOINT);
+    let response = match params {
+        Some(params) => {
+            api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?
+        }
+        None => {
+            api_client.get_endpoint(endpoint).await?
+        }
+    };
+    let json_response: RecruitingTeamsResponse = response.json().await?;
     Ok(json_response)
 }
