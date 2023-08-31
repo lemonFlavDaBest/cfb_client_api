@@ -21,3 +21,47 @@ pub struct BettingParams<'a> {
     home: Option<&'a str>,
     away: Option<&'a str>,
 }
+
+impl BettingParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(gameId) = self.gameId {
+            params.push(("gameId", gameId));
+        }
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        if let Some(week) = self.week {
+            params.push(("week", week));
+        }
+        // Default to regular season
+        if let Some(seasonType) = self.seasonType {
+            params.push(("seasonType", seasonType));
+        } else {
+            params.push(("seasonType", "regular"));
+        }
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        if let Some(home) = self.home {
+            params.push(("home", home));
+        }
+        if let Some(away) = self.away {
+            params.push(("away", away));
+        }
+        params
+    }
+}
+
+pub struct BettingResponse {}
+
+pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<BettingResponse, Error> {
+    let endpoint = BETTING_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: BettingResponse = response.json().await?;
+    Ok(json_response)
+}
