@@ -27,6 +27,13 @@ pub struct RecruitingTeamsParams<'a>{
     team: Option<&'a str>,
 }
 
+pub struct RecruitingGroupsParams<'a>{
+    startYear: Option<&'a str>,
+    endYear: Option<&'a str>,
+    team: Option<&'a str>,
+    conference: Option<&'a str>,
+}
+
 impl RecruitingPlayersParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -68,11 +75,34 @@ impl RecruitingTeamsParams<'_> {
     }
 }
 
+impl RecruitingGroupsParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // either year or team must exist, the rest are optional
+        if let Some(startYear) = self.startYear {
+            params.push(("startYear", startYear));
+        } 
+        if let Some(endYear) = self.endYear {
+            params.push(("endYear", endYear));
+        }
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        params
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct RecruitingPlayersResponse {}
 
 #[derive(Deserialize, Debug)]
 pub struct RecruitingTeamsResponse {}
+
+#[derive(Deserialize, Debug)]
+pub struct RecruitingGroupsResponse {}
 
 pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<RecruitingPlayersResponse, Error> {
     let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, PLAYERS_ENDPOINT);
@@ -92,5 +122,19 @@ pub async fn get_recruiting_teams_with_params(api_client: &ApiClient, params: Op
         }
     };
     let json_response: RecruitingTeamsResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_recruiting_groups_with_params(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<RecruitingGroupsResponse, Error> {
+    let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, GROUPS_ENDPOINT);
+    let response = match params {
+        Some(params) => {
+            api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?
+        }
+        None => {
+            api_client.get_endpoint(endpoint).await?
+        }
+    };
+    let json_response: RecruitingGroupsResponse = response.json().await?;
     Ok(json_response)
 }
