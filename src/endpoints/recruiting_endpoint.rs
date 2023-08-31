@@ -17,7 +17,7 @@ const GROUPS_ENDPOINT: &str = "groups";
 pub struct RecruitingPlayersParams<'a> {
     year: Option<&'a str>, //required if no team
     classification: Option<&'a str>, // HighSchool, JUCO, PrepSchool
-    postition: Option<&'a str>,
+    position: Option<&'a str>,
     state: Option<&'a str>,
     team: Option<&'a str>, //required if no year
 }
