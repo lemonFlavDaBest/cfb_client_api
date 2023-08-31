@@ -10,6 +10,7 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 //define the endpoint
 const RATINGS_ENDPOINT: &str = "ratings";
 const SP_ENDPOINT: &str = "ratings/sp";
+const SRS_ENDPOINT : &str = "ratings/srs";
 const SP_CONFERENCES_ENDPOINT: &str = "ratings/sp/conferences";
 const ELO_ENDPOINT: &str = "ratings/elo";
 
@@ -17,6 +18,12 @@ const ELO_ENDPOINT: &str = "ratings/elo";
 pub struct RatingsSPParams<'a> {
     year: Option<&'a str>,
     team: Option<&'a str>,
+}
+
+pub struct RatingsSRSParams<'a> {
+    year: Option<&'a str>, //required if team not specified
+    team: Option<&'a str>, //required if year not specified
+    conference: Option<&'a str>,
 }
 
 impl RatingsSPParams<'_> {
@@ -39,7 +46,7 @@ impl RatingsSPParams<'_> {
 
 pub struct RatingsSPResponse {}
 
-pub async fn get_ratings_sp(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
+pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
     let endpoint = SP_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: RatingsSPResponse = response.json().await?;
