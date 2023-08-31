@@ -26,6 +26,11 @@ pub struct RatingsSRSParams<'a> {
     conference: Option<&'a str>,
 }
 
+pub struct RatingsSPConferencesParams<'a> {
+    year: Option<&'a str>,
+    conference: Option<&'a str>,
+}
+
 impl RatingsSPParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -64,11 +69,29 @@ impl RatingsSRSParams<'_>{
         params
     }
 }
+
+impl  RatingsSPConferencesParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // one of year or team must be provided
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        params
+    }
+}
+
 #[derive(Debug, Deserialize)]
 pub struct RatingsSPResponse {}
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsSRSResponse {}
+
+#[derive(Debug, Deserialize)]
+pub struct RatingsSPConferencesResponse {}
 
 pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
     let endpoint = SP_ENDPOINT;
@@ -81,5 +104,19 @@ pub async fn get_ratings_srs_with_params(api_client: &ApiClient, params: Ratings
     let endpoint = SRS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: RatingsSRSResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<RatingsSPConferencesParams<'_>>) -> Result<RatingsSPConferencesResponse, Error> {
+    let endpoint = SP_CONFERENCES_ENDPOINT;
+    let response = match params {
+        Some(params) => {
+            api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?
+        },
+        None => {
+            api_client.get_endpoint(endpoint).await?
+        }
+    };
+    let json_response: RatingsSPConferencesResponse = response.json().await?;
     Ok(json_response)
 }
