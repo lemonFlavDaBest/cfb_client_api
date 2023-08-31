@@ -111,7 +111,7 @@ pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: 
     Ok(json_response)
 }
 
-pub async fn get_recruiting_teams_with_params(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<RecruitingTeamsResponse, Error> {
+pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<RecruitingTeamsResponse, Error> {
     let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, TEAMS_ENDPOINT);
     let response = match params {
         Some(params) => {
@@ -125,7 +125,7 @@ pub async fn get_recruiting_teams_with_params(api_client: &ApiClient, params: Op
     Ok(json_response)
 }
 
-pub async fn get_recruiting_groups_with_params(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<RecruitingGroupsResponse, Error> {
+pub async fn get_recruiting_groups(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<RecruitingGroupsResponse, Error> {
     let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, GROUPS_ENDPOINT);
     let response = match params {
         Some(params) => {
