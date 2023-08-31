@@ -15,3 +15,4 @@ pub mod players_endpoint;
 pub mod rankings_endpoint;
 pub mod betting_endpoint;
 pub mod recruiting_endpoint;
+pub mod ratings_endpoint;
