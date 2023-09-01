@@ -217,18 +217,25 @@ impl MetricsWPPregameParams<'_> {
     }
 }
 
+#[derive(Debug, Deserialize)]
 pub struct PPAPredictedResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct PPATeamsResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct PPAGamesResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct PPAPlayersGamesResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct PPAPlayersSeasonResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct MetricsWPResponse {}
 
+#[derive(Debug, Deserialize)]
 pub struct MetricsWPPregameResponse {}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
