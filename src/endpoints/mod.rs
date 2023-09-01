@@ -18,3 +18,4 @@ pub mod recruiting_endpoint;
 pub mod ratings_endpoint;
 pub mod metrics_endpoint;
 pub mod stats_endpoint;
+pub mod draft_endpoint;
