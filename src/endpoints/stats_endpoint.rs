@@ -31,6 +31,15 @@ pub struct SeasonStatsAdvancedParams<'a> {
     endWeek: Option<&'a str>,
 }
 
+pub struct GameStatsAdvancedParams<'a> {
+    year: Option<&'a str>, // required if team not specified
+    week: Option<&'a str>,
+    team: Option<&'a str>, // required if year not specified
+    opponent: Option<&'a str>,
+    excludeGarbageTime: Option<&'a str>, // boolean
+    seasonType: Option<&'a str>, // regular, postseason, or both
+}
+
 impl SeasonStatsParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -85,12 +94,44 @@ impl SeasonStatsAdvancedParams<'_> {
     }
 }
 
+impl GameStatsAdvancedParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // one of year or team must be provided
+        if let Some(year) = self.year {
+            params.push(("year", year));
+
+            if let Some(team) = self.team {
+                params.push(("team", team));
+            }
+
+        } else if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(week) = self.week {
+            params.push(("week", week));
+        }
+        if let Some(opponent) = self.opponent {
+            params.push(("opponent", opponent));
+        }
+        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+            params.push(("excludeGarbageTime", excludeGarbageTime));
+        }
+        if let Some(seasonType) = self.seasonType {
+            params.push(("seasonType", seasonType));
+        } 
+        params
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct SeasonStatsResponse {}
 
 #[derive(Deserialize, Debug)]
 pub struct SeasonStatsAdvancedResponse {}
 
+#[derive(Deserialize, Debug)]
+pub struct GameStatsAdvancedResponse {}
 
 pub async fn get_season_stats_with_params(api_client: &ApiClient, params: SeasonStatsParams<'_>) -> Result<SeasonStatsResponse, Error> {
     let endpoint = SEASON_ENDPOINT;
@@ -103,5 +144,12 @@ pub async fn get_season_stats_advanced_with_params(api_client: &ApiClient, param
     let endpoint = SEASON_ADVANCED_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: SeasonStatsAdvancedResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_game_stats_advanced_with_params(api_client: &ApiClient, params: GameStatsAdvancedParams<'_>) -> Result<GameStatsAdvancedResponse, Error> {
+    let endpoint = GAME_ADVANCED_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: GameStatsAdvancedResponse = response.json().await?;
     Ok(json_response)
 }
