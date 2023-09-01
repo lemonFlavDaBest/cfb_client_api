@@ -62,6 +62,13 @@ pub struct MetricsWPParams<'a> {
     gameId: &'a str,
 }
 
+pub struct MetricsWPPregameParams<'a> {
+    year: Option<&'a str>,
+    week: Option<&'a str>,
+    team: Option<&'a str>,
+    seasonType: Option<&'a str>, // regular or postseason
+}
+
 impl PPAPredictedParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -190,6 +197,26 @@ impl MetricsWPParams<'_> {
     }
 }
 
+impl MetricsWPPregameParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        if let Some(week) = self.week {
+            params.push(("week", week));
+        }
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(seasonType) = self.seasonType {
+            params.push(("seasonType", seasonType));
+        } 
+        params
+    }
+}
+
 pub struct PPAPredictedResponse {}
 
 pub struct PPATeamsResponse {}
@@ -201,6 +228,8 @@ pub struct PPAPlayersGamesResponse {}
 pub struct PPAPlayersSeasonResponse {}
 
 pub struct MetricsWPResponse {}
+
+pub struct MetricsWPPregameResponse {}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
@@ -241,5 +270,12 @@ async fn get_metrics_wp_with_params(api_client: &ApiClient, params: MetricsWPPar
     let endpoint = METRICS_WP_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: MetricsWPResponse = response.json().await?;
+    Ok(json_response)
+}
+
+async fn get_metrics_wp_pregame_with_params(api_client: &ApiClient, params: MetricsWPPregameParams<'_>) -> Result<MetricsWPPregameResponse, Error> {
+    let endpoint = METRICS_WP_PREGAME_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: MetricsWPPregameResponse = response.json().await?;
     Ok(json_response)
 }
