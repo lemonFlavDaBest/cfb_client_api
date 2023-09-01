@@ -58,6 +58,10 @@ pub struct PPAPlayersSeasonParams<'a> {
     excludeGarbageTime: Option<&'a str>,
 }
 
+pub struct MetricsWPParams<'a> {
+    gameId: &'a str,
+}
+
 impl PPAPredictedParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -179,6 +183,13 @@ impl PPAPlayersSeasonParams<'_> {
     }
 }
 
+impl MetricsWPParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = vec![("gameId", self.gameId)];
+        params
+    }
+}
+
 pub struct PPAPredictedResponse {}
 
 pub struct PPATeamsResponse {}
@@ -188,6 +199,8 @@ pub struct PPAGamesResponse {}
 pub struct PPAPlayersGamesResponse {}
 
 pub struct PPAPlayersSeasonResponse {}
+
+pub struct MetricsWPResponse {}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
@@ -221,5 +234,12 @@ async fn get_ppa_players_season_with_params(api_client: &ApiClient, params: PPAP
     let endpoint = PPA_PLAYERS_SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: PPAPlayersSeasonResponse = response.json().await?;
+    Ok(json_response)
+}
+
+async fn get_metrics_wp_with_params(api_client: &ApiClient, params: MetricsWPParams<'_>) -> Result<MetricsWPResponse, Error> {
+    let endpoint = METRICS_WP_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: MetricsWPResponse = response.json().await?;
     Ok(json_response)
 }
