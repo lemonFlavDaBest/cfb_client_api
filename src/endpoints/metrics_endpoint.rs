@@ -21,6 +21,13 @@ pub struct PPAPredictedParams<'a> {
     distance: &'a str,
 }
 
+pub struct PPATeamsParams<'a> {
+    year: Option<&'a str>, // required if team not specified
+    team: Option<&'a str>, // required if year not specified
+    conference: Option<&'a str>,
+    excludeGarbageTime: Option<&'a str>,
+}
+
 impl PPAPredictedParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -31,7 +38,32 @@ impl PPAPredictedParams<'_> {
     }
 }
 
+impl PPATeamsParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(year) = self.year {
+            params.push(("year", year));
+            // check if team exists alos, if so, add it
+            if let Some(team) = self.team {
+                params.push(("team", team));
+            }
+        } else if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(conference) = self.conference {
+            params.push(("conference", conference));
+        }
+        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+            params.push(("excludeGarbageTime", excludeGarbageTime));
+        }
+        params
+    }
+}
+
 pub struct PPAPredictedResponse {}
+
+pub struct PPATeamsResponse {}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
@@ -39,3 +71,11 @@ pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPr
     let json_response: PPAPredictedResponse = response.json().await?;
     Ok(json_response)
 }
+
+pub async fn get_ppa_teams_with_params(api_client: &ApiClient, params: PPATeamsParams<'_>) -> Result<PPATeamsResponse, Error> {
+    let endpoint = PPA_TEAMS_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: PPATeamsResponse = response.json().await?;
+    Ok(json_response)
+}
+
