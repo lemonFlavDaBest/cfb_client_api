@@ -37,6 +37,17 @@ pub struct PPAGamesParams<'a> {
     seasonType: Option<&'a str>, // regular or postseason
 }
 
+pub struct PPAPlayersGamesParams<'a> {
+    year: Option<&'a str>,
+    week: Option<&'a str>,
+    team: Option<&'a str>,
+    position: Option<&'a str>,
+    playerId: Option<&'a str>,
+    threshold: Option<&'a str>,
+    excludeGarbageTime: Option<&'a str>,
+    seasonType: Option<&'a str>, // default to regular
+}
+
 impl PPAPredictedParams<'_> {
     fn as_query_params(&self) -> Vec<(&str, &str)> {
         let mut params = Vec::new();
@@ -95,11 +106,47 @@ impl PPAGamesParams<'_> {
     }
 }
 
+impl PPAPlayersGamesParams<'_> {
+    fn as_query_params(&self) -> Vec<(&str, &str)> {
+        let mut params = Vec::new();
+        // Add other fields if they exist in self
+        if let Some(year) = self.year {
+            params.push(("year", year));
+        }
+        if let Some(week) = self.week {
+            params.push(("week", week));
+        }
+        if let Some(team) = self.team {
+            params.push(("team", team));
+        }
+        if let Some(position) = self.position {
+            params.push(("position", position));
+        }
+        if let Some(playerId) = self.playerId {
+            params.push(("playerId", playerId));
+        }
+        if let Some(threshold) = self.threshold {
+            params.push(("threshold", threshold));
+        }
+        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+            params.push(("excludeGarbageTime", excludeGarbageTime));
+        }
+        if let Some(seasonType) = self.seasonType {
+            params.push(("seasonType", seasonType));
+        } else {
+            params.push(("seasonType", "regular")); // the default case
+        }
+        params
+    }
+}
+
 pub struct PPAPredictedResponse {}
 
 pub struct PPATeamsResponse {}
 
 pub struct PPAGamesResponse {}
+
+pub struct PPAPlayersGamesResponse {}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
@@ -119,5 +166,12 @@ pub async fn get_ppa_games_with_params(api_client: &ApiClient, params: PPAGamesP
     let endpoint = PPA_GAMES_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: PPAGamesResponse = response.json().await?;
+    Ok(json_response)
+}
+
+async fn get_ppa_players_games_with_params(api_client: &ApiClient, params: PPAPlayersGamesParams<'_>) -> Result<PPAPlayersGamesResponse, Error> {
+    let endpoint = PPA_PLAYERS_GAMES_ENDPOINT;
+    let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
+    let json_response: PPAPlayersGamesResponse = response.json().await?;
     Ok(json_response)
 }
