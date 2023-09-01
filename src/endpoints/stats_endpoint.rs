@@ -133,6 +133,8 @@ pub struct SeasonStatsAdvancedResponse {}
 #[derive(Deserialize, Debug)]
 pub struct GameStatsAdvancedResponse {}
 
+#[derive(Deserialize, Debug)]
+
 pub async fn get_season_stats_with_params(api_client: &ApiClient, params: SeasonStatsParams<'_>) -> Result<SeasonStatsResponse, Error> {
     let endpoint = SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
@@ -151,5 +153,12 @@ pub async fn get_game_stats_advanced_with_params(api_client: &ApiClient, params:
     let endpoint = GAME_ADVANCED_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
     let json_response: GameStatsAdvancedResponse = response.json().await?;
+    Ok(json_response)
+}
+
+pub async fn get_stats_categories(api_client: &ApiClient) -> Result<Vec<Value>, Error> {
+    let endpoint = CATEGORIES_ENDPOINT;
+    let response = api_client.get_endpoint(endpoint).await?;
+    let json_response: Vec<Value> = response.json().await?;
     Ok(json_response)
 }
