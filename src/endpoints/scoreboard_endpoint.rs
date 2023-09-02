@@ -49,10 +49,13 @@ pub struct Team {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Weather {
-    //temperature: Option<f32>,
-    //description: Option<String>,
-    //windSpeed: Option<f32>,
-    //windDirection: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f32_from_str")]
+    temperature: Option<f32>,
+    description: Option<String>,
+    #[serde(deserialize_with = "deserialize_f32_from_str")]
+    windSpeed: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f32_from_str")]
+    windDirection: Option<f32>,
 }
 
 #[derive(Debug, serde::Deserialize)]
