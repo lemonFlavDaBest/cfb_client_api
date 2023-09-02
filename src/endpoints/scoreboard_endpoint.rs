@@ -14,19 +14,19 @@ const SCOREBOARD_ENDPOINT: &str = "scoreboard";
 #[derive(Debug, serde::Deserialize)]
 pub struct ScoreboardResponse {
     id: Option<i64>,
-    startDate: Option<String>,
-    startTimeTBD: Option<bool>,
+    start_date: Option<String>,
+    start_time_tbd: Option<bool>,
     tv: Option<String>,
-    neutralSite: Option<bool>,
-    conferenceGame: Option<bool>,
+    neutral_site: Option<bool>,
+    conference_game: Option<bool>,
     status: Option<String>,
     period: Option<i8>,
     clock: Option<String>,
     situation: Option<String>,
     possession: Option<String>,
     venue: Option<Venue>,
-    homeTeam: Option<Team>,
-    awayTeam: Option<Team>,
+    home_team: Option<Team>,
+    away_team: Option<Team>,
     weather: Option<Weather>,
     betting: Option<Betting>,
 }
@@ -39,6 +39,7 @@ pub struct Venue {
 }
 
 #[derive(Debug, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Team {
     id: Option<i64>,
     name: Option<String>,
@@ -48,24 +49,26 @@ pub struct Team {
 }
 
 #[derive(Debug, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Weather {
     #[serde(deserialize_with = "deserialize_f32_from_str")]
     temperature: Option<f32>,
     description: Option<String>,
     #[serde(deserialize_with = "deserialize_f32_from_str")]
-    windSpeed: Option<f32>,
+    wind_speed: Option<f32>,
     #[serde(deserialize_with = "deserialize_f32_from_str")]
-    windDirection: Option<f32>,
+    wind_direction: Option<f32>,
 }
 
 #[derive(Debug, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Betting {
     #[serde(deserialize_with = "deserialize_f32_from_str")]
     spread: Option<f32>,
     #[serde(deserialize_with = "deserialize_f32_from_str")]
-    overUnder: Option<f32>,
-    homeMoneyline: Option<i32>,
-    awayMoneyline: Option<i32>,
+    over_under: Option<f32>,
+    home_moneyline: Option<i32>,
+    away_moneyline: Option<i32>,
 }
 
 
