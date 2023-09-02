@@ -13,22 +13,22 @@ const SCOREBOARD_ENDPOINT: &str = "scoreboard";
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ScoreboardResponse {
-    //id: Option<T>,
-    //startDate: Option<T>,
-   // startTimeTBD: Option<T>,
-   // tv: Option<T>,
-   // neutralSite: Option<T>,
-   // conferenceGame: Option<T>,
-   // status: Option<T>,
-   // period: Option<T>,
-   // clock: Option<T>,
-   // situation: Option<T>,
-   // possession: Option<T>,
-   // venue: Option<Venue>,
-  //  homeTeam: Option<Team>,
-  //  awayTeam: Option<Team>,
-  //  weather: Option<Weather>,
-  //  betting: Option<Betting>,
+    id: Option<i64>,
+    startDate: Option<String>,
+    startTimeTBD: Option<bool>,
+    tv: Option<String>,
+    neutralSite: Option<bool>,
+    conferenceGame: Option<bool>,
+    status: Option<String>,
+    period: Option<i8>,
+    clock: Option<String>,
+    situation: Option<String>,
+    possession: Option<String>,
+    venue: Option<Venue>,
+    homeTeam: Option<Team>,
+    awayTeam: Option<Team>,
+    weather: Option<Weather>,
+    betting: Option<Betting>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -40,7 +40,7 @@ pub struct Venue {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Team {
-    id: Option<u64>,
+    id: Option<i64>,
     name: Option<String>,
     conference: Option<String>,
     classification: Option<String>,
@@ -49,18 +49,18 @@ pub struct Team {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Weather {
-    temperature: Option<i32>,
-    description: Option<String>,
-    windSpeed: Option<i32>,
-    windDirection: Option<i32>,
+    //temperature: Option<f32>,
+    //description: Option<String>,
+    //windSpeed: Option<f32>,
+    //windDirection: Option<f32>,
 }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Betting {
-    spread: Option<f64>,
-    overUnder: Option<f64>,
-    homeMoneyline: Option<i32>,
-    awayMoneyline: Option<i32>,
+    //spread: Option<f64>,
+    //overUnder: Option<f64>,
+    //homeMoneyline: Option<i32>,
+    //awayMoneyline: Option<i32>,
 }
 
 
@@ -101,18 +101,18 @@ pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardResp
     Ok(json_response)
 }
 
-pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<String, Error> {
+pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<Vec<ScoreboardResponse>, Error> {
     let scoreboard_params = params.unwrap_or_else(ScoreboardParams::new);
     let endpoint = SCOREBOARD_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, scoreboard_params.as_query_params()).await?;
     //println!("checkpoint");
     //print response as text
     
-    Ok(response.text().await?)
+    //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    //let json_response: Vec<ScoreboardResponse> = response.json().await?;
+    let json_response: Vec<ScoreboardResponse> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
-    //Ok(json_response)
+    Ok(json_response)
 }
