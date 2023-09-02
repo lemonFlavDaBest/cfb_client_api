@@ -57,10 +57,12 @@ pub struct Weather {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Betting {
-    //spread: Option<f64>,
-    //overUnder: Option<f64>,
-    //homeMoneyline: Option<i32>,
-    //awayMoneyline: Option<i32>,
+    #[serde(deserialize_with = "deserialize_f32_from_str")]
+    spread: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f32_from_str")]
+    overUnder: Option<f32>,
+    homeMoneyline: Option<i32>,
+    awayMoneyline: Option<i32>,
 }
 
 
@@ -86,6 +88,22 @@ impl ScoreboardParams<'_> {
             query_params.push(("conference", conference));
         } 
         query_params
+    }
+}
+
+fn deserialize_f32_from_str<'de, D>(deserializer: D) -> Result<Option<f32>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let value: Option<String> = Option::deserialize(deserializer)?;
+    match value {
+        Some(val_str) => {
+            // Parse the string value into f32
+            let parsed_val = f32::from_str(&val_str)
+                .map_err(|_err| serde::de::Error::custom("Failed to parse f32 from string"))?;
+            Ok(Some(parsed_val))
+        }
+        None => Ok(None),
     }
 }
 
