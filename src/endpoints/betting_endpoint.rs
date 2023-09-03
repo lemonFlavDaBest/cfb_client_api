@@ -58,7 +58,20 @@ impl BettingParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct BettingResponse {}
+pub struct BettingResponse {
+    id: Option<i32>,
+    season: Option<i32>,
+    week: Option<u16>,
+    season_type: Option<String>,
+    start_date: Option<String>,
+    home_team: Option<String>,
+    home_conference: Option<String>,
+    home_score: Option<u16>,
+    away_team: Option<String>,
+    away_conference: Option<String>,
+    away_score: Option<u16>,
+    lines: Option<Vec<Line>>,
+}
 
 pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<BettingResponse, Error> {
     let endpoint = BETTING_ENDPOINT;
