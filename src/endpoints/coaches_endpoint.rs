@@ -47,7 +47,15 @@ impl CoachesParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct CoachesResponse {}
+pub struct CoachesResponse {
+    first_name: Option<String>,
+    last_name: Option<String>,
+    hire_date: Option<String>,
+    seasons: Option<Vec<Season>>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Season {}
 
 async fn get_coaches_with_params(api_client: &ApiClient, params: Option<CoachesParams<'_>>) -> Result<CoachesResponse, Error> {
     let endpoint = COACHES_ENDPOINT;
