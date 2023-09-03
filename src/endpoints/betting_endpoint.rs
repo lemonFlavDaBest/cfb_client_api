@@ -73,6 +73,9 @@ pub struct BettingResponse {
     lines: Option<Vec<Line>>,
 }
 
+#[derive(Debug, Deserialize)]
+struct Line(String);
+
 pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<BettingResponse, Error> {
     let endpoint = BETTING_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
