@@ -181,7 +181,13 @@ pub struct PlayersParams<'a> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayersResponse {}
+pub struct PlayersResponse {
+    id: Option<i64>,
+    teams: Option<Vec<Team>>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Team {}
 
 impl PlayersParams<'_> {
     pub fn new() -> Self {
@@ -238,6 +244,7 @@ pub struct TeamsParams<'a> {
 }
 #[derive(Debug, Deserialize)]
 pub struct TeamsResponse {}
+
 impl TeamsParams<'_> {
     pub fn new() -> Self {
         Default::default()
@@ -264,6 +271,7 @@ impl TeamsParams<'_> {
         params
     }
 }
+
 impl Default for TeamsParams<'_> {
     fn default() -> Self {
         TeamsParams { 
