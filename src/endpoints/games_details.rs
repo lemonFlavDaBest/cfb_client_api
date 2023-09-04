@@ -27,7 +27,18 @@ pub struct MediaParams<'a> {
 
 #[derive(Debug, Deserialize)]
 pub struct MediaResponse {
-
+    id: Option<i64>,
+    season: Option<i64>,
+    week: Option<u16>,
+    season_type: Option<String>,
+    start_time: Option<String>,
+    is_start_time_tbd: Option<bool>,
+    home_team: Option<String>,
+    home_conference: Option<String>,
+    away_team: Option<String>,
+    away_conference: Option<String>,
+    media_type: Option<String>,
+    outlet: Option<String>,
 }
 
 impl MediaParams<'_> {
