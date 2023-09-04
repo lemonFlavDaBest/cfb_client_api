@@ -243,7 +243,10 @@ pub struct TeamsParams<'a> {
     classification: Option<&'a str>,
 }
 #[derive(Debug, Deserialize)]
-pub struct TeamsResponse {}
+pub struct TeamsResponse {
+    id: Option<i64>,
+    teams: Option<Vec<Team>>,
+}
 
 impl TeamsParams<'_> {
     pub fn new() -> Self {
