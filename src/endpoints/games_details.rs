@@ -289,7 +289,15 @@ impl Default for TeamsParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct BoxResponse{}
+pub struct BoxResponse{
+    teams: Option<BoxTeams>,
+    players: Option<BoxPlayers>,
+}
+#[derive(Debug, Deserialize)]
+pub struct BoxTeams {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxPlayers {}
 pub struct BoxParams<'a> {
     gameId: &'a str,
 }
