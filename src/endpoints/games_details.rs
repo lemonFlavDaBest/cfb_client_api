@@ -145,7 +145,30 @@ impl Default for WeatherParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct WeatherResponse {}
+pub struct WeatherResponse {
+    id: Option<i64>,
+    season: Option<i64>,
+    week: Option<u16>,
+    season_type: Option<String>,
+    start_time: Option<String>,
+    game_indoors: Option<bool>,
+    home_team: Option<String>,
+    home_conference: Option<String>,
+    away_team: Option<String>,
+    away_conference: Option<String>,
+    venue_id: Option<i64>,
+    venue: Option<String>,
+    temperature: Option<f64>,
+    dew_point: Option<f64>,
+    humidity: Option<f64>,
+    precipitation: Option<f64>,
+    snowfall: Option<f64>,
+    wind_direction: Option<f64>,
+    wind_speed: Option<f64>,
+    pressure: Option<f64>,
+    weather_condition_code: Option<i64>,
+    weather_condition: Option<String>,
+}
 
 pub struct PlayersParams<'a> {
     pub year: &'a str,
