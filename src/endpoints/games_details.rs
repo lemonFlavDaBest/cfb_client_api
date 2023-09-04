@@ -307,7 +307,8 @@ pub struct BoxTeams {
 
 #[derive(Debug, Deserialize)]
 pub struct BoxPlayers {
-    
+    usage: Option<Vec<BoxUsage>>,
+    ppa: Option<Vec<BoxPlayersPpa>>,
 }
 pub struct BoxParams<'a> {
     gameId: &'a str,
