@@ -294,10 +294,21 @@ pub struct BoxResponse{
     players: Option<BoxPlayers>,
 }
 #[derive(Debug, Deserialize)]
-pub struct BoxTeams {}
+pub struct BoxTeams {
+    ppa: Option<Vec<BoxPpa>>,
+    cumulative_ppa: Option<Vec<BoxCumulativePpa>>,
+    success_rates: Option<Vec<BoxSuccessRates>>,
+    explosiveness: Option<Vec<BoxExplosiveness>>,
+    rushing: Option<Vec<BoxRushing>>,
+    havoc: Option<Vec<BoxHavoc>>,
+    scoring_opp: Option<Vec<BoxScoringOpp>>,
+    field_position: Option<Vec<BoxFieldPosition>>,
+}
 
 #[derive(Debug, Deserialize)]
-pub struct BoxPlayers {}
+pub struct BoxPlayers {
+    
+}
 pub struct BoxParams<'a> {
     gameId: &'a str,
 }
