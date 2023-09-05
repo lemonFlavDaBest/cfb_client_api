@@ -12,7 +12,35 @@ const DRIVES_ENDPOINT: &str = "drives";
 //define the response struct
 #[derive(Deserialize, Debug)]
 pub struct DrivesResponse {
+    offense: Option<String>,
+    offense_conference: Option<String>,
+    defense: Option<String>,
+    defense_conference: Option<String>,
+    game_id: Option<i64>,
+    drive_number: Option<i64>,
+    scoring: Option<bool>,
+    start_period: Option<i64>,
+    start_yardline: Option<i64>,
+    start_yards_to_goal: Option<i64>,
+    start_time: Option<Clock>,
+    end_period: Option<i64>,
+    end_yardline: Option<i64>,
+    end_yards_to_goal: Option<i64>,
+    end_time: Option<Clock>,
+    plays: Option<u16>,
+    yards: Option<i32>,
+    drive_result: Option<String>,
+    is_home_offense: Option<bool>,
+    start_offense_score: Option<u32>,
+    start_defense_score: Option<u32>,
+    end_offense_score: Option<u32>,
+    end_defense_score: Option<u32>,
+}
 
+#[derive(Deserialize, Debug)]
+pub struct Clock {
+    minutes: Option<i64>,
+    seconds: Option<i64>,
 }
 
 //define the params struct
