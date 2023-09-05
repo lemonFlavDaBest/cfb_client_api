@@ -288,7 +288,23 @@ pub struct TeamRankings {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPAPlayersGamesResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PPAPlayersGamesResponse {
+    season: Option<u64>,
+    week: Option<u16>,
+    name: Option<String>,
+    position: Option<String>,
+    team: Option<String>,
+    opponent: Option<String>,
+    average_ppa: Option<AveragePPA>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AveragePPA {
+    all: Option<f64>,
+    pass: Option<f64>,
+    rush: Option<f64>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PPAPlayersSeasonResponse {}
