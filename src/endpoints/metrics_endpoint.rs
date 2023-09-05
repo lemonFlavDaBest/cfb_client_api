@@ -233,6 +233,7 @@ pub struct PPATeamsResponse {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct OffenseBox {
     overall: Option<f64>,
     passing: Option<f64>,
@@ -244,6 +245,7 @@ pub struct OffenseBox {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DefenseBox {
     overall: Option<f64>,
     passing: Option<f64>,
