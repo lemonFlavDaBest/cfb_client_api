@@ -218,10 +218,48 @@ impl MetricsWPPregameParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPAPredictedResponse {}
+pub struct PPAPredictedResponse {
+    yardline: Option<i32>,
+    ppa: Option<f32>,
+}
 
 #[derive(Debug, Deserialize)]
-pub struct PPATeamsResponse {}
+pub struct PPATeamsResponse {
+    season: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    offense: Option<OffenseBox>,
+    defense: Option<DefenseBox>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct OffenseBox {
+    overall: Option<f64>,
+    passing: Option<f64>,
+    rushing: Option<f64>,
+    first_down: Option<f64>,
+    second_down: Option<f64>,
+    third_down: Option<f64>,
+    cumulative: Option<CumulativeScores>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct DefenseBox {
+    overall: Option<f64>,
+    passing: Option<f64>,
+    rushing: Option<f64>,
+    first_down: Option<f64>,
+    second_down: Option<f64>,
+    third_down: Option<f64>,
+    cumulative: Option<CumulativeScores>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CumulativeScores {
+    total: Option<f64>,
+    passing: Option<f64>,
+    rushing: Option<f64>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PPAGamesResponse {}
