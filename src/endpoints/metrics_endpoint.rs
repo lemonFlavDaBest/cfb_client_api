@@ -332,7 +332,26 @@ pub struct SeasonAveragePPA {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct MetricsWPResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct MetricsWPResponse {
+    games_id: Option<i64>,
+    play_id: Option<i64>,
+    play_text: Option<String>,
+    home_id: Option<i64>,
+    home: Option<String>,
+    away_id: Option<i64>,
+    away: Option<String>,
+    spread: Option<f64>,
+    home_ball: Option<bool>,
+    home_score: Option<u32>,
+    away_score: Option<u32>,
+    time_remaining: Option<i64>,
+    yard_line: Option<i64>,
+    down: Option<u8>,
+    distance: Option<u32>,
+    home_win_prob: Option<f64>,
+    play_number: Option<u32>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct MetricsWPPregameResponse {}
