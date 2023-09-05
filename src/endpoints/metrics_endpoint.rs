@@ -264,7 +264,28 @@ pub struct CumulativeScores {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPAGamesResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PPAGamesResponse {
+    game_id: Option<i64>,
+    season: Option<u64>,
+    week: Option<u16>,
+    team: Option<String>,
+    conference: Option<String>,
+    opponent: Option<String>,
+    offense: Option<TeamRankings>,
+    defense: Option<TeamRankings>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TeamRankings {
+    overall: Option<f64>,
+    passing: Option<f64>,
+    rushing: Option<f64>,
+    first_down: Option<f64>,
+    second_down: Option<f64>,
+    third_down: Option<f64>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PPAPlayersGamesResponse {}
