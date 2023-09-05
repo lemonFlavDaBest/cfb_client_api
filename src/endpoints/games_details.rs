@@ -306,10 +306,41 @@ pub struct BoxTeams {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct BoxPpa {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxCumulativePpa {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxSuccessRates {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxExplosiveness {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxRushing {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxHavoc {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxScoringOpp {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxFieldPosition {}
+
+#[derive(Debug, Deserialize)]
 pub struct BoxPlayers {
     usage: Option<Vec<BoxUsage>>,
     ppa: Option<Vec<BoxPlayersPpa>>,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct BoxUsage {}
+
+#[derive(Debug, Deserialize)]
+pub struct BoxPlayersPpa {}
+
 pub struct BoxParams<'a> {
     gameId: &'a str,
 }
