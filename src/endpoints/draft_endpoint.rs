@@ -45,13 +45,42 @@ impl DraftPicksParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DraftTeamsResponse{}
+pub struct DraftTeamsResponse{
+    location: Option<String>,
+    nickname: Option<String>,
+    display_name: Option<String>,
+    logo: Option<String>,
+}
 
 #[derive(Deserialize, Debug)]
-pub struct DraftPositionsResponse{}
+pub struct DraftPositionsResponse{
+    name: Option<String>,
+    abbreviation: Option<String>,
+}
 
 #[derive(Deserialize, Debug)]
-pub struct DraftPicksResponse {}
+pub struct DraftPicksResponse {
+    college_athlete_id: Option<i64>,
+    nfl_athlete_id: Option<i64>,
+    college_id: Option<i64>,
+    college_team: Option<String>,
+    college_conference: Option<String>,
+    nfl_team: Option<String>,
+    year: Option<u64>,
+    overall: Option<u64>,
+    round: Option<u8>,
+    pick: Option<u32>,
+    name: Option<String>,
+    position: Option<String>,
+    height: Option<i8>,
+    weight: Option<i16>,
+    pre_draft_ranking: Option<u32>,
+    pre_draft_position_ranking: Option<u32>,
+    pre_draft_grade: Option<i64>,
+    hometown_info: Option<Hometown>,
+}
+#[derive(Deserialize, Debug)]
+pub struct Hometown {}
 
 pub async fn get_draft_teams(api_client: &ApiClient) -> Result<DraftTeamsResponse, Error> {
     let response = api_client.get_endpoint(TEAMS_ENDPOINT).await?;
