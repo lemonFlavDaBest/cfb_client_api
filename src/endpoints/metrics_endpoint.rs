@@ -354,7 +354,17 @@ pub struct MetricsWPResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct MetricsWPPregameResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct MetricsWPPregameResponse {
+    season: Option<u64>,
+    season_type: Option<String>,
+    week: Option<u16>,
+    game_id: Option<i64>,
+    home_team: Option<String>,
+    away_team: Option<String>,
+    spread: Option<f64>,
+    home_win_prob: Option<f64>,
+}
 
 pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
