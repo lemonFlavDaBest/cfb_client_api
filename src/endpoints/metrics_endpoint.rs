@@ -307,7 +307,29 @@ pub struct AveragePPA {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPAPlayersSeasonResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PPAPlayersSeasonResponse {
+    season: Option<u64>,
+    id: Option<i64>,
+    name: Option<String>,
+    position: Option<String>,
+    team: Option<String>,
+    average_ppa: Option<SeasonAveragePPA>,
+    total_ppa: Option<SeasonAveragePPA>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SeasonAveragePPA {
+    all: Option<f64>,
+    pass: Option<f64>,
+    rush: Option<f64>,
+    first_down: Option<f64>,
+    second_down: Option<f64>,
+    third_down: Option<f64>,
+    standard_downs: Option<f64>,
+    passing_downs: Option<f64>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct MetricsWPResponse {}
