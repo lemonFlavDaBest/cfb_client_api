@@ -147,7 +147,21 @@ impl PlayerPortalParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerSearchResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PlayerSearchResponse {
+    id: Option<i64>,
+    team: Option<String>,
+    name: Option<String>,
+    first_name: Option<String>,
+    last_name: Option<String>,
+    weight: Option<u16>,
+    height: Option<u16>,
+    jersey: Option<u8>,
+    position: Option<String>,
+    hometown: Option<String>,
+    team_color: Option<String>,
+    team_color_secondary: Option<String>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayerUsageResponse {}
