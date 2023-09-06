@@ -22,7 +22,24 @@ pub struct LivePlayParams<'a> {
     gameId: &'a str,
 }
 #[derive(Debug, Deserialize)]
-pub struct LivePlayResponse{}
+#[serde(rename_all = "camelCase")]
+pub struct LivePlayResponse{
+    id: Option<i64>,
+    status: Option<String>,
+    period: Option<i8>,
+    possession: Option<String>,
+    down: Option<u8>,
+    distance: Option<i16>,
+    yards_to_goal: Option<i16>,
+    teams: Option<Vec<Teams>>,
+    drives: Option<Vec<Drives>>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Teams {}
+
+#[derive(Debug, Deserialize)]
+pub struct Drives {}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayTypesResponse{}
