@@ -65,8 +65,50 @@ pub struct Teams {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Drives {
-    
+    id: Option<i64>,
+    offense_id: Option<i64>,
+    offense: Option<String>,
+    defense_id: Option<i64>,
+    defense: Option<String>,
+    play_count: Option<u16>,
+    yards: Option<i16>,
+    start_period: Option<i8>,
+    start_clock: Option<String>,
+    start_yards_to_goal: Option<i16>,
+    end_period: Option<i8>,
+    end_clock: Option<String>,
+    end_yards_to_goal: Option<i16>,
+    duration: Option<String>,
+    scoring_play: Option<bool>,
+    plays: Option<Vec<DrivePlays>>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DrivePlays {
+    // add the rest of the fields
+    id: Option<i64>,
+    home_score: Option<i16>,
+    away_score: Option<i16>,
+    period: Option<i8>,
+    clock: Option<String>,
+    wallclock: Option<String>,
+    team_id: Option<i64>,
+    team: Option<String>,
+    down: Option<u8>,
+    distance: Option<i16>,
+    yards_to_goal: Option<i16>,
+    yards_gained: Option<i16>,
+    play_type_id: Option<i64>,
+    play_type: Option<String>,
+    epa: Option<f64>,
+    garbage_time: Option<bool>,
+    success: Option<bool>,
+    rush_pass: Option<String>,
+    down_type: Option<String>,
+    play_text: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
