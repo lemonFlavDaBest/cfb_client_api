@@ -164,7 +164,28 @@ pub struct PlayerSearchResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerUsageResponse {}
+pub struct PlayerUsageResponse {
+    season: Option<u64>,
+    id: Option<i64>,
+    name: Option<String>,
+    position: Option<String>,
+    team: Option<String>,
+    conference: Option<String>,
+    usage: Option<PlayerUsage>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PlayerUsage {
+    overall: Option<f32>,
+    pass: Option<f32>,
+    rush: Option<f32>,
+    first_down: Option<f32>,
+    second_down: Option<f32>,
+    third_down: Option<f32>,
+    standard_downs: Option<f32>,
+    passing_downs: Option<f32>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayerReturningResponse {}
