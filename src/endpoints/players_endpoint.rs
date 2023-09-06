@@ -188,7 +188,20 @@ pub struct PlayerUsage {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerReturningResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PlayerReturningResponse {
+    season: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    total_ppa: Option<f32>,
+    total_passing_ppa: Option<f32>,
+    total_receiving_ppa: Option<f32>,
+    total_rushing_ppa: Option<f32>,
+    usage: Option<f32>,
+    passing_usage: Option<f32>,
+    receiving_usage: Option<f32>,
+    rushing_usage: Option<f32>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayerSeasonStatsResponse {}
