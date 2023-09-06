@@ -217,7 +217,19 @@ pub struct PlayerSeasonStatsResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerPortalResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PlayerPortalResponse {
+    season: Option<u64>,
+    first_name: Option<String>,
+    last_name: Option<String>,
+    position: Option<String>,
+    origin: Option<String>,
+    destination: Option<String>,
+    transfer_date: Option<String>, //need to do date conversion
+    rating: Option<f32>,
+    stars: Option<u8>,
+    eligibility: Option<String>,
+}
 
 pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResponse, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, SEARCH_ENDPOINT);
