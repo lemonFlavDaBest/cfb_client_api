@@ -36,10 +36,38 @@ pub struct LivePlayResponse{
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Teams {}
+#[serde(rename_all = "camelCase")]
+pub struct Teams {
+    team_id: Option<i64>,
+    team: Option<String>,
+    home_away: Option<String>,
+    points: Option<i16>,
+    drives: Option<u16>,
+    scoring_opportunities: Option<u16>,
+    points_per_opportunity: Option<f64>,
+    plays: Option<u16>,
+    line_yards: Option<i64>,
+    line_yards_per_rush: Option<f64>,
+    second_level_yards: Option<i64>,
+    second_level_yards_per_rush: Option<f64>,
+    open_field_yards: Option<i64>,
+    open_field_yards_per_rush: Option<f64>,
+    epa_per_play: Option<f64>,
+    total_epa: Option<f64>,
+    passing_epa: Option<f64>,
+    epa_per_pass: Option<f64>,
+    rushing_epa: Option<f64>,
+    epa_per_rush: Option<f64>,
+    success_rate: Option<f64>,
+    standard_downs_success_rate: Option<f64>,
+    passing_downs_success_rate: Option<f64>,
+    explosiveness: Option<f64>,
+}
 
 #[derive(Debug, Deserialize)]
-pub struct Drives {}
+pub struct Drives {
+    
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayTypesResponse{}
