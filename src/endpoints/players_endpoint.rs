@@ -204,7 +204,17 @@ pub struct PlayerReturningResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerSeasonStatsResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct PlayerSeasonStatsResponse {
+    season: Option<u64>,
+    player_id: Option<i64>,
+    player: Option<String>,
+    team: Option<String>,
+    conference: Option<String>,
+    category: Option<String>,
+    stat_type: Option<String>,
+    stat: Option<f32>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct PlayerPortalResponse {}
