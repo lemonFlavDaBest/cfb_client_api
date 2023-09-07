@@ -171,6 +171,12 @@ pub struct SpecialTeamsSP {
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsSRSResponse {  
+
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RatingsEloResponse {
+
 }
 
 #[derive(Debug, Deserialize)]
