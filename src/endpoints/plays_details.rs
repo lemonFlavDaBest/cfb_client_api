@@ -112,7 +112,11 @@ pub struct DrivePlays {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayTypesResponse{}
+pub struct PlayTypesResponse{
+    id: Option<i64>,
+    text: Option<String>,
+    abbreviation: Option<String>,
+}
 
 pub struct PlayStatsParams<'a> {
     year: Option<&'a str>,
@@ -126,7 +130,33 @@ pub struct PlayStatsParams<'a> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayStatsResponse{}
+#[serde(rename_all = "camelCase")]
+pub struct PlayStatsResponse{
+    game_id: Option<i64>,
+    season: Option<u64>,
+    week: Option<u8>,
+    team: Option<String>,
+    conference: Option<String>,
+    opponent: Option<String>,
+    team_score: Option<u16>,
+    opponent_score: Option<u16>,
+    drive_id: Option<i64>,
+    play_id: Option<i64>,
+    period: Option<u8>,
+    clock: Option<Clock>,
+    yards_to_goal: Option<u16>,
+    down: Option<u8>,
+    distance: Option<u8>,
+    athlete_id: Option<i64>,
+    stat_type: Option<String>,
+    stat: Option<i32>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Clock {
+    minutes: Option<u8>,
+    seconds: Option<u8>,
+}
 
 impl PlayStatsParams <'_> {
     pub fn as_query_params(&self) -> Vec<(&str, &str)> {
