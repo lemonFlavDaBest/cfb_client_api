@@ -184,7 +184,10 @@ pub struct RatingsSPConferencesResponse {}
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsEloResponse {
-    
+    year: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    elo: Option<f64>,
 }
 
 pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
