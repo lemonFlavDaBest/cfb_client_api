@@ -191,7 +191,10 @@ impl PlayStatsParams <'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayStatTypesResponse{}
+pub struct PlayStatTypesResponse{
+    id: Option<i64>,
+    name: Option<String>,
+}
 
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
