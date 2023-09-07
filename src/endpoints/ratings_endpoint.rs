@@ -112,10 +112,66 @@ impl RatingsEloParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsSPResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct RatingsSPResponse {
+    year: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    rating: Option<f64>,
+    ranking: Option<f64>,
+    second_order_wins: Option<f64>,
+    sos: Option<f64>,
+    offense: Option<OffenseSP>,
+    defense: Option<DefenseSP>,
+    special_teams: Option<SpecialTeamsSP>,
+}
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsSRSResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct OffenseSP {
+    ranking: Option<f64>,
+    rating: Option<f64>,
+    success: Option<f64>,
+    explosiveness: Option<f64>,
+    rushing: Option<f64>,
+    passing: Option<f64>,
+    standard_downs: Option<f64>,
+    passing_downs: Option<f64>,
+    run_rate: Option<f64>,
+    pace: Option<f64>,
+}
+
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DefenseSP {
+    ranking: Option<f64>,
+    rating: Option<f64>,
+    success: Option<f64>,
+    explosiveness: Option<f64>,
+    rushing: Option<f64>,
+    passing: Option<f64>,
+    standard_downs: Option<f64>,
+    passing_downs: Option<f64>,
+    havoc: Option<Havoc>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Havoc {
+    total: Option<f64>,
+    front_seven: Option<f64>,
+    db: Option<f64>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct SpecialTeamsSP {
+    rating: Option<f64>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RatingsSRSResponse {  
+}
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsSPConferencesResponse {}
