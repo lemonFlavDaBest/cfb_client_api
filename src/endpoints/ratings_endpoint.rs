@@ -180,7 +180,44 @@ pub struct RatingsSRSResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsSPConferencesResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct RatingsSPConferencesResponse {
+    year: Option<u64>,
+    conference: Option<String>,
+    rating: Option<f64>,
+    second_order_wins: Option<f64>,
+    sos: Option<f64>,
+    offense: Option<OffenseSP>,
+    defense: Option<DefenseSP>,
+    special_teams: Option<SpecialTeamsSP>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct OffenseConferenceSP {
+    rating: Option<f64>,
+    success: Option<f64>,
+    explosiveness: Option<f64>,
+    rushing: Option<f64>,
+    passing: Option<f64>,
+    standard_downs: Option<f64>,
+    passing_downs: Option<f64>,
+    run_rate: Option<f64>,
+    pace: Option<f64>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DefenseConferenceSP {
+    rating: Option<f64>,
+    success: Option<f64>,
+    explosiveness: Option<f64>,
+    rushing: Option<f64>,
+    passing: Option<f64>,
+    standard_downs: Option<f64>,
+    passing_downs: Option<f64>,
+    havoc: Option<Havoc>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsEloResponse {
