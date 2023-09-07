@@ -180,12 +180,12 @@ pub struct RatingsSRSResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsEloResponse {
-
-}
+pub struct RatingsSPConferencesResponse {}
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsSPConferencesResponse {}
+pub struct RatingsEloResponse {
+    
+}
 
 pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
     let endpoint = SP_ENDPOINT;
