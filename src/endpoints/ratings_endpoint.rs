@@ -171,7 +171,12 @@ pub struct SpecialTeamsSP {
 
 #[derive(Debug, Deserialize)]
 pub struct RatingsSRSResponse {  
-
+    year: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    division: Option<String>,
+    rating: Option<f64>,
+    ranking: Option<f64>,
 }
 
 #[derive(Debug, Deserialize)]
