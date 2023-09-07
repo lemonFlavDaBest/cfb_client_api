@@ -34,7 +34,29 @@ impl RankingsParams <'_> {
     }
 }
 #[derive(Deserialize, Debug)]
-pub struct RankingsResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct RankingsResponse {
+    season: Option<u64>,
+    season_type: Option<String>,
+    week: Option<u16>,
+    polls: Option<Vec<Poll>>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Poll {
+    poll: Option<String>,
+    ranks: Option<Vec<Rank>>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct Rank {
+    rank: Option<u16>,
+    school: Option<String>,
+    conference: Option<String>,
+    first_place_votes: Option<u16>,
+    points: Option<u16>,
+}
 
 async fn get_rankings_with_params(api_client: &ApiClient, params: RankingsParams<'_>) -> Result<RankingsResponse, Error> {
     let endpoint = RANKINGS_ENDPOINT;
