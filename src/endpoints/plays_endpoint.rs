@@ -37,7 +37,7 @@ pub struct PlaysResponse {
     offense_timeouts: Option<i8>, //need to clean: negative values
     defense_timeouts: Option<i8>,// need to clean: negative values
     yard_line: Option<i16>, //need to clean: negative values here
-    yards_to_goal: Option<i16>, //need to clean:: negative values here
+    yards_to_goal: Option<i16>, //need to clean: negative values here
     down: Option<u8>,
     distance: Option<i16>, //need to clean: negative values here
     yards_gained: Option<i16>,
