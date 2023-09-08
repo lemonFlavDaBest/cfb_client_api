@@ -96,7 +96,34 @@ impl RecruitingGroupsParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct RecruitingPlayersResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct RecruitingPlayersResponse {
+    id: Option<i64>,
+    athlete_id: Option<i64>,
+    recruit_type: Option<String>,
+    year: Option<u64>,
+    name: Option<String>,
+    school: Option<String>,
+    committed_to: Option<String>,
+    position: Option<String>,
+    height: Option<f64>,
+    weight: Option<u64>,
+    stars: Option<u8>,
+    rating: Option<f64>,
+    city: Option<String>,
+    state_province: Option<String>,
+    country: Option<String>,
+    hometown_info: Option<Hometown>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct Hometown {
+    latitude: Option<f64>,
+    longitude: Option<f64>,
+    county_fips: Option<String>,
+}
+
 
 #[derive(Deserialize, Debug)]
 pub struct RecruitingTeamsResponse {}
