@@ -164,6 +164,10 @@ pub struct AdvancedOffense {
     points_per_opportunity: Option<f32>,
     field_position: Option<FieldPosition>,
     havoc: Option<Havoc>,
+    standard_downs: Option<StandardDowns>,
+    passing_downs: Option<PassingDowns>,
+    rushing_plays: Option<RushingPlays>,
+    passing_plays: Option<PassingPlays>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -180,6 +184,43 @@ pub struct Havoc {
     front_seven: Option<f32>,
     db: Option<f32>,
 }
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct StandardDowns{
+    rate: Option<f32>,
+    ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct PassingDowns {
+    rate: Option<f32>,
+    ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct RushingPlays {
+    rate: Option<f32>,
+    ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct PassingPlays {
+    rate: Option<f32>,
+    ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+}
+
 
 #[derive(Deserialize, Debug)]
 pub struct GameStatsAdvancedResponse {}
