@@ -140,10 +140,24 @@ pub struct Location {
 
 
 #[derive(Deserialize, Debug)]
-pub struct FbsResponse {}
-
-#[derive(Deserialize, Debug)]
-pub struct RosterResponse {}
+pub struct Player {
+    id: Option<i64>,
+    first_name: Option<String>,
+    last_name: Option<String>,
+    team: Option<String>,
+    height: Option<u16>,
+    weight: Option<u16>,
+    jersey: Option<u8>,
+    year: Option<u8>,
+    position: Option<String>,
+    home_city: Option<String>,
+    home_state: Option<String>,
+    home_country: Option<String>,
+    home_latitude: Option<f64>,
+    home_longitude: Option<f64>,
+    home_county_fips: Option<String>,
+    recruit_ids: Option<Vec<i64>>,
+}
 
 #[derive(Deserialize, Debug)]
 pub struct TalentResponse {}
@@ -151,10 +165,10 @@ pub struct TalentResponse {}
 #[derive(Deserialize, Debug)]
 pub struct MatchupResponse {}
 
-pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamsResponse>, Error> {
+pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<Team>, Error> {
     // I want to match params with some and none. if some, then unwrap and call get_endpoint_with_parms.
     //if none, then just call get_endpoint
-    let teams_response: Vec<TeamsResponse> = match params {
+    let teams_response: Vec<Team> = match params {
         Some(params) => {
             let response = api_client.get_endpoint_with_params(TEAMS_ENDPOINT, params.as_query_params()).await?;
             //println!("checkpoint");
@@ -172,9 +186,9 @@ pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) 
     Ok(teams_response)
 }
 
-pub async fn get_fbs_teams(api_client: &ApiClient, params: Option<FbsParams<'_>>) -> Result<Vec<FbsResponse>, Error> {
+pub async fn get_fbs_teams(api_client: &ApiClient, params: Option<FbsParams<'_>>) -> Result<Vec<Team>, Error> {
     let endpoint = format!("{}/{}", TEAMS_ENDPOINT, FBS_ENDPOINT);
-    let fbs_response: Vec<FbsResponse> = match params {
+    let fbs_response: Vec<Team> = match params {
         Some(params) => {
             let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
             //println!("checkpoint");
@@ -192,9 +206,9 @@ pub async fn get_fbs_teams(api_client: &ApiClient, params: Option<FbsParams<'_>>
     Ok(fbs_response)
 }
 
-async fn get_roster(api_client: &ApiClient, params: Option<RosterParams<'_>>) -> Result<Vec<RosterResponse>, Error> {
+async fn get_roster(api_client: &ApiClient, params: Option<RosterParams<'_>>) -> Result<Vec<Player>, Error> {
     let endpoint = ROSTER_ENDPOINT;
-    let roster_response: Vec<RosterResponse> = match params {
+    let roster_response: Vec<Player> = match params {
         Some(params) => {
             let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
             //println!("checkpoint");
