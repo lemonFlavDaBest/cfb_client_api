@@ -144,8 +144,41 @@ pub struct AdvancedSeasonStat {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct AdvancedOffense {
+    plays: Option<i32>,
+    drives: Option<i32>,
+    ppa: Option<f32>,
+    total_ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+    power_success: Option<f32>,
+    stuff_rate: Option<f32>,
+    line_yards: Option<f32>,
+    line_yards_total: Option<f32>,
+    second_level_yards: Option<f32>,
+    second_level_yards_total: Option<u32>,
+    open_field_yards: Option<f32>,
+    open_field_yards_total: Option<u32>,
+    total_opportunities: Option<u32>,
+    points_per_opportunity: Option<f32>,
+    field_position: Option<FieldPosition>,
+    havoc: Option<Havoc>,
+}
 
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct FieldPosition {
+    average_start: Option<f32>,
+    average_predicted_points: Option<f32>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct Havoc {
+    total_havoc: Option<f32>,
+    front_seven: Option<f32>,
+    db: Option<f32>,
 }
 
 #[derive(Deserialize, Debug)]
