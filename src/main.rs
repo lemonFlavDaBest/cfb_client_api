@@ -6,7 +6,7 @@ use api_client::ApiClient;
 //use reqwest::Response;
 //use serde::Deserialize; 
 //use polars::prelude::*;
-use endpoints::calendar_endpoint::{get_calendar, CalendarResponse};
+use endpoints::calendar_endpoint::{get_calendar, Week};
 use endpoints::games_endpoint::{get_games_with_params, GamesResponse, GamesParams};
 use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, PlaysResponse};
 use endpoints::scoreboard_endpoint::{get_scoreboard, get_scoreboard_with_params, ScoreboardResponse, ScoreboardParams};
@@ -93,16 +93,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 }
 
-async fn _get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
+async fn _get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<Week>, Box<dyn std::error::Error>> {
     let response = get_calendar(api_client, year).await?;
     Ok(response)
 }
 
-async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, end_year: i32) -> Result<Vec<CalendarResponse>, Box<dyn std::error::Error>> {
-    let mut calendar_responses: Vec<CalendarResponse> = Vec::new();;
+async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, end_year: i32) -> Result<Vec<Week>, Box<dyn std::error::Error>> {
+    let mut calendar_responses: Vec<Week> = Vec::new();;
     while start_year < end_year {
         let year_str = start_year.to_string();
-        let response: Vec<CalendarResponse> = get_calendar(&api_client, &year_str).await?;
+        let response: Vec<Week> = get_calendar(&api_client, &year_str).await?;
         calendar_responses.extend(response);
         start_year += 1;
     }
