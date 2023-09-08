@@ -134,7 +134,16 @@ pub struct RecruitingTeamsResponse {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct RecruitingGroupsResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct RecruitingGroupsResponse {
+    team: Option<String>,
+    conference: Option<String>,
+    position_group: Option<String>,
+    average_rating: Option<f64>,
+    total_rating: Option<f64>,
+    commits: Option<f64>,
+    average_starts: Option<f64>,
+}
 
 pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<RecruitingPlayersResponse, Error> {
     let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, PLAYERS_ENDPOINT);
