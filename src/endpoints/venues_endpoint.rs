@@ -12,10 +12,30 @@ const VENUES_ENDPOINT: &str = "venues";
 
 //define the response struct
 #[derive(Deserialize, Debug)]
-pub struct VenuesResponse {}
+pub struct Venue {
+    id: Option<i64>,
+    name: Option<String>,
+    capacity: Option<i64>,
+    grass: Option<bool>,
+    city: Option<String>,
+    state: Option<String>,
+    zip: Option<String>,
+    country_code: Option<String>,
+    location:Option<Coordinates>,
+    elevation: Option<f64>,
+    year_constructed: Option<i64>, 
+    dome: Option<bool>,
+    timezone: Option<String>,
+}
 
-pub async fn get_venues(api_client: &ApiClient) -> Result<VenuesResponse, Error> {
+#[derive(Deserialize, Debug)]
+pub struct Coordinates {
+    x: f64, 
+    y: f64
+}
+
+pub async fn get_venues(api_client: &ApiClient) -> Result<Vec<Venue>, Error> {
     let response = api_client.get_endpoint(VENUES_ENDPOINT).await?;
-    let json_response: VenuesResponse = response.json().await?;
+    let json_response: Vec<Venue> = response.json().await?;
     Ok(json_response)
 }
