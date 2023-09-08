@@ -160,7 +160,11 @@ pub struct Player {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct TalentResponse {}
+pub struct TeamTalent {
+    year: Option<u64>,
+    school: Option<String>,
+    talent: Option<f64>,
+}
 
 #[derive(Deserialize, Debug)]
 pub struct MatchupResponse {}
@@ -225,9 +229,9 @@ async fn get_roster(api_client: &ApiClient, params: Option<RosterParams<'_>>) ->
     Ok(roster_response)
 }
 
-async fn get_talent(api_client: &ApiClient, params: Option<TalentParams<'_>>) -> Result<Vec<TalentResponse>, Error> {
+async fn get_talent(api_client: &ApiClient, params: Option<TalentParams<'_>>) -> Result<Vec<TeamTalent>, Error> {
     let endpoint = TALENT_ENDPOINT;
-    let talent_response: Vec<TalentResponse> = match params {
+    let talent_response: Vec<TeamTalent> = match params {
         Some(params) => {
             let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
             //println!("checkpoint");
