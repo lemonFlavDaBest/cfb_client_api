@@ -58,7 +58,7 @@ impl BettingParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct BettingResponse {
+pub struct GameLines {
     id: Option<i32>,
     season: Option<i32>,
     week: Option<u16>,
@@ -76,9 +76,9 @@ pub struct BettingResponse {
 #[derive(Debug, Deserialize)]
 struct Line(String);
 
-pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<BettingResponse, Error> {
+pub async fn get_betting_with_params(api_client: &ApiClient, params: BettingParams<'_>) -> Result<GameLines, Error> {
     let endpoint = BETTING_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: BettingResponse = response.json().await?;
+    let json_response: GameLines = response.json().await?;
     Ok(json_response)
 }
