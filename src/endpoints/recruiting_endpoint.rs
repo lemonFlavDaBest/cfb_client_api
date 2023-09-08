@@ -126,7 +126,12 @@ pub struct Hometown {
 
 
 #[derive(Deserialize, Debug)]
-pub struct RecruitingTeamsResponse {}
+pub struct RecruitingTeamsResponse {
+    year: Option<u64>,
+    rank: Option<u64>,
+    team: Option<String>,
+    points: Option<f64>,
+}
 
 #[derive(Deserialize, Debug)]
 pub struct RecruitingGroupsResponse {}
