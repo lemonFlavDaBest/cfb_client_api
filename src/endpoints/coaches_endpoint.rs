@@ -47,7 +47,7 @@ impl CoachesParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct CoachesResponse {
+pub struct Coach {
     first_name: Option<String>,
     last_name: Option<String>,
     hire_date: Option<String>,
@@ -55,14 +55,27 @@ pub struct CoachesResponse {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Season {}
+pub struct Season {
+    school: Option<String>,
+    year: Option<String>,
+    games: Option<i16>,
+    wins: Option<i16>,
+    losses: Option<i16>,
+    ties: Option<i16>,
+    preseason_rank: Option<i16>,
+    postseason_rank: Option<i16>,
+    srs: Option<f32>,
+    sp_overall: Option<f32>,
+    sp_offense: Option<f32>,
+    sp_defense: Option<f32>,
+}
 
-async fn get_coaches_with_params(api_client: &ApiClient, params: Option<CoachesParams<'_>>) -> Result<CoachesResponse, Error> {
+async fn get_coaches_with_params(api_client: &ApiClient, params: Option<CoachesParams<'_>>) -> Result<Coach, Error> {
     let endpoint = COACHES_ENDPOINT;
     let response = match params {
         Some(params) => api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?,
         None => api_client.get_endpoint(COACHES_ENDPOINT).await?,
     };
-    let json_response: CoachesResponse = response.json().await?;
+    let json_response: Coach = response.json().await?;
     Ok(json_response)
 }
