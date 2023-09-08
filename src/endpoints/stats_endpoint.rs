@@ -125,10 +125,28 @@ impl GameStatsAdvancedParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct SeasonStatsResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct TeamSeasonStat {
+    season: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    stat_name: Option<String>,
+    stat_value: Option<i16>,
+}
 
 #[derive(Deserialize, Debug)]
-pub struct SeasonStatsAdvancedResponse {}
+pub struct AdvancedSeasonStat {
+    season: Option<u64>,
+    team: Option<String>,
+    conference: Option<String>,
+    offense: Option<AdvancedOffense>,
+    defense: Option<AdvancedDefense>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct AdvancedOffense {
+
+}
 
 #[derive(Deserialize, Debug)]
 pub struct GameStatsAdvancedResponse {}
@@ -136,10 +154,10 @@ pub struct GameStatsAdvancedResponse {}
 #[derive(Deserialize, Debug)]
 pub struct StatsCategoriesResponse {}
 
-pub async fn get_season_stats_with_params(api_client: &ApiClient, params: SeasonStatsParams<'_>) -> Result<SeasonStatsResponse, Error> {
+pub async fn get_season_stats_with_params(api_client: &ApiClient, params: SeasonStatsParams<'_>) -> Result<TeamSeasonStat, Error> {
     let endpoint = SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: SeasonStatsResponse = response.json().await?;
+    let json_response: TeamSeasonStat = response.json().await?;
     Ok(json_response)
 }
 
