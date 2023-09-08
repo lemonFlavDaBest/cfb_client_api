@@ -170,6 +170,13 @@ pub struct AdvancedOffense {
     passing_plays: Option<PassingPlays>,
 }
 
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct AdvancedDefense {
+
+}
+
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct FieldPosition {
@@ -235,10 +242,10 @@ pub async fn get_season_stats_with_params(api_client: &ApiClient, params: Season
     Ok(json_response)
 }
 
-pub async fn get_season_stats_advanced_with_params(api_client: &ApiClient, params: SeasonStatsAdvancedParams<'_>) -> Result<SeasonStatsAdvancedResponse, Error> {
+pub async fn get_season_stats_advanced_with_params(api_client: &ApiClient, params: SeasonStatsAdvancedParams<'_>) -> Result<AdvancedSeasonStat, Error> {
     let endpoint = SEASON_ADVANCED_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: SeasonStatsAdvancedResponse = response.json().await?;
+    let json_response: AdvancedSeasonStat = response.json().await?;
     Ok(json_response)
 }
 
