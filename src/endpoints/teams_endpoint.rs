@@ -167,7 +167,37 @@ pub struct TeamTalent {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct MatchupResponse {}
+#[serde(rename_all = "camelCase")]
+pub struct TeamMatchup {
+    team1: Option<String>,
+    team2: Option<String>,
+    start_year: Option<u64>,
+    end_year: Option<u64>,
+    team1_wins: Option<u64>,
+    team2_wins: Option<u64>,
+    ties: Option<u64>,
+    games: Option<Game>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Game {
+    season: Option<u64>,
+    week: Option<u8>,
+    season_type: Option<String>,
+    date: Option<String>,
+    #[serde(rename = "camelCase")]
+    neutral_site: Option<bool>,
+    venue: Option<String>,
+    #[serde(rename = "camelCase")]
+    home_team: Option<String>,
+    #[serde(rename = "camelCase")]
+    home_score: Option<u16>,
+    #[serde(rename = "camelCase")]
+    away_team: Option<u16>,
+    #[serde(rename = "camelCase")]
+    away_score: Option<u16>,
+    winner: Option<String>,
+}
 
 pub async fn get_teams(api_client: &ApiClient, params: Option<TeamsParams<'_>>) -> Result<Vec<Team>, Error> {
     // I want to match params with some and none. if some, then unwrap and call get_endpoint_with_parms.
@@ -248,9 +278,9 @@ async fn get_talent(api_client: &ApiClient, params: Option<TalentParams<'_>>) ->
     Ok(talent_response)
 }
 
-async fn get_matchups(api_client: &ApiClient, params: MatchupParams<'_>) -> Result<Vec<MatchupResponse>, Error> {
+async fn get_matchups(api_client: &ApiClient, params: MatchupParams<'_>) -> Result<TeamMatchup, Error> {
     let endpoint = format!("{}/{}", TEAMS_ENDPOINT, MATCHUP_ENDPOINT);
-    let matchup_response: Vec<MatchupResponse> = {
+    let matchup_response: TeamMatchup = {
         let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
         //println!("checkpoint");
         //print response as text
