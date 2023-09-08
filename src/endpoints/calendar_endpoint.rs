@@ -11,14 +11,15 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 const CALENDAR_ENDPOINT: &str = "calendar";
 
 #[derive(Debug, Deserialize)]
-pub struct CalendarResponse {
+#[serde(rename_all = "camelCase")]
+pub struct Week {
     pub season: String,
     pub week: i32,
-    pub seasonType: String,
+    pub season_type: String,
     #[serde(deserialize_with = "deserialize_game_start")]
-    pub firstGameStart: DateTime<Utc>,
+    pub first_game_start: DateTime<Utc>,
     #[serde(deserialize_with = "deserialize_game_start")]
-    pub lastGameStart: DateTime<Utc>,
+    pub last_game_start: DateTime<Utc>,
 }
 
 
@@ -39,7 +40,7 @@ where
         .map_err(|_err| de::Error::custom("Failed to parse wallclock datetime"))
 }
 
-pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Vec<CalendarResponse>, Error> {
+pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Vec<Week>, Error> {
     let params: Vec<(&str, &str)> = vec![("year", year)];
     //println!("Params: {:?}", params);
     
@@ -47,7 +48,7 @@ pub async fn get_calendar(api_client: &ApiClient, year: &str) -> Result<Vec<Cale
     //println!("checkpoint");
     
     // Parse the response into JSON
-    let json_response: Vec<CalendarResponse> = response.json().await?;
+    let json_response: Vec<Week> = response.json().await?;
     
     //println!("JSON Response: {:?}", json_response);
     Ok(json_response)
