@@ -174,7 +174,28 @@ pub struct AdvancedOffense {
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct AdvancedDefense {
-
+    plays: Option<i32>,
+    drives: Option<i32>,
+    ppa: Option<f32>,
+    total_ppa: Option<f32>,
+    success_rate: Option<f32>,
+    explosiveness: Option<f32>,
+    power_success: Option<f32>,
+    stuff_rate: Option<f32>,
+    line_yards: Option<f32>,
+    line_yards_total: Option<f32>,
+    second_level_yards: Option<f32>,
+    second_level_yards_total: Option<u32>,
+    open_field_yards: Option<f32>,
+    open_field_yards_total: Option<u32>,
+    total_opportunities: Option<u32>,
+    points_per_opportunity: Option<f32>,
+    field_position: Option<FieldPosition>,
+    havoc: Option<Havoc>,
+    standard_downs: Option<StandardDowns>,
+    passing_downs: Option<PassingDowns>,
+    rushing_plays: Option<RushingPlays>,
+    passing_plays: Option<PassingPlays>,
 }
 
 #[derive(Deserialize, Debug)]
