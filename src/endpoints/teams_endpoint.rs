@@ -102,7 +102,42 @@ impl MatchupParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct TeamsResponse {}
+pub struct Team {
+    id: Option<i64>,
+    school: Option<String>,
+    mascot: Option<String>,
+    abbreviation: Option<String>,
+    alt_name_1: Option<String>,
+    alt_name_2: Option<String>,
+    alt_name_3: Option<String>,
+    classification: Option<String>,
+    conference: Option<String>,
+    division: Option<String>,
+    color: Option<String>,
+    alt_color: Option<String>,
+    logos: Option<Vec<String>>,
+    twitter: Option<String>,
+    location: Option<Location>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Location {
+    venue_id: Option<i64>,
+    name: Option<String>,
+    city: Option<String>,
+    state: Option<String>,
+    zip: Option<String>,
+    country_code: Option<String>,
+    timezone: Option<String>,
+    latitude: Option<f64>,
+    longitude: Option<f64>,
+    elevation: Option<f64>,
+    capacity: Option<u64>,
+    year_constructed: Option<u64>,
+    grass: Option<bool>,
+    dome: Option<bool>,
+}
+
 
 #[derive(Deserialize, Debug)]
 pub struct FbsResponse {}
