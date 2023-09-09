@@ -45,7 +45,7 @@ impl DraftPicksParams<'_> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DraftTeamsResponse{
+pub struct DraftTeam{
     location: Option<String>,
     nickname: Option<String>,
     display_name: Option<String>,
@@ -53,13 +53,13 @@ pub struct DraftTeamsResponse{
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DraftPositionsResponse{
+pub struct DraftPosition{
     name: Option<String>,
     abbreviation: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DraftPicksResponse {
+pub struct DraftPick {
     college_athlete_id: Option<i64>,
     nfl_athlete_id: Option<i64>,
     college_id: Option<i64>,
@@ -82,20 +82,20 @@ pub struct DraftPicksResponse {
 #[derive(Deserialize, Debug)]
 pub struct Hometown {}
 
-pub async fn get_draft_teams(api_client: &ApiClient) -> Result<DraftTeamsResponse, Error> {
+pub async fn get_draft_teams(api_client: &ApiClient) -> Result<DraftTeam, Error> {
     let response = api_client.get_endpoint(TEAMS_ENDPOINT).await?;
-    let json_response: DraftTeamsResponse = response.json().await?;
+    let json_response: DraftTeam = response.json().await?;
     Ok(json_response)
 }
 
-pub async fn get_draft_positions(api_client: &ApiClient) -> Result<DraftPositionsResponse, Error> {
+pub async fn get_draft_positions(api_client: &ApiClient) -> Result<DraftPosition, Error> {
     let response = api_client.get_endpoint(POSITIONS_ENDPOINT).await?;
-    let json_response: DraftPositionsResponse = response.json().await?;
+    let json_response: DraftPosition = response.json().await?;
     Ok(json_response)
 }
 
-pub async fn get_draft_picks(api_client: &ApiClient, params: Option<DraftPicksParams<'_>>) -> Result<DraftPicksResponse, Error> {
-    let draft_picks_response: DraftPicksResponse = match params {
+pub async fn get_draft_picks(api_client: &ApiClient, params: Option<DraftPicksParams<'_>>) -> Result<DraftPick, Error> {
+    let draft_picks_response: DraftPick = match params {
         Some(params) => {
             let response = api_client.get_endpoint_with_params(PICKS_ENDPOINT, params.as_query_params()).await?;
             response.json().await?
