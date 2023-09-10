@@ -11,7 +11,7 @@ const DRIVES_ENDPOINT: &str = "drives";
 
 //define the response struct
 #[derive(Deserialize, Debug)]
-pub struct DrivesResponse {
+pub struct Drive {
     offense: Option<String>,
     offense_conference: Option<String>,
     defense: Option<String>,
@@ -111,14 +111,14 @@ impl Default for DrivesParams<'_> {
     }
 }
 
-pub async fn get_drives_with_params(api_client: &ApiClient, params: Option<DrivesParams<'_>>) -> Result<Vec<DrivesResponse>, Error> {
+pub async fn get_drives_with_params(api_client: &ApiClient, params: Option<DrivesParams<'_>>) -> Result<Vec<Drive>, Error> {
     let drives_params = params.unwrap_or_else(DrivesParams::new);
     let endpoint = DRIVES_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, drives_params.as_query_params()).await?;
     //println!("checkpoint");
     
     // Parse the response into JSON
-    let json_response: Vec<DrivesResponse> = response.json().await?;
+    let json_response: Vec<Drive> = response.json().await?;
     
     //println!("JSON Response: {:?}", json_response);
     Ok(json_response)
