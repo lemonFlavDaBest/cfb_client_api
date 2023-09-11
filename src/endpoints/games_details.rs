@@ -412,7 +412,7 @@ pub async fn get_games_players_with_params(api_client: &ApiClient, year: &str, p
     Ok(json_response)
 }
 
-pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamsResponse>, Error> {
+pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, params: Option<TeamsParams<'_>>) -> Result<Vec<TeamGame>, Error> {
     let mut games_params = params.unwrap_or_else(TeamsParams::new);
     games_params.year = year;
 
@@ -424,7 +424,7 @@ pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, par
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<TeamsResponse> = response.json().await?;
+    let json_response: Vec<TeamGame> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
