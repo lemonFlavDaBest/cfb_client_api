@@ -397,7 +397,7 @@ async fn get_ppa_players_games_with_params(api_client: &ApiClient, params: PPAPl
 async fn get_ppa_players_season_with_params(api_client: &ApiClient, params: PPAPlayersSeasonParams<'_>) -> Result<PlayerSeasonPPA, Error> {
     let endpoint = PPA_PLAYERS_SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: PlayerGamePPA = response.json().await?;
+    let json_response: PlayerSeasonPPA = response.json().await?;
     Ok(json_response)
 }
 
