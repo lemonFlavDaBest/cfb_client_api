@@ -26,7 +26,7 @@ pub struct MediaParams<'a> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct MediaResponse {
+pub struct GameMedia {
     id: Option<i64>,
     season: Option<i64>,
     week: Option<u16>,
@@ -345,7 +345,7 @@ pub struct BoxParams<'a> {
     gameId: &'a str,
 }
 
-pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<MediaResponse>, Error> {
+pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, params: Option<MediaParams<'_>>) -> Result<Vec<GameMedia>, Error> {
     let mut games_params = params.unwrap_or_else(MediaParams::new);
     games_params.year = year;
 
@@ -357,7 +357,7 @@ pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, par
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<MediaResponse> = response.json().await?;
+    let json_response: Vec<GameMedia> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
