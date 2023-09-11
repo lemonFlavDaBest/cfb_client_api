@@ -218,7 +218,7 @@ impl MetricsWPPregameParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPAPredictedResponse {
+pub struct PredictedPoints {
     yardline: Option<i32>,
     ppa: Option<f32>,
 }
@@ -366,10 +366,10 @@ pub struct MetricsWPPregameResponse {
     home_win_prob: Option<f64>,
 }
 
-pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PPAPredictedResponse, Error> {
+pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPredictedParams<'_>) -> Result<PredictedPoints, Error> {
     let endpoint = PPA_PREDICTED_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: PPAPredictedResponse = response.json().await?;
+    let json_response: PredictedPoints = response.json().await?;
     Ok(json_response)
 }
 
