@@ -333,7 +333,7 @@ pub struct SeasonAveragePPA {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct MetricsWPResponse {
+pub struct PlayWP {
     games_id: Option<i64>,
     play_id: Option<i64>,
     play_text: Option<String>,
@@ -355,7 +355,7 @@ pub struct MetricsWPResponse {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct MetricsWPPregameResponse {
+pub struct PregameWP {
     season: Option<u64>,
     season_type: Option<String>,
     week: Option<u16>,
@@ -401,16 +401,16 @@ async fn get_ppa_players_season_with_params(api_client: &ApiClient, params: PPAP
     Ok(json_response)
 }
 
-async fn get_metrics_wp_with_params(api_client: &ApiClient, params: MetricsWPParams<'_>) -> Result<MetricsWPResponse, Error> {
+async fn get_metrics_wp_with_params(api_client: &ApiClient, params: MetricsWPParams<'_>) -> Result<PlayWP, Error> {
     let endpoint = METRICS_WP_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: MetricsWPResponse = response.json().await?;
+    let json_response: PlayWP = response.json().await?;
     Ok(json_response)
 }
 
-async fn get_metrics_wp_pregame_with_params(api_client: &ApiClient, params: MetricsWPPregameParams<'_>) -> Result<MetricsWPPregameResponse, Error> {
+async fn get_metrics_wp_pregame_with_params(api_client: &ApiClient, params: MetricsWPPregameParams<'_>) -> Result<PregameWP, Error> {
     let endpoint = METRICS_WP_PREGAME_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: MetricsWPPregameResponse = response.json().await?;
+    let json_response: PregameWP = response.json().await?;
     Ok(json_response)
 }
