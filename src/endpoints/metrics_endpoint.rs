@@ -224,7 +224,7 @@ pub struct PredictedPoints {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PPATeamsResponse {
+pub struct TeamPPA {
     season: Option<u64>,
     team: Option<String>,
     conference: Option<String>,
@@ -373,10 +373,10 @@ pub async fn get_ppa_predicted_with_params(api_client: &ApiClient, params: PPAPr
     Ok(json_response)
 }
 
-pub async fn get_ppa_teams_with_params(api_client: &ApiClient, params: PPATeamsParams<'_>) -> Result<PPATeamsResponse, Error> {
+pub async fn get_ppa_teams_with_params(api_client: &ApiClient, params: PPATeamsParams<'_>) -> Result<TeamPPA, Error> {
     let endpoint = PPA_TEAMS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: PPATeamsResponse = response.json().await?;
+    let json_response: TeamPPA = response.json().await?;
     Ok(json_response)
 }
 
