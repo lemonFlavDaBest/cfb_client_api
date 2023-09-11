@@ -1,9 +1,7 @@
 // players_endpoint.rs
 
-use chrono::{DateTime, Utc, TimeZone, format};
-use reqwest::{Error, Response};
-use serde::{Deserialize, Deserializer, de};
-use serde_json::Value;
+use reqwest::Error;
+use serde::Deserialize;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
@@ -218,7 +216,7 @@ pub struct PlayerSeasonStatsResponse {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PlayerPortalResponse {
+pub struct PortalPlayer {
     season: Option<u64>,
     first_name: Option<String>,
     last_name: Option<String>,
@@ -262,9 +260,9 @@ pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeaso
     Ok(json_response)
 }
 
-pub async fn get_player_portal(api_client: &ApiClient, params: PlayerPortalParams<'_>) -> Result<PlayerPortalResponse, Error> {
+pub async fn get_player_portal(api_client: &ApiClient, params: PlayerPortalParams<'_>) -> Result<PortalPlayer, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, PORTAL_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
-    let json_response: PlayerPortalResponse = response.json().await?;
+    let json_response: PortalPlayer = response.json().await?;
     Ok(json_response)
 }
