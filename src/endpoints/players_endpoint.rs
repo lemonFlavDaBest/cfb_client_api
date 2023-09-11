@@ -203,7 +203,7 @@ pub struct PlayerReturningResponse {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PlayerSeasonStatsResponse {
+pub struct PlayerSeasonStat {
     season: Option<u64>,
     player_id: Option<i64>,
     player: Option<String>,
@@ -253,10 +253,10 @@ pub async fn get_player_returning_with_params(api_client: &ApiClient, params: Op
     Ok(json_response)
 }
 
-pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeasonStatsParams<'_>) -> Result<PlayerSeasonStatsResponse, Error> {
+pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeasonStatsParams<'_>) -> Result<PlayerSeasonStat, Error> {
     let endpoint = format!("{}/{}/{}", STATS_ENDPOINT, PLAYER_ENDPOINT, SEASON_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
-    let json_response: PlayerSeasonStatsResponse = response.json().await?;
+    let json_response: PlayerSeasonStat= response.json().await?;
     Ok(json_response)
 }
 
