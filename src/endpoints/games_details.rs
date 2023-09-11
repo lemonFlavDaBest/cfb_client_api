@@ -318,10 +318,11 @@ impl Default for TeamsParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct BoxResponse{
+pub struct BoxScore{
     teams: Option<BoxTeams>,
     players: Option<BoxPlayers>,
 }
+
 #[derive(Debug, Deserialize)]
 pub struct BoxTeams {
     ppa: Option<Vec<BoxPpa>>,
@@ -446,7 +447,7 @@ pub async fn get_games_teams_with_params(api_client: &ApiClient, year: &str, par
     Ok(json_response)
 }
 
-pub async fn get_games_box_with_params(api_client: &ApiClient, game_id: &str) -> Result<Vec<BoxResponse>, Error> {
+pub async fn get_games_box_with_params(api_client: &ApiClient, game_id: &str) -> Result<Vec<BoxScore>, Error> {
     let games_params = vec![("gameId", game_id)];
     let endpoint = format!("{}/{}", GAMES_ENDPOINT, BOX_ADVANCED_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, games_params).await?;
@@ -456,7 +457,7 @@ pub async fn get_games_box_with_params(api_client: &ApiClient, game_id: &str) ->
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<BoxResponse> = response.json().await?;
+    let json_response: Vec<BoxScore> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
