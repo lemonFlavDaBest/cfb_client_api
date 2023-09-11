@@ -265,7 +265,7 @@ pub struct CumulativeScores {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PPAGamesResponse {
+pub struct GamePPA {
     game_id: Option<i64>,
     season: Option<u64>,
     week: Option<u16>,
@@ -380,10 +380,10 @@ pub async fn get_ppa_teams_with_params(api_client: &ApiClient, params: PPATeamsP
     Ok(json_response)
 }
 
-pub async fn get_ppa_games_with_params(api_client: &ApiClient, params: PPAGamesParams<'_>) -> Result<PPAGamesResponse, Error> {
+pub async fn get_ppa_games_with_params(api_client: &ApiClient, params: PPAGamesParams<'_>) -> Result<GamePPA, Error> {
     let endpoint = PPA_GAMES_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: PPAGamesResponse = response.json().await?;
+    let json_response: GamePPA = response.json().await?;
     Ok(json_response)
 }
 
