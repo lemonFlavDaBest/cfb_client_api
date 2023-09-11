@@ -181,9 +181,25 @@ pub struct PlayersParams<'a> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayersResponse {
+pub struct PlayerGame {
     id: Option<i64>,
-    teams: Option<Vec<Team>>,
+    teams: Option<Vec<PlayerTeam>>,
+}
+
+// i want to eventually make these into a shared trait.
+#[derive(Debug, Deserialize)]
+pub struct PlayerTeam {
+    school: Option<String>,
+    conference: Option<String>,
+    home_away: Option<String>,
+    points: Option<i64>,
+    categories: Option<Vec<Category>>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Category {
+    category: Option<String>,
+    stat: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -394,7 +410,7 @@ pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<
     Ok(json_response)
 }
 
-pub async fn get_games_players_with_params(api_client: &ApiClient, year: &str, params: Option<PlayersParams<'_>>) -> Result<Vec<PlayersResponse>, Error> {
+pub async fn get_games_players_with_params(api_client: &ApiClient, year: &str, params: Option<PlayersParams<'_>>) -> Result<Vec<PlayerGame>, Error> {
     let mut games_params = params.unwrap_or_else(PlayersParams::new);
     games_params.year = year;
 
@@ -406,7 +422,7 @@ pub async fn get_games_players_with_params(api_client: &ApiClient, year: &str, p
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<PlayersResponse> = response.json().await?;
+    let json_response: Vec<PlayerGame> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
