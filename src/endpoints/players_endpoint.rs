@@ -146,7 +146,7 @@ impl PlayerPortalParams<'_> {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PlayerSearchResponse {
+pub struct PlayerSearchResult {
     id: Option<i64>,
     team: Option<String>,
     name: Option<String>,
@@ -229,10 +229,10 @@ pub struct PortalPlayer {
     eligibility: Option<String>,
 }
 
-pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResponse, Error> {
+pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResult, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, SEARCH_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
-    let json_response: PlayerSearchResponse = response.json().await?;
+    let json_response: PlayerSearchResult = response.json().await?;
     Ok(json_response)
 }
 
