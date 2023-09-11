@@ -145,7 +145,7 @@ impl Default for WeatherParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct WeatherResponse {
+pub struct GameWeather {
     id: Option<i64>,
     season: Option<i64>,
     week: Option<u16>,
@@ -363,7 +363,7 @@ pub async fn get_games_media_with_params(api_client: &ApiClient, year: &str, par
     Ok(json_response)
 }
 
-pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<&str>, params: Option<WeatherParams<'_>>) -> Result<Vec<WeatherResponse>, Error> {
+pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<&str>, params: Option<WeatherParams<'_>>) -> Result<Vec<GameWeather>, Error> {
     let mut games_params = params.unwrap_or_else(WeatherParams::new);
     games_params.year = year;
 
@@ -375,7 +375,7 @@ pub async fn get_games_weather_with_params(api_client: &ApiClient, year: Option<
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<WeatherResponse> = response.json().await?;
+    let json_response: Vec<GameWeather> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
