@@ -9,11 +9,10 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
 const GAMES_ENDPOINT: &str = "games";
-const MEDIA_ENDPOINT: &str = "media";
 
 //define the response struct
 #[derive(Deserialize, Debug)]
-pub struct GamesResponse {
+pub struct Game {
     id: u32,
     season: Option<u32>,
     week: Option<u32>,
@@ -134,7 +133,7 @@ where
 }
 
 //create function to get games that take the api client as a parameter and an optional parameters struct
-pub async fn get_games_with_params(api_client: &ApiClient, year: &str, params: Option<GamesParams<'_>>) -> Result<Vec<GamesResponse>, Error> {
+pub async fn get_games_with_params(api_client: &ApiClient, year: &str, params: Option<GamesParams<'_>>) -> Result<Vec<Game>, Error> {
     let mut games_params = params.unwrap_or_else(GamesParams::new);
     games_params.year = year;
 
@@ -146,7 +145,7 @@ pub async fn get_games_with_params(api_client: &ApiClient, year: &str, params: O
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<GamesResponse> = response.json().await?;
+    let json_response: Vec<Game> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
