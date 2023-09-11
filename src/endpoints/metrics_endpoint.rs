@@ -308,7 +308,7 @@ pub struct AveragePPA {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PPAPlayersSeasonResponse {
+pub struct PlayerSeasonPPA {
     season: Option<u64>,
     id: Option<i64>,
     name: Option<String>,
@@ -394,10 +394,10 @@ async fn get_ppa_players_games_with_params(api_client: &ApiClient, params: PPAPl
     Ok(json_response)
 }
 
-async fn get_ppa_players_season_with_params(api_client: &ApiClient, params: PPAPlayersSeasonParams<'_>) -> Result<PPAPlayersSeasonResponse, Error> {
+async fn get_ppa_players_season_with_params(api_client: &ApiClient, params: PPAPlayersSeasonParams<'_>) -> Result<PlayerSeasonPPA, Error> {
     let endpoint = PPA_PLAYERS_SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: PPAPlayersSeasonResponse = response.json().await?;
+    let json_response: PlayerGamePPA = response.json().await?;
     Ok(json_response)
 }
 
