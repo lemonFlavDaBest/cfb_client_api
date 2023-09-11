@@ -162,19 +162,19 @@ pub struct PlayerSearchResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayerUsageResponse {
+pub struct PlayerUsage {
     season: Option<u64>,
     id: Option<i64>,
     name: Option<String>,
     position: Option<String>,
     team: Option<String>,
     conference: Option<String>,
-    usage: Option<PlayerUsage>,
+    usage: Option<Usage>,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PlayerUsage {
+pub struct Usage {
     overall: Option<f32>,
     pass: Option<f32>,
     rush: Option<f32>,
@@ -236,10 +236,10 @@ pub async fn get_player_search_with_params(api_client: &ApiClient, params: Playe
     Ok(json_response)
 }
 
-pub async fn get_player_usage_with_params(api_client: &ApiClient, params: PlayerUsageParams<'_>) -> Result<PlayerUsageResponse, Error> {
+pub async fn get_player_usage_with_params(api_client: &ApiClient, params: PlayerUsageParams<'_>) -> Result<PlayerUsage, Error> {
     let endpoint = format!("{}/{}", PLAYER_ENDPOINT, USAGE_ENDPOINT);
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
-    let json_response: PlayerUsageResponse = response.json().await?;
+    let json_response: PlayerUsage = response.json().await?;
     Ok(json_response)
 }
 
