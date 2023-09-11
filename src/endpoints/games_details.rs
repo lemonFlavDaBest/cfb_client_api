@@ -187,7 +187,20 @@ pub struct PlayersResponse {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Team {}
+#[serde(rename_all = "camelCase")]
+pub struct Team {
+    school: Option<String>,
+    conference: Option<String>,
+    home_away: Option<String>,
+    points: Option<i64>,
+    stats: Option<Vec<Stat>>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Stat {
+    category: Option<String>,
+    stat: Option<String>,
+}
 
 impl PlayersParams<'_> {
     pub fn new() -> Self {
@@ -243,7 +256,7 @@ pub struct TeamsParams<'a> {
     classification: Option<&'a str>,
 }
 #[derive(Debug, Deserialize)]
-pub struct TeamsResponse {
+pub struct TeamGame {
     id: Option<i64>,
     teams: Option<Vec<Team>>,
 }
