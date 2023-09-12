@@ -7,11 +7,11 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
 const PLAYER_ENDPOINT: &str = "player";
-const SEARCH_ENDPOINT: &str = "search";
-const USAGE_ENDPOINT: &str = "usage";
+const SEARCH_ENDPOINT: &str = "player/search";
+const USAGE_ENDPOINT: &str = "player/usage";
 const RETURNING_ENDPOINT: &str = "returning";
 const STATS_ENDPOINT: &str = "stats";
-const PORTAL_ENDPOINT: &str = "portal";
+const PORTAL_ENDPOINT: &str = "player/portal";
 const SEASON_ENDPOINT: &str = "season";
 
 pub struct PlayerSearchParams<'a> {
@@ -230,14 +230,14 @@ pub struct PortalPlayer {
 }
 
 pub async fn get_player_search_with_params(api_client: &ApiClient, params: PlayerSearchParams<'_>) -> Result<PlayerSearchResult, Error> {
-    let endpoint = format!("{}/{}", PLAYER_ENDPOINT, SEARCH_ENDPOINT);
+    let endpoint =  SEARCH_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PlayerSearchResult = response.json().await?;
     Ok(json_response)
 }
 
 pub async fn get_player_usage_with_params(api_client: &ApiClient, params: PlayerUsageParams<'_>) -> Result<PlayerUsage, Error> {
-    let endpoint = format!("{}/{}", PLAYER_ENDPOINT, USAGE_ENDPOINT);
+    let endpoint  = USAGE_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PlayerUsage = response.json().await?;
     Ok(json_response)
@@ -261,7 +261,7 @@ pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeaso
 }
 
 pub async fn get_player_portal(api_client: &ApiClient, params: PlayerPortalParams<'_>) -> Result<PortalPlayer, Error> {
-    let endpoint = format!("{}/{}", PLAYER_ENDPOINT, PORTAL_ENDPOINT);
+    let endpoint = PORTAL_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PortalPlayer = response.json().await?;
     Ok(json_response)
