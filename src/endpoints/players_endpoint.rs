@@ -9,10 +9,10 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 const PLAYER_ENDPOINT: &str = "player";
 const SEARCH_ENDPOINT: &str = "player/search";
 const USAGE_ENDPOINT: &str = "player/usage";
-const RETURNING_ENDPOINT: &str = "returning";
+const RETURNING_ENDPOINT: &str = "player/returning";
 const STATS_ENDPOINT: &str = "stats";
 const PORTAL_ENDPOINT: &str = "player/portal";
-const SEASON_ENDPOINT: &str = "season";
+const SEASON_ENDPOINT: &str = "stats/player/season";
 
 pub struct PlayerSearchParams<'a> {
     searchTerm: &'a str,
@@ -244,7 +244,7 @@ pub async fn get_player_usage_with_params(api_client: &ApiClient, params: Player
 }
 
 pub async fn get_player_returning_with_params(api_client: &ApiClient, params: Option<PlayerReturningParams<'_>>) -> Result<ReturningProduction, Error> {
-    let endpoint = format!("{}/{}", PLAYER_ENDPOINT, RETURNING_ENDPOINT);
+    let endpoint= RETURNING_ENDPOINT;
     let response = match params {
         Some(params) => api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?,
         None => api_client.get_endpoint(&endpoint).await?,
@@ -254,7 +254,7 @@ pub async fn get_player_returning_with_params(api_client: &ApiClient, params: Op
 }
 
 pub async fn get_player_season_stats(api_client: &ApiClient, params: PlayerSeasonStatsParams<'_>) -> Result<PlayerSeasonStat, Error> {
-    let endpoint = format!("{}/{}/{}", STATS_ENDPOINT, PLAYER_ENDPOINT, SEASON_ENDPOINT);
+    let endpoint = SEASON_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: PlayerSeasonStat= response.json().await?;
     Ok(json_response)
