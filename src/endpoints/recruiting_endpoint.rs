@@ -12,6 +12,9 @@ const RECRUITING_ENDPOINT: &str = "recruiting";
 const PLAYERS_ENDPOINT: &str = "players";
 const TEAMS_ENDPOINT: &str = "teams";
 const GROUPS_ENDPOINT: &str = "groups";
+const RECRUITING_PLAYERS_ENDPOINT: &str = "recruiting/players";
+const RECRUITING_TEAMS_ENDPOINT: &str = "recruiting/teams";
+const RECRUITING_GROUPS_ENDPOINT: &str = "recruiting/groups";
 
 //define the params struct
 pub struct RecruitingPlayersParams<'a> {
@@ -146,14 +149,14 @@ pub struct RecruitingGroupsResponse {
 }
 
 pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<RecruitingPlayersResponse, Error> {
-    let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, PLAYERS_ENDPOINT);
+    let endpoint = RECRUITING_PLAYERS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: RecruitingPlayersResponse = response.json().await?;
     Ok(json_response)
 }
 
 pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<RecruitingTeamsResponse, Error> {
-    let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, TEAMS_ENDPOINT);
+    let endpoint = RECRUITING_TEAMS_ENDPOINT
     let response = match params {
         Some(params) => {
             api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?
@@ -167,7 +170,7 @@ pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<Recruit
 }
 
 pub async fn get_recruiting_groups(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<RecruitingGroupsResponse, Error> {
-    let endpoint = format!("{}/{}", RECRUITING_ENDPOINT, GROUPS_ENDPOINT);
+    let endpoint = RECRUITING_GROUPS_ENDPOINT;
     let response = match params {
         Some(params) => {
             api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?
