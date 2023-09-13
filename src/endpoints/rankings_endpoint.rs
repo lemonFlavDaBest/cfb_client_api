@@ -35,7 +35,7 @@ impl RankingsParams <'_> {
 }
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct RankingsResponse {
+pub struct RankingWeek {
     season: Option<u64>,
     season_type: Option<String>,
     week: Option<u16>,
@@ -58,9 +58,9 @@ pub struct Rank {
     points: Option<u16>,
 }
 
-async fn get_rankings_with_params(api_client: &ApiClient, params: RankingsParams<'_>) -> Result<RankingsResponse, Error> {
+async fn get_rankings_with_params(api_client: &ApiClient, params: RankingsParams<'_>) -> Result<RankingWeek, Error> {
     let endpoint = RANKINGS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: RankingsResponse = response.json().await?;
+    let json_response: RankingWeek = response.json().await?;
     Ok(json_response)
 }
