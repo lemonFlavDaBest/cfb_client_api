@@ -12,7 +12,7 @@ use crate::api_client::ApiClient;
 const SCOREBOARD_ENDPOINT: &str = "scoreboard";
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ScoreboardResponse {
+pub struct ScoreboardGame {
     id: Option<i64>,
     start_date: Option<String>,
     start_time_tbd: Option<bool>,
@@ -113,19 +113,19 @@ where
     }
 }
 
-pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardResponse>, Error> {
+pub async fn get_scoreboard(api_client: &ApiClient) -> Result<Vec<ScoreboardGame>, Error> {
 
     let response = api_client.get_endpoint(SCOREBOARD_ENDPOINT,).await?;
     //println!("checkpoint");
 
     // Parse the response into JSON
-    let json_response: Vec<ScoreboardResponse> = response.json().await?;
+    let json_response: Vec<ScoreboardGame> = response.json().await?;
 
     //println!("JSON Response: {:?}", json_response);
     Ok(json_response)
 }
 
-pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<Vec<ScoreboardResponse>, Error> {
+pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<ScoreboardParams<'_>>) -> Result<Vec<ScoreboardGame>, Error> {
     let scoreboard_params = params.unwrap_or_else(ScoreboardParams::new);
     let endpoint = SCOREBOARD_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, scoreboard_params.as_query_params()).await?;
@@ -135,7 +135,7 @@ pub async fn get_scoreboard_with_params(api_client: &ApiClient, params: Option<S
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<ScoreboardResponse> = response.json().await?;
+    let json_response: Vec<ScoreboardGame> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
