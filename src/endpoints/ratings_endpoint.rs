@@ -181,7 +181,7 @@ pub struct TeamSRSRating {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RatingsSPConferencesResponse {
+pub struct ConferenceSPRating {
     year: Option<u64>,
     conference: Option<String>,
     rating: Option<f64>,
@@ -241,7 +241,7 @@ pub async fn get_ratings_srs_with_params(api_client: &ApiClient, params: Ratings
     Ok(json_response)
 }
 
-pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<RatingsSPConferencesParams<'_>>) -> Result<RatingsSPConferencesResponse, Error> {
+pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<RatingsSPConferencesParams<'_>>) -> Result<ConferenceSPRating, Error> {
     let endpoint = SP_CONFERENCES_ENDPOINT;
     let response = match params {
         Some(params) => {
@@ -251,7 +251,7 @@ pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<R
             api_client.get_endpoint(endpoint).await?
         }
     };
-    let json_response: RatingsSPConferencesResponse = response.json().await?;
+    let json_response: ConferenceSPRating = response.json().await?;
     Ok(json_response)
 }
 
