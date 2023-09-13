@@ -12,11 +12,14 @@ use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
 const PLAYS_ENDPOINT: &str = "plays";
-const LIVE_ENDPOINT: &str = "live";
+const LIVE_ENDPOINT: &str = "live/plays";
 const TYPES_ENDPOINT: &str = "types";
 const STATS_ENDPOINT: &str = "stats";
 const STAT_ENDPOINT: &str = "stat";
 const PLAY_ENDPOINT: &str = "play";
+const PLAY_TYPES_ENDPOINT: &str = "play/types";
+const PLAY_STATS_ENDPOINT: &str = "play/stats";
+const PLAY_STAT_TYPES_ENDPOINT: &str = "play/stat/types";
 
 pub struct LivePlayParams<'a> {
     gameId: &'a str,
@@ -199,7 +202,7 @@ pub struct PlayStatTypesResponse{
 pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
     //println!("Params: {:?}", params);
-    let endpoint = format!("{}/{}", LIVE_ENDPOINT, PLAYS_ENDPOINT);
+    let endpoint = LIVE_ENDPOINT;
     
     let response = api_client.get_endpoint_with_params(&endpoint, params).await?;
     //println!("checkpoint");
@@ -212,21 +215,21 @@ pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec
 }
 
 pub async fn get_play_types(api_client: &ApiClient) -> Result<Vec<PlayTypesResponse>, Error> {
-    let endpoint = format!("{}/{}", PLAY_ENDPOINT, TYPES_ENDPOINT);
+    let endpoint = PLAY_TYPES_ENDPOINT;
     let response = api_client.get_endpoint(&endpoint).await?;
     let json_response: Vec<PlayTypesResponse> = response.json().await?;
     Ok(json_response)
 }
 
 pub async fn get_play_stats(api_client: &ApiClient, params: PlayStatsParams<'_>) -> Result<Vec<PlayStatsResponse>, Error> {
-    let endpoint = format!("{}/{}", PLAY_ENDPOINT, STATS_ENDPOINT);
+    let endpoint = PLAY_STATS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
     let json_response: Vec<PlayStatsResponse> = response.json().await?;
     Ok(json_response)
 }
 
 pub async fn get_play_stat_types(api_client: &ApiClient) -> Result<Vec<PlayStatTypesResponse>, Error> {
-    let endpoint = format!("{}/{}/{}", PLAY_ENDPOINT, STAT_ENDPOINT, TYPES_ENDPOINT);
+    let endpoint = PLAY_STAT_TYPES_ENDPOINT;
     let response = api_client.get_endpoint(&endpoint).await?;
     let json_response: Vec<PlayStatTypesResponse> = response.json().await?;
     Ok(json_response)
