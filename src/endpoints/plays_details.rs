@@ -26,7 +26,7 @@ pub struct LivePlayParams<'a> {
 }
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct LivePlayResponse{
+pub struct LivePlayByPlay{
     id: Option<i64>,
     status: Option<String>,
     period: Option<i8>,
@@ -115,7 +115,7 @@ pub struct DrivePlays {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayTypesResponse{
+pub struct PlayType{
     id: Option<i64>,
     text: Option<String>,
     abbreviation: Option<String>,
@@ -134,7 +134,7 @@ pub struct PlayStatsParams<'a> {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PlayStatsResponse{
+pub struct PlayStat{
     game_id: Option<i64>,
     season: Option<u64>,
     week: Option<u8>,
@@ -194,12 +194,12 @@ impl PlayStatsParams <'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PlayStatTypesResponse{
+pub struct PlayStatType{
     id: Option<i64>,
     name: Option<String>,
 }
 
-pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayResponse>, Error> {
+pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec<LivePlayByPlay>, Error> {
     let params: Vec<(&str, &str)> = vec![("gameId", game_id)];
     //println!("Params: {:?}", params);
     let endpoint = LIVE_ENDPOINT;
@@ -208,29 +208,29 @@ pub async fn get_live_plays(api_client: &ApiClient, game_id: &str) -> Result<Vec
     //println!("checkpoint");
     
     // Parse the response into JSON
-    let json_response: Vec<LivePlayResponse> = response.json().await?;
+    let json_response: Vec<LivePlayByPlay> = response.json().await?;
     
     //println!("JSON Response: {:?}", json_response);
     Ok(json_response)
 }
 
-pub async fn get_play_types(api_client: &ApiClient) -> Result<Vec<PlayTypesResponse>, Error> {
+pub async fn get_play_types(api_client: &ApiClient) -> Result<Vec<PlayType>, Error> {
     let endpoint = PLAY_TYPES_ENDPOINT;
     let response = api_client.get_endpoint(&endpoint).await?;
-    let json_response: Vec<PlayTypesResponse> = response.json().await?;
+    let json_response: Vec<PlayType> = response.json().await?;
     Ok(json_response)
 }
 
-pub async fn get_play_stats(api_client: &ApiClient, params: PlayStatsParams<'_>) -> Result<Vec<PlayStatsResponse>, Error> {
+pub async fn get_play_stats(api_client: &ApiClient, params: PlayStatsParams<'_>) -> Result<Vec<PlayStat>, Error> {
     let endpoint = PLAY_STATS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(&endpoint, params.as_query_params()).await?;
-    let json_response: Vec<PlayStatsResponse> = response.json().await?;
+    let json_response: Vec<PlayStat> = response.json().await?;
     Ok(json_response)
 }
 
-pub async fn get_play_stat_types(api_client: &ApiClient) -> Result<Vec<PlayStatTypesResponse>, Error> {
+pub async fn get_play_stat_types(api_client: &ApiClient) -> Result<Vec<PlayStatType>, Error> {
     let endpoint = PLAY_STAT_TYPES_ENDPOINT;
     let response = api_client.get_endpoint(&endpoint).await?;
-    let json_response: Vec<PlayStatTypesResponse> = response.json().await?;
+    let json_response: Vec<PlayStatType> = response.json().await?;
     Ok(json_response)
 }
