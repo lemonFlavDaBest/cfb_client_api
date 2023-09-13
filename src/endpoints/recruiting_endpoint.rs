@@ -125,7 +125,7 @@ pub struct Hometown {
 
 
 #[derive(Deserialize, Debug)]
-pub struct RecruitingTeamsResponse {
+pub struct TeamRecruitingRank {
     year: Option<u64>,
     rank: Option<u64>,
     team: Option<String>,
@@ -134,14 +134,14 @@ pub struct RecruitingTeamsResponse {
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct RecruitingGroupsResponse {
+pub struct PositionGroupRecruitingRating {
     team: Option<String>,
     conference: Option<String>,
     position_group: Option<String>,
     average_rating: Option<f64>,
     total_rating: Option<f64>,
     commits: Option<f64>,
-    average_starts: Option<f64>,
+    average_stars: Option<f64>,
 }
 
 pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: RecruitingPlayersParams<'_>) -> Result<Recruit, Error> {
@@ -151,7 +151,7 @@ pub async fn get_recruiting_players_with_params(api_client: &ApiClient, params: 
     Ok(json_response)
 }
 
-pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<RecruitingTeamsResponse, Error> {
+pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<RecruitingTeamsParams<'_>>) -> Result<TeamRecruitingRank, Error> {
     let endpoint = RECRUITING_TEAMS_ENDPOINT;
     let response = match params {
         Some(params) => {
@@ -161,11 +161,11 @@ pub async fn get_recruiting_teams(api_client: &ApiClient, params: Option<Recruit
             api_client.get_endpoint(&endpoint).await?
         }
     };
-    let json_response: RecruitingTeamsResponse = response.json().await?;
+    let json_response: TeamRecruitingRank = response.json().await?;
     Ok(json_response)
 }
 
-pub async fn get_recruiting_groups(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<RecruitingGroupsResponse, Error> {
+pub async fn get_recruiting_groups(api_client: &ApiClient, params: Option<RecruitingGroupsParams<'_>>) -> Result<PositionGroupRecruitingRating, Error> {
     let endpoint = RECRUITING_GROUPS_ENDPOINT;
     let response = match params {
         Some(params) => {
@@ -175,6 +175,6 @@ pub async fn get_recruiting_groups(api_client: &ApiClient, params: Option<Recrui
             api_client.get_endpoint(&endpoint).await?
         }
     };
-    let json_response: RecruitingGroupsResponse = response.json().await?;
+    let json_response: PositionGroupRecruitingRating = response.json().await?;
     Ok(json_response)
 }
