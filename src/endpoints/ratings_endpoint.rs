@@ -170,7 +170,7 @@ pub struct SpecialTeamsSP {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsSRSResponse {  
+pub struct TeamSRSRating {  
     year: Option<u64>,
     team: Option<String>,
     conference: Option<String>,
@@ -234,10 +234,10 @@ pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsS
     Ok(json_response)
 }
 
-pub async fn get_ratings_srs_with_params(api_client: &ApiClient, params: RatingsSRSParams<'_>) -> Result<RatingsSRSResponse, Error> {
+pub async fn get_ratings_srs_with_params(api_client: &ApiClient, params: RatingsSRSParams<'_>) -> Result<TeamSRSRating, Error> {
     let endpoint = SRS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: RatingsSRSResponse = response.json().await?;
+    let json_response: TeamSRSRating = response.json().await?;
     Ok(json_response)
 }
 
