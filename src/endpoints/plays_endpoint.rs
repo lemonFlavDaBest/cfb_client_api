@@ -15,7 +15,7 @@ const PLAYS_ENDPOINT: &str = "plays";
 //define the response struct
 //we added Serialize to the struct
 #[derive(Deserialize, Debug, Serialize)]
-pub struct PlaysResponse {
+pub struct Play {
     #[serde(deserialize_with = "deserialize_i64_from_str")]
     id: Option<i64>,
     #[serde(deserialize_with = "deserialize_i64_from_str")]
@@ -206,7 +206,7 @@ where
     }
 }
 
-pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &str, params: Option<PlaysParams<'_>>) -> Result<Vec<PlaysResponse>, Error> {
+pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &str, params: Option<PlaysParams<'_>>) -> Result<Vec<Play>, Error> {
     let mut plays_params = params.unwrap_or_else(PlaysParams::new);
     plays_params.year = year;
     plays_params.week = week;
@@ -218,13 +218,13 @@ pub async fn get_plays_with_params(api_client: &ApiClient, year: &str, week: &st
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<PlaysResponse> = response.json().await?;
+    let json_response: Vec<Play> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
 }
 
-pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<PlaysResponse>, Error> {
+pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u32, end_year: u32, start_week: u16, end_week: u16) -> Result<Vec<Play>, Error> {
     let mut all_plays = Vec::new();
 
     for year in tqdm(start_year..=end_year) {

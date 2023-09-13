@@ -8,7 +8,7 @@ use api_client::ApiClient;
 //use polars::prelude::*;
 use endpoints::calendar_endpoint::{get_calendar, Week};
 use endpoints::games_endpoint::{get_games_with_params, Game, GamesParams};
-use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, PlaysResponse};
+use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, Play};
 use endpoints::scoreboard_endpoint::{get_scoreboard, get_scoreboard_with_params, ScoreboardResponse, ScoreboardParams};
 use polars::prelude::*;
 use reqwest::Error;
