@@ -220,7 +220,7 @@ pub struct DefenseConferenceSP {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RatingsEloResponse {
+pub struct TeamEloRating {
     year: Option<u64>,
     team: Option<String>,
     conference: Option<String>,
@@ -255,7 +255,7 @@ pub async fn get_conferences_sp_ratings(api_client: &ApiClient, params: Option<R
     Ok(json_response)
 }
 
-pub async fn get_elo_ratings(api_client: &ApiClient, params: Option<RatingsEloParams<'_>>) -> Result<RatingsEloResponse, Error> {
+pub async fn get_elo_ratings(api_client: &ApiClient, params: Option<RatingsEloParams<'_>>) -> Result<TeamEloRating, Error> {
     let endpoint = ELO_ENDPOINT;
     let response = match params {
         Some(params) => {
@@ -265,6 +265,6 @@ pub async fn get_elo_ratings(api_client: &ApiClient, params: Option<RatingsEloPa
             api_client.get_endpoint(endpoint).await?
         }
     };
-    let json_response: RatingsEloResponse = response.json().await?;
+    let json_response: TeamEloRating = response.json().await?;
     Ok(json_response)
 }
