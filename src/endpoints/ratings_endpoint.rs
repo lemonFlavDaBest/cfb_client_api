@@ -113,7 +113,7 @@ impl RatingsEloParams<'_> {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RatingsSPResponse {
+pub struct TeamSPRating {
     year: Option<u64>,
     team: Option<String>,
     conference: Option<String>,
@@ -227,10 +227,10 @@ pub struct RatingsEloResponse {
     elo: Option<f64>,
 }
 
-pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<RatingsSPResponse, Error> {
+pub async fn get_ratings_sp_with_params(api_client: &ApiClient, params: RatingsSPParams<'_>) -> Result<TeamSPRating, Error> {
     let endpoint = SP_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, params.as_query_params()).await?;
-    let json_response: RatingsSPResponse = response.json().await?;
+    let json_response: TeamSPRating = response.json().await?;
     Ok(json_response)
 }
 
