@@ -32,7 +32,7 @@ impl RecordsParams<'_> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct RecordsResponse {
+pub struct TeamRecord {
     year: u32,
     team: String,
     conference: String,
@@ -53,7 +53,7 @@ pub struct RecordStats {
 }
 
 //create function to get records that take the api client as a parameter and an optional recordsparams struct
-pub async fn get_records_with_params(api_client: &ApiClient, params: Option<RecordsParams<'_>>) -> Result<Vec<RecordsResponse>, Error> {
+pub async fn get_records_with_params(api_client: &ApiClient, params: Option<RecordsParams<'_>>) -> Result<Vec<TeamRecord>, Error> {
     let mut records_params = params.unwrap_or_else(|| RecordsParams { year: None, team: None, conference: None });
     let endpoint = RECORDS_ENDPOINT;
     let response = api_client.get_endpoint_with_params(endpoint, records_params.as_query_params()).await?;
@@ -63,7 +63,7 @@ pub async fn get_records_with_params(api_client: &ApiClient, params: Option<Reco
     //Ok(response.text().await?)
 
     //Deserialize the response into GamesResponse struct
-    let json_response: Vec<RecordsResponse> = response.json().await?;
+    let json_response: Vec<TeamRecord> = response.json().await?;
     //println!("json_response: {:?}", json_response);
 
     Ok(json_response)
