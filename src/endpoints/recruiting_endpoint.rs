@@ -8,10 +8,6 @@ use serde_json::Value;
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
 
 //define the endpoint
-const RECRUITING_ENDPOINT: &str = "recruiting";
-const PLAYERS_ENDPOINT: &str = "players";
-const TEAMS_ENDPOINT: &str = "teams";
-const GROUPS_ENDPOINT: &str = "groups";
 const RECRUITING_PLAYERS_ENDPOINT: &str = "recruiting/players";
 const RECRUITING_TEAMS_ENDPOINT: &str = "recruiting/teams";
 const RECRUITING_GROUPS_ENDPOINT: &str = "recruiting/groups";
