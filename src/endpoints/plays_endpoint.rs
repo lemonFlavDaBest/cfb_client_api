@@ -55,16 +55,19 @@ pub struct Clock {
     minutes: Option<u8>,
     seconds: Option<u8>,
 }
+
+#[derive(Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct PlaysParams<'a> {
-    seasonType: Option<&'a str>,
+    season_type: Option<&'a str>,
     year: &'a str,
     week: &'a str,
     team: Option<&'a str>,
     offense: Option<&'a str>,
     defense: Option<&'a str>,
-    offenseConference: Option<&'a str>,
-    defenseConference: Option<&'a str>,
-    playType: Option<&'a str>,
+    offense_conference: Option<&'a str>,
+    defense_conference: Option<&'a str>,
+    play_type: Option<&'a str>,
     classification: Option<&'a str>,
 }
 
@@ -77,7 +80,7 @@ impl PlaysParams<'_> {
         let mut params = vec![("year", self.year)];
         params.push(("week", self.week));
         // Add other fields if they exist in self
-        if let Some(season_type) = self.seasonType {
+        if let Some(season_type) = self.season_type {
             params.push(("seasonType", season_type));
         }
         if let Some(team) = self.team {
@@ -89,13 +92,13 @@ impl PlaysParams<'_> {
         if let Some(defense) = self.defense {
             params.push(("defense", defense));
         }
-        if let Some(offenseConference) = self.offenseConference {
+        if let Some(offenseConference) = self.offense_conference {
             params.push(("offenseConference", offenseConference));
         }
-        if let Some(defenseConference) = self.defenseConference {
+        if let Some(defenseConference) = self.defense_conference {
             params.push(("defenseConference", defenseConference));
         }
-        if let Some(playType) = self.playType {
+        if let Some(playType) = self.play_type {
             params.push(("playType", playType));
         }  
         if let Some(classification) = self.classification {
@@ -108,15 +111,15 @@ impl PlaysParams<'_> {
 impl Default for PlaysParams<'_> {
     fn default() -> Self {
         PlaysParams { 
-            seasonType: Some("regular"),
+            season_type: Some("regular"),
             year: "2022", 
             week: "1", 
             team: None,
             offense: None,
             defense: None,
-            offenseConference: None,
-            defenseConference: None,
-            playType: None,
+            offense_conference: None,
+            defense_conference: None,
+            play_type: None,
             classification: Some("fbs"),
         } 
     }
@@ -249,7 +252,7 @@ pub async fn get_all_plays_for_year_range(api_client: &ApiClient, start_year: u3
             // Get postseason plays
             let postseason_params = PlaysParams {
                 year: &year_str,
-                seasonType: Some("postseason"),
+                season_type: Some("postseason"),
                 ..Default::default()
             };
             let postseason_plays = get_plays_with_params(&api_client, &year_str, postseason_params.week, Some(postseason_params)).await?;
