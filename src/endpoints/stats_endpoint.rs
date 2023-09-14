@@ -2,7 +2,7 @@
 
 use chrono::{DateTime, Utc, TimeZone};
 use reqwest::{Error, Response};
-use serde::{Deserialize, Deserializer, de};
+use serde::{Deserialize, Serialize, Deserializer, de};
 use serde_json::Value;
 
 use crate::api_client::ApiClient; // Import the ApiClient from the parent module
@@ -15,29 +15,34 @@ const GAME_ADVANCED_ENDPOINT: &str = "stats/game/advanced";
 const CATEGORIES_ENDPOINT: &str = "stats/categories";
 
 //define the params struct
+#[derive(Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct SeasonStatsParams<'a> {
     year: Option<&'a str>, // required if team not specified
     team: Option<&'a str>, // required if year not specified
     conference: Option<&'a str>,
-    startWeek: Option<&'a str>,
-    endWeek: Option<&'a str>,
+    start_week: Option<&'a str>,
+    end_week: Option<&'a str>,
 }
-
+#[derive(Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct SeasonStatsAdvancedParams<'a> {
     year: Option<&'a str>, // required if team not specified
     team: Option<&'a str>, // required if year not specified
-    excludeGarbageTime: Option<&'a str>,
-    startWeek: Option<&'a str>,
-    endWeek: Option<&'a str>,
+    exclude_garbage_time: Option<&'a str>,
+    start_week: Option<&'a str>,
+    end_week: Option<&'a str>,
 }
 
+#[derive(Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct GameStatsAdvancedParams<'a> {
     year: Option<&'a str>, // required if team not specified
     week: Option<&'a str>,
     team: Option<&'a str>, // required if year not specified
     opponent: Option<&'a str>,
-    excludeGarbageTime: Option<&'a str>, // boolean
-    seasonType: Option<&'a str>, // regular, postseason, or both
+    exclude_garbage_time: Option<&'a str>, // boolean
+    season_type: Option<&'a str>, // regular, postseason, or both
 }
 
 impl SeasonStatsParams<'_> {
@@ -57,10 +62,10 @@ impl SeasonStatsParams<'_> {
         if let Some(conference) = self.conference {
             params.push(("conference", conference));
         }
-        if let Some(startWeek) = self.startWeek {
+        if let Some(startWeek) = self.start_week {
             params.push(("startWeek", startWeek));
         }
-        if let Some(endWeek) = self.endWeek {
+        if let Some(endWeek) = self.end_week {
             params.push(("endWeek", endWeek));
         }
         params
@@ -81,13 +86,13 @@ impl SeasonStatsAdvancedParams<'_> {
         } else if let Some(team) = self.team {
             params.push(("team", team));
         }
-        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+        if let Some(excludeGarbageTime) = self.exclude_garbage_time {
             params.push(("excludeGarbageTime", excludeGarbageTime));
         }
-        if let Some(startWeek) = self.startWeek {
+        if let Some(startWeek) = self.start_week {
             params.push(("startWeek", startWeek));
         }
-        if let Some(endWeek) = self.endWeek {
+        if let Some(endWeek) = self.end_week {
             params.push(("endWeek", endWeek));
         }
         params
@@ -114,10 +119,10 @@ impl GameStatsAdvancedParams<'_> {
         if let Some(opponent) = self.opponent {
             params.push(("opponent", opponent));
         }
-        if let Some(excludeGarbageTime) = self.excludeGarbageTime {
+        if let Some(excludeGarbageTime) = self.exclude_garbage_time {
             params.push(("excludeGarbageTime", excludeGarbageTime));
         }
-        if let Some(seasonType) = self.seasonType {
+        if let Some(seasonType) = self.season_type {
             params.push(("seasonType", seasonType));
         } 
         params
