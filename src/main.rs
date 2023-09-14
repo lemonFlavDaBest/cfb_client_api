@@ -8,7 +8,7 @@ use api_client::ApiClient;
 //use polars::prelude::*;
 use endpoints::calendar_endpoint::{get_calendar, Week};
 use endpoints::games_endpoint::{get_games_with_params, Game, GamesParams};
-use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, Play};
+use endpoints::plays_endpoint::{get_plays_with_params, get_all_plays_for_year_range, Play, PlaysParams};
 use endpoints::scoreboard_endpoint::{get_scoreboard, get_scoreboard_with_params, ScoreboardGame, ScoreboardParams};
 use polars::prelude::*;
 use reqwest::Error;
@@ -24,12 +24,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing calendar range function here 
     {
-    //let start_year = 2016;
-    //let end_year = 2017;
-    //let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
-    //println!("{:#?}", response);
+    let start_year = 2016;
+    let end_year = 2017;
+    let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
+    println!("{:#?}", response);
     //print length of response
-    //println!("length of response: {}", response.len());
+    println!("length of response: {}", response.len());
     }
 
     //testing the games for years function here
@@ -45,11 +45,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing the plays endpoint here 
     {
-    //let year: &str = "2021";
-    //let week: &str = "1";
-
-    //let response: Vec<PlaysResponse> = get_plays_with_params(&api_client, year, week, None).await?;
-    //println!("{:#?}", response);
+    let year: &str = "2021";
+    let week: &str = "1";
+    let response: Vec<Play> = get_plays_with_params(&api_client, year, week, None).await?;
+    println!("{:#?}", response);
     }
 
     //testing get_all_plays_for_year_range here
@@ -79,15 +78,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing the scoreboard endpoint here
     {
-        let scoreboard_response = get_scoreboard(&api_client).await?;
-        println!("{:#?}", scoreboard_response);
+        //let scoreboard_response = get_scoreboard(&api_client).await?;
+        //println!("{:#?}", scoreboard_response);
 
-        let scoreboard_params = ScoreboardParams {
-            classification: Some("fbs"),
-            conference: None,
-        };
-        let scoreboard_response = get_scoreboard_with_params(&api_client, Some(scoreboard_params)).await?;
-        println!("{:#?}", scoreboard_response);
+        //let scoreboard_params = ScoreboardParams {
+            //classification: Some("fbs"),
+            //conference: None,
+        //};
+        //let scoreboard_response = get_scoreboard_with_params(&api_client, Some(scoreboard_params)).await?;
+        //println!("{:#?}", scoreboard_response);
     }
     Ok(())
 
