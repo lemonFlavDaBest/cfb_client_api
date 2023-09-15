@@ -8,7 +8,7 @@ use common::setup;
 #[cfg(test)]
 mod tests {
 
-    use cfb_client_api::{ApiClient, calendar_endpoint::get_calendar, };
+    use cfb_client_api::{calendar_endpoint::get_calendar, ApiClient};
 
     use super::*;
 
