@@ -14,7 +14,7 @@ mod tests {
 
 
     #[tokio::test]
-    fn test_get_plays() {
+    async fn test_get_plays() {
         let client = setup();
         println!("test_get_plays");
         println!("API_CLIENT: {:#?}", client);
