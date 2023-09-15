@@ -92,10 +92,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 }
 
-async fn _get_calendar_year(api_client: &ApiClient, year: &str) -> Result<Vec<Week>, Box<dyn std::error::Error>> {
-    let response = get_calendar(api_client, year).await?;
-    Ok(response)
-}
 
 async fn get_calendar_year_range(api_client: &ApiClient, mut start_year: i32, end_year: i32) -> Result<Vec<Week>, Box<dyn std::error::Error>> {
     let mut calendar_responses: Vec<Week> = Vec::new();;
