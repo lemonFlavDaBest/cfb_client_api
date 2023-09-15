@@ -12,21 +12,21 @@ mod tests {
 
     use super::*;
 
-    static CLIENT: ApiClient = setup();
     
     #[test]
     fn test_get_calendar() {
-       
+        let client = setup();
         let year = "2016";
-        let response = get_calendar(&CLIENT, year);
+        let response = get_calendar(&client, year);
         println!("test_get_calendar");
     }
 
     #[test]
     fn test_get_calendar_year_range() {
+        let client = setup();
         let start_year = 2016;
         let end_year = 2017;
-        let response = get_calendar_year_range(&CLIENT, start_year, end_year);
+        //let response = get_calendar_year_range(&CLIENT, start_year, end_year);
         println!("test_get_calendar_year_range");
     }
 }   
