@@ -24,12 +24,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //testing calendar range function here 
     {
-    let start_year = 2016;
-    let end_year = 2017;
-    let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
-    println!("{:#?}", response);
+    //let start_year = 2016;
+    //let end_year = 2017;
+    //let response = get_calendar_year_range(&api_client, start_year, end_year).await?;
+    //println!("{:#?}", response);
     //print length of response
-    println!("length of response: {}", response.len());
+    //println!("length of response: {}", response.len());
     }
 
     //testing the games for years function here
