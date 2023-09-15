@@ -13,7 +13,7 @@ mod tests {
 
 
 
-    #[test]
+    #[tokio::test]
     fn test_get_plays() {
         let client = setup();
         println!("test_get_plays");

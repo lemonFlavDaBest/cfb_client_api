@@ -13,16 +13,16 @@ mod tests {
     use super::*;
 
     
-    #[test]
-    fn test_get_calendar() {
+    #[tokio::test]
+    async fn test_get_calendar() {
         let client = setup();
         let year = "2016";
-        let response = get_calendar(&client, year);
-        println!("test_get_calendar");
+        let response = get_calendar(&client, year).await;
+        assert!(response.is_ok());
     }
 
-    #[test]
-    fn test_get_calendar_year_range() {
+    #[tokio::test]
+    async fn test_get_calendar_year_range() {
         let client = setup();
         let start_year = 2016;
         let end_year = 2017;
