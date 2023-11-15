@@ -1,4 +1,4 @@
-use reqwest::{Client, ClientBuilder, Error, Response, Request, RequestBuilder };
+use reqwest::{Client, ClientBuilder, Error, Response, RequestBuilder };
 use reqwest::header;
 
 #[derive(Debug)]
